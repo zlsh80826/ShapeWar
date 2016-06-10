@@ -1,6 +1,8 @@
 The Server
 ==========
 
+Game server and Web server
+
 Requirements
 ------------
 
