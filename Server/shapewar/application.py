@@ -1,3 +1,4 @@
+import os
 import tornado.web
 from torinja import Jinja2Env
 from jinja2 import PackageLoader
@@ -16,5 +17,6 @@ def make_app(database_engine):
         database_engine=database_engine,
         template_loader=Jinja2Env(
             loader=PackageLoader('shapewar')
-        )
+        ),
+        cookie_secret=os.urandom(64)
     )

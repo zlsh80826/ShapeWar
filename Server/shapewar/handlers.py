@@ -1,11 +1,35 @@
+import logging
 import tornado.web
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from .database import DBHandlerMixin, User
 
 
+logger = logging.getLogger(__name__)
+
+
 class RequestHandler(DBHandlerMixin, tornado.web.RequestHandler):
-    pass
+
+    # user related stuff
+
+    def get_current_user(self, user_cookie=None):
+        if user_cookie is None:
+            user_cookie = self.get_secure_cookie('user')
+        if user_cookie is None:
+            return None
+        else:
+            with self.get_session() as session:
+                try:
+                    return session.query(User)\
+                        .filter(User.username == user_cookie).one()
+                except NoResultFound:
+                    return None
+
+    def set_current_user(self, user):
+        self.set_secure_cookie('user', user)
+
+    def logout_user(self):
+        self.clear_cookie('user')
 
 
 class APIHandler(RequestHandler):
@@ -33,7 +57,7 @@ class APILogin(APIHandler):
                 )
             else:
                 if user.verify_password(password):
-                    self.finish('ok XXX')
+                    self.finish({'token': "NotImplemented"})
                 else:
                     self.finish({
                         'error': {'message': 'invalid passwored'}
@@ -43,17 +67,17 @@ class APILogin(APIHandler):
 class APIRegister(APIHandler):
 
     def post(self):
-        user = User(
-            username=self.get_body_argument('username'),
-            password=self.get_body_argument('password')
-        )
+        username = self.get_body_argument('username')
+        password = self.get_body_argument('password')
+        user = User(username=username, password=password)
         try:
             with self.get_session() as session:
                 session.add(user)
         except IntegrityError:
             self.finish({'error': {'message': 'username is used already'}})
         else:
-            self.finish('ok XXX')
+            self.set_current_user(username)
+            self.finish({'token': "NotImplemented"})
 
 
 all_handlers = [
