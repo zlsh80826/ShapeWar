@@ -21,4 +21,6 @@ Installation
 Running
 -------
 
-Not implemented yet.
+.. code-block:: bash
+
+    python run.py  # in virtual environment
