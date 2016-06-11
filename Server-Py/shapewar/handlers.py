@@ -1,4 +1,3 @@
-import json
 import logging
 import tornado.web
 from tornado.websocket import WebSocketHandler, WebSocketClosedError
@@ -96,7 +95,7 @@ class Arena:
 
     def send_updates(self):
         self.frame_id += 1
-        self.broadcast_message(json.dumps({
+        self.broadcast_message({
             "frame": self.frame_id,
             "me": {
                 "maxHp": 10000,
@@ -125,7 +124,7 @@ class Arena:
                     "position": [600, 800]
                 },
             ]
-        }))
+        })
 
     def broadcast_message(self, message):
         removal = set()
