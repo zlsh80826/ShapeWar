@@ -3,6 +3,7 @@
 
 #include <QGraphicsView>
 #include <QColor>
+#include <hero.h>
 
 class Scene : public QGraphicsView
 {
@@ -21,6 +22,7 @@ protected:
     void drawBackground(QPainter *painter, const QRectF &rect);
 
 private:
+    Hero* hero;
     void initView();
     void initGame();
     int width;

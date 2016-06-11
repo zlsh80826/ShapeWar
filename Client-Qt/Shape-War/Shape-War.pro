@@ -13,9 +13,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    scene.cpp
+    scene.cpp \
+    hero.cpp
 
 HEADERS  += \
-    scene.h
+    scene.h \
+    hero.h
+
+CONFIG += qt
 
 FORMS    += mainwindow.ui

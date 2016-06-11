@@ -1,4 +1,5 @@
 #include <scene.h>
+#include <hero.h>
 #include <QPainter>
 
 Scene::Scene(QWidget *parent) : QGraphicsView(parent){
@@ -20,6 +21,12 @@ void Scene::initView(){
     QGraphicsScene* scene = new QGraphicsScene;
     scene -> setSceneRect(5, 5, width, height);
     setScene(scene);
+
+    hero = new Hero();
+    hero -> setPos(100, 200);
+    scene -> addItem(hero);
+
+    startGame();
 }
 
 void Scene::drawBackground(QPainter *painter, const QRectF &rect){
@@ -36,11 +43,11 @@ void Scene::drawBackground(QPainter *painter, const QRectF &rect){
 }
 
 void Scene::startGame(){
-
+    initGame();
 }
 
 void Scene::initGame(){
-
+    hero -> setFocus();
 }
 
 void Scene::gameOver(){
