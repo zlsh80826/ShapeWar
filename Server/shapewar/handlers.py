@@ -92,9 +92,12 @@ class Arena:
 
     def __init__(self):
         self.clients = set()
+        self.frame_id = 0
 
     def send_updates(self):
+        self.frame_id += 1
         self.broadcast_message(json.dumps({
+            "frame": self.frame_id,
             "me": {
                 "maxHp": 10000,
                 "experience": 400,
@@ -140,16 +143,17 @@ arena = Arena()
 class DummyArenaHandler(WebSocketHandler):
 
     def open(self):
-        logger.info('%r connected', self)
+        arena.clients.add(self)
+        logger.info('%s connected', self.request.remote_ip)
 
     def on_message(self, message):
-        logger.info('%s said %r', self.remote_ip, message)
+        logger.info('%s said %r', self.request.remote_ip, message)
 
     def check_origin(self, origin):
         return True
 
     def on_close(self):
-        logger.info('%r closed', self)
+        logger.info('%s closed', self.request.remote_ip)
 
 
 all_handlers = [

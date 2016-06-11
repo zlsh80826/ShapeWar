@@ -27,7 +27,8 @@ def main():
     Base.metadata.create_all(database_engine)
 
     # start arena
-    PeriodicCallback(arena.send_updates, 20)  # send updates every 20 ms
+    pc = PeriodicCallback(arena.send_updates, 20)  # send updates every 20 ms
+    pc.start()
     logger.info('started dummy arena')
 
     # listen
