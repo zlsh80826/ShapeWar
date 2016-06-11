@@ -1,5 +1,7 @@
+import json
 import logging
 import tornado.web
+from tornado.websocket import WebSocketHandler, WebSocketClosedError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from .database import DBHandlerMixin, User
@@ -42,6 +44,12 @@ class APIHandler(RequestHandler):
         })
 
 
+class APIPing(APIHandler):
+
+    def get(self):
+        self.finish({'message': 'server is running'})
+
+
 class APILogin(APIHandler):
 
     def post(self):
@@ -80,7 +88,73 @@ class APIRegister(APIHandler):
             self.finish({'token': "NotImplemented"})
 
 
+class Arena:
+
+    def __init__(self):
+        self.clients = set()
+
+    def send_updates(self):
+        self.broadcast_message(json.dumps({
+            "me": {
+                "maxHp": 10000,
+                "experience": 400,
+                "reload": 2.5,
+                "bulletSpeed": 40,
+                "bulletBodyDamage": 25,
+                "bodyDamage": 25,
+                "speed": 30
+            },
+            "objects": [
+                {
+                    "id": 1,
+                    "name": None,
+                    "shape": "circle3",
+                    "hp": 450,
+                    "maxHp": 2000,
+                    "position": [2400, 250]
+                },
+                {
+                    "id": 2,
+                    "name": 'my_name',
+                    "shape": "circle5",
+                    "hp": 5600,
+                    "maxHp": 10000,
+                    "position": [600, 800]
+                },
+            ]
+        }))
+
+    def broadcast_message(self, message):
+        removal = set()
+        for client in self.clients:
+            try:
+                client.write_message(message)
+            except WebSocketClosedError:
+                removal.add(client)
+        self.clients -= removal
+
+
+arena = Arena()
+
+
+class DummyArenaHandler(WebSocketHandler):
+
+    def open(self):
+        logger.info('%r connected', self)
+
+    def on_message(self, message):
+        logger.info('%s said %r', self.remote_ip, message)
+
+    def check_origin(self, origin):
+        return True
+
+    def on_close(self):
+        logger.info('%r closed', self)
+
+
 all_handlers = [
+    ('/api/ping', APIPing),
     ('/api/login', APILogin),
     ('/api/register', APIRegister),
+    ('/arena/dummy', DummyArenaHandler),
 ]

@@ -1,11 +1,12 @@
 import logging
 
-from tornado.ioloop import IOLoop
+from tornado.ioloop import IOLoop, PeriodicCallback
 from tornado.options import parse_command_line, define, options
 from sqlalchemy import create_engine
 
 from shapewar.application import make_app
 from shapewar.database import Base
+from shapewar.handlers import arena
 
 
 logger = logging.getLogger(__name__)
@@ -24,6 +25,10 @@ def main():
 
     # create all tables
     Base.metadata.create_all(database_engine)
+
+    # start arena
+    PeriodicCallback(arena.send_updates, 20)  # send updates every 20 ms
+    logger.info('started dummy arena')
 
     # listen
     app = make_app(database_engine)
