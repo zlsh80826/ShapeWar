@@ -53,9 +53,6 @@ void Scene::initGame() {
     hero -> setFocus();
 }
 
-void Scene::startGame() {
-
-}
 
 void Scene::initGame() {
 
