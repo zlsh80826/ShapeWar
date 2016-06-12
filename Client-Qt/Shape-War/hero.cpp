@@ -7,6 +7,7 @@ Hero::Hero() {
     this -> speed = 0;
     this -> maxSpeed = 80;
     this -> setFlags(QGraphicsItem::ItemIsFocusable);
+    printf("Hero_constructed");
 }
 
 QRectF Hero::boundingRect() const {
@@ -25,8 +26,8 @@ QPainterPath Hero::shape() const {
 }
 
 void Hero::keyPressEvent(QKeyEvent *event) {
+    printf("Key_pressed\n");
     this -> speed += 0.019;
-
     switch( event -> key() ){
         case Qt::Key_Down :
             moveBy(0, speed);
@@ -44,5 +45,10 @@ void Hero::keyPressEvent(QKeyEvent *event) {
 }
 
 void Hero::keyReleaseEvent(QKeyEvent* event) {
-    //this -> speed = 0;
+    if(event->isAutoRepeat()) {
+        event->ignore();
+    }
+    else {
+        this -> speed = 0;
+    }
 }
