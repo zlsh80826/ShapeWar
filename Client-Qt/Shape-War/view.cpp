@@ -14,6 +14,10 @@ View::View(Scene *scene): QGraphicsView(scene)
     setMinimumSize(viewWidth, viewHeight);
     setMaximumSize(viewWidth, viewHeight);
 
+    // disable the scroll bar
+    this->setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
+    this->setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
+
     this->setMouseTracking(true);  // pretty consumes resources of CPU
 
     this->self = scene->self;

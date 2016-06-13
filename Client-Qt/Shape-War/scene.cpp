@@ -3,8 +3,8 @@
 #include <QPainter>
 
 Scene::Scene(QWidget *parent) : QGraphicsScene(parent) {
-    this->width = 800;
-    this->height = 600;
+    this->width = 2000;
+    this->height = 1500;
     this->margin = 10;
     initView();
 }
