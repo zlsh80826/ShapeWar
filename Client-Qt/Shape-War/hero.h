@@ -2,7 +2,7 @@
 #define HERO_H
 #include <QGraphicsObject>
 
-class Hero : public QGraphicsObject{
+class Hero : public QGraphicsObject {
     Q_OBJECT
 public:
     Hero();

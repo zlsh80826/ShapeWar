@@ -1,5 +1,6 @@
 #ifndef VIEW_H
 #define VIEW_H
+
 #include "scene.h"
 #include "hero.h"
 #include <QGraphicsView>
@@ -7,8 +8,13 @@
 
 class View : public QGraphicsView
 {
+    Q_OBJECT
+
 public:
     View(Scene *scene);
+
+public slots:
+    void settingCenter();
 
 protected:
     void mousePressEvent(QMouseEvent *event);

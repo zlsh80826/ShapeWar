@@ -22,6 +22,9 @@ View::View(Scene *scene): QGraphicsView(scene)
 
     this->self = scene->self;
     this->centerOn(this->self->pos());
+
+    connect(self, SIGNAL(xChanged()), this, SLOT(settingCenter()));
+    connect(self, SIGNAL(yChanged()), this, SLOT(settingCenter()));
 }
 
 
@@ -48,18 +51,24 @@ void View::keyPressEvent(QKeyEvent *event) {
             self->moveBy(moveAmount, 0);
             break;
     }
+}
+
+void View::settingCenter() {
     this->centerOn(this->self->pos());
 }
+
 void View::mousePressEvent(QMouseEvent *event) {
     mouseClicked = true;
 }
 void View::mouseMoveEvent(QMouseEvent *event) {
-    QPointF mouseP = event->pos();
+    QPointF mouseP = this->mapToScene( event->pos() );
     QPointF selfP = self->pos();
+
     qreal tangent =  ( mouseP.y() - selfP.y() ) / (mouseP.x() - selfP.x());
     qreal targetAngle = atan( tangent );
     if( mouseP.x() < selfP.x() ) targetAngle += M_PI;
     else if( mouseP.y() < selfP.y() ) targetAngle += M_PI*2;
-    self->setTargetAngle( targetAngle );
-    //printf("degree of mouse relative to self is: %f", targetAngle * 180.0 / 3.14 );
+    self->setRotation( targetAngle * 180 / 3.14 );
+  // printf("self (%f, %f), mouse (%f,%f). degree of mouse relative to self is: %f",selfP.x(), selfP.y(), mouseP.x(), mouseP.y(),
+  //                  targetAngle * 180.0 / 3.14 );
 }
