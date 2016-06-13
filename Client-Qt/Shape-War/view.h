@@ -7,6 +7,9 @@
 #include <QKeyEvent>
 #include <QDebug>
 #include <QTimer>
+#include <triangle.h>
+#include <rectangle.h>
+#include <pentagon.h>
 
 class View : public QGraphicsView
 {

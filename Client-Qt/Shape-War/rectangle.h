@@ -1,21 +1,21 @@
-#ifndef HERO_H
-#define HERO_H
+#ifndef RECTANGLE_H
+#define RECTANGLE_H
 #include <QGraphicsObject>
+#include <QPolygonF>
 
-class Hero : public QGraphicsObject {
+class Rectangle : public QGraphicsObject {
     Q_OBJECT
 public:
-    Hero();
+    Rectangle();
     // need to optimize to boundingRegion
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QPainterPath shape() const;
     void setTargetAngle(qreal targetAngle);
 
-
 private:
-    qreal width;
+    int edge;
     qreal targetAngle;
+    QPolygonF polygonShape;
 };
-
-#endif // HERO_H
+#endif // RECTANGLE_H

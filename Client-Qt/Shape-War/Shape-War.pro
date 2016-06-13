@@ -15,12 +15,18 @@ TEMPLATE = app
 SOURCES += main.cpp \
     scene.cpp \
     hero.cpp \
-    view.cpp
+    view.cpp \
+    triangle.cpp \
+    rectangle.cpp \
+    pentagon.cpp
 
 HEADERS  += \
     scene.h \
     hero.h \
-    view.h
+    view.h \
+    triangle.h \
+    rectangle.h \
+    pentagon.h
 
 CONFIG += qt
 

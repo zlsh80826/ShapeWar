@@ -1,11 +1,12 @@
-#ifndef HERO_H
-#define HERO_H
+#ifndef PENTAGON_H
+#define PENTAGON_H
 #include <QGraphicsObject>
+#include <QPolygonF>
 
-class Hero : public QGraphicsObject {
+class Pentagon : public QGraphicsObject {
     Q_OBJECT
 public:
-    Hero();
+    Pentagon();
     // need to optimize to boundingRegion
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -14,8 +15,8 @@ public:
 
 
 private:
-    qreal width;
+    int axis;
     qreal targetAngle;
+    QPolygonF polygonShape;
 };
-
-#endif // HERO_H
+#endif // PENTAGON_H

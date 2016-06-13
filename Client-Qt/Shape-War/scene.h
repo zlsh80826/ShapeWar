@@ -4,6 +4,9 @@
 #include <QGraphicsView>
 #include <QColor>
 #include <hero.h>
+#include <triangle.h>
+#include <rectangle.h>
+#include <pentagon.h>
 #include <QKeyEvent>
 #include <math.h>
 
@@ -13,6 +16,11 @@ class Scene : public QGraphicsScene
 public:
     Scene(QWidget* parent = 0);
     Hero* self;
+
+    // test object
+    Triangle* testTriangle;
+    Rectangle* testRectangle;
+    Pentagon* testPentagon;
 
 public slots:
     void startGame();
@@ -26,7 +34,7 @@ private:
     int width;
     int height;
     int margin;
-
+    QColor backgroundColor;
 
 };
 
