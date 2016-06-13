@@ -22,3 +22,6 @@ QPainterPath Hero::shape() const {
     path.addRect(-width/2, -width/2, width, width);
     return path;
 }
+void Hero::setTargetAngle(qreal targetAngle) {
+    this->targetAngle = targetAngle;
+}

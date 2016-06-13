@@ -5,6 +5,7 @@
 #include <QColor>
 #include <hero.h>
 #include <QKeyEvent>
+#include <math.h>
 
 class Scene : public QGraphicsView
 {
@@ -19,6 +20,7 @@ public slots:
 
 protected:
     void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
     void drawBackground(QPainter *painter, const QRectF &rect);
 
@@ -35,8 +37,8 @@ private:
     bool key_s_pressed;
     bool key_d_pressed;
 
-    bool mouseLeftClicked;
-    bool mouseRightClicked;
+    bool mouseClicked;
+    qreal targetAngle;
 
 
 };

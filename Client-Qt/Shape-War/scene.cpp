@@ -82,6 +82,16 @@ void Scene::keyPressEvent(QKeyEvent *event) {
             break;
     }
 }
-void mousePressEvent(QMouseEvent *event) {
-
+void Scene::mousePressEvent(QMouseEvent *event) {
+    mouseClicked = true;
+}
+void Scene::mouseMoveEvent(QMouseEvent *event) {
+    QPointF mouseP = event->pos();
+    QPointF selfP = self->pos();
+    qreal tangent =  ( mouseP.y() - selfP.y() ) / (mouseP.x() - selfP.x());
+    qreal targetAngle = atan( tangent );
+    if( mouseP.x() < selfP.x() ) targetAngle += M_PI;
+    else if( mouseP.y() < selfP.y() ) targetAngle += M_PI*2;
+    self->setTargetAngle( targetAngle );
+    printf("degree of mouse relative to self is: %f", targetAngle * 180.0 / 3.14 );
 }
