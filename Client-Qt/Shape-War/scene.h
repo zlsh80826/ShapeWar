@@ -22,12 +22,12 @@ protected:
     void drawBackground(QPainter *painter, const QRectF &rect);
 
 private:
-    void initView();
     void initGame();
     int width;
     int height;
     int margin;
-    //QTimer *recvDelayTimer;
+
+
 };
 
 #endif // SCENE_H

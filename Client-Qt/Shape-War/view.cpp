@@ -29,6 +29,8 @@ View::View(Scene *scene): QGraphicsView(scene)
     sendDelayTimer = new QTimer(this);
     connect(sendDelayTimer, SIGNAL(timeout()), this, SLOT(sendControlToServer()));
     sendDelayTimer->start(sendDelay);
+
+    key_a_pressed = key_d_pressed = key_s_pressed = key_w_pressed = false;
 }
 
 

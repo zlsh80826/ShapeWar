@@ -6,17 +6,7 @@ Scene::Scene(QWidget *parent) : QGraphicsScene(parent) {
     this->width = 2000;
     this->height = 1500;
     this->margin = 10;
-    initView();
-}
-
-void Scene::initView() {
-
-    this->setSceneRect(5, 5, width, height);
-
-    self = new Hero();
-    self -> setPos(100, 200);
-    this -> addItem(self);
-
+    initGame();
     startGame();
 }
 
@@ -37,15 +27,17 @@ void Scene::drawBackground(QPainter *painter, const QRectF &rect) {
 
 
 void Scene::startGame() {
-    initGame();
+
 }
 
 void Scene::initGame() {
-  /*
-    recvDelayTimer = new QTimer(this);
-    connect(sendDelayTimer, SIGNAL(timeout()), this, SLOT(sendToServer()) );
-    connect(recvDelayTimer, SIGNAL(timeout()), this, SLOT(recvFromServer()) );*/
 
+    this->setSceneRect(5, 5, width, height);
+
+    // self should not be constructed here after server is completed ?
+    self = new Hero();
+    self -> setPos(100, 200);
+    this -> addItem(self);
 }
 
 void Scene::gameOver() {
