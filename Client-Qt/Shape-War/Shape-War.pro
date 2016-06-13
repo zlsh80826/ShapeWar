@@ -14,11 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     scene.cpp \
-    hero.cpp
+    hero.cpp \
+    view.cpp
 
 HEADERS  += \
     scene.h \
-    hero.h
+    hero.h \
+    view.h
 
 CONFIG += qt
 

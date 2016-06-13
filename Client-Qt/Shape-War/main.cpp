@@ -1,4 +1,5 @@
 #include "scene.h"
+#include "view.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -7,7 +8,8 @@ int main(int argc, char *argv[])
     printf("main() start\n");
     QApplication a(argc, argv);
     Scene scene;
-    scene.show();
+    View view(&scene);
+    view.show();
 
     return a.exec();
 }
