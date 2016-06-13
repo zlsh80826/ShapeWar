@@ -25,6 +25,10 @@ View::View(Scene *scene): QGraphicsView(scene)
 
     connect(self, SIGNAL(xChanged()), this, SLOT(settingCenter()));
     connect(self, SIGNAL(yChanged()), this, SLOT(settingCenter()));
+
+    sendDelayTimer = new QTimer(this);
+    connect(sendDelayTimer, SIGNAL(timeout()), this, SLOT(sendControlToServer()));
+    sendDelayTimer->start(sendDelay);
 }
 
 
@@ -53,12 +57,37 @@ void View::keyPressEvent(QKeyEvent *event) {
     }
 }
 
+void View::keyReleaseEvent(QKeyEvent *event) {
+    if(event->isAutoRepeat()) {
+        event->ignore();
+        return;
+    }
+    switch( event->key() ) {
+        case Qt::Key_W :
+            this->key_w_pressed = false;
+            break;
+        case Qt::Key_A :
+            this->key_a_pressed = false;
+            break;
+        case Qt::Key_S :
+            this->key_s_pressed = false;
+            break;
+        case Qt::Key_D :
+            this->key_d_pressed = false;
+            break;
+    }
+    qDebug() << "Released key: " << event->key();
+}
+
 void View::settingCenter() {
     this->centerOn(this->self->pos());
 }
 
 void View::mousePressEvent(QMouseEvent *event) {
     mouseClicked = true;
+}
+void View::mouseReleaseEvent(QMouseEvent *event) {
+    mouseClicked = false;
 }
 void View::mouseMoveEvent(QMouseEvent *event) {
     QPointF mouseP = this->mapToScene( event->pos() );
@@ -71,4 +100,11 @@ void View::mouseMoveEvent(QMouseEvent *event) {
     self->setRotation( targetAngle * 180 / 3.14 );
   // printf("self (%f, %f), mouse (%f,%f). degree of mouse relative to self is: %f",selfP.x(), selfP.y(), mouseP.x(), mouseP.y(),
   //                  targetAngle * 180.0 / 3.14 );
+}
+
+void View::sendControlToServer() {
+    // TODO: send all control messages of keyboard/mouse to server
+
+    // debug print
+    printf("%d %d %d %d, %d, %f", key_w_pressed, key_a_pressed, key_s_pressed, key_d_pressed, mouseClicked, self->rotation());
 }

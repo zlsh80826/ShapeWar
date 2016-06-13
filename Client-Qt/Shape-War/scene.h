@@ -27,7 +27,7 @@ private:
     int width;
     int height;
     int margin;
-
+    //QTimer *recvDelayTimer;
 };
 
 #endif // SCENE_H

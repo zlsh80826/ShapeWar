@@ -41,7 +41,7 @@ void Scene::startGame() {
 }
 
 void Scene::initGame() {
-  /*  sendDelayTimer = new QTimer(this);
+  /*
     recvDelayTimer = new QTimer(this);
     connect(sendDelayTimer, SIGNAL(timeout()), this, SLOT(sendToServer()) );
     connect(recvDelayTimer, SIGNAL(timeout()), this, SLOT(recvFromServer()) );*/
