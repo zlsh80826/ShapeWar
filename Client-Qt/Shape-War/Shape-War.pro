@@ -18,7 +18,8 @@ SOURCES += main.cpp \
     view.cpp \
     triangle.cpp \
     rectangle.cpp \
-    pentagon.cpp
+    pentagon.cpp \
+    bullet.cpp
 
 HEADERS  += \
     scene.h \
@@ -26,7 +27,8 @@ HEADERS  += \
     view.h \
     triangle.h \
     rectangle.h \
-    pentagon.h
+    pentagon.h \
+    bullet.h
 
 CONFIG += qt
 

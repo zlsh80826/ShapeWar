@@ -48,8 +48,12 @@ void Scene::initGame() {
     this -> addItem(testRectangle);
 
     testPentagon = new Pentagon();
-    testPentagon ->setPos(200, 300);
+    testPentagon -> setPos(200, 300);
     this -> addItem(testPentagon);
+
+    testBullet = new Bullet();
+    testBullet -> setPos(300, 250);
+    this -> addItem(testBullet);
 }
 
 void Scene::gameOver() {

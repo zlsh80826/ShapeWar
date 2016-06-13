@@ -7,6 +7,7 @@
 #include <triangle.h>
 #include <rectangle.h>
 #include <pentagon.h>
+#include <bullet.h>
 #include <QKeyEvent>
 #include <math.h>
 
@@ -21,6 +22,7 @@ public:
     Triangle* testTriangle;
     Rectangle* testRectangle;
     Pentagon* testPentagon;
+    Bullet* testBullet;
 
 public slots:
     void startGame();

@@ -18,6 +18,8 @@ QRectF Rectangle::boundingRect() const{
 }
 
 void Rectangle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
+    painter -> setBrush(QBrush(QColor(255, 232, 105, 255), Qt::SolidPattern));
+    painter -> setRenderHint( QPainter::Antialiasing );
     painter -> drawPath(this->shape());
 }
 

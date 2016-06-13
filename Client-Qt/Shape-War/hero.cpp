@@ -14,6 +14,8 @@ QRectF Hero::boundingRect() const {
 }
 
 void Hero::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+    painter -> setBrush(QBrush(QColor(0, 178, 255, 255), Qt::SolidPattern));
+    painter -> setRenderHint( QPainter::Antialiasing );
     painter -> drawPath(this->shape());
 }
 

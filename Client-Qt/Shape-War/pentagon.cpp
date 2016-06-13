@@ -22,6 +22,8 @@ QRectF Pentagon::boundingRect() const{
 }
 
 void Pentagon::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
+    painter -> setBrush(QBrush(QColor(118, 141, 252, 255), Qt::SolidPattern));
+    painter -> setRenderHint( QPainter::Antialiasing );
     painter -> drawPath(this->shape());
 }
 

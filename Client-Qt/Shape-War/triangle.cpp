@@ -17,6 +17,8 @@ QRectF Triangle::boundingRect() const{
 }
 
 void Triangle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
+    painter -> setBrush(QBrush(QColor(252, 118, 119, 255), Qt::SolidPattern));
+    painter -> setRenderHint( QPainter::Antialiasing );
     painter -> drawPath(this->shape());
 }
 
