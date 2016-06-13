@@ -11,14 +11,11 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QPainterPath shape() const;
 
-protected:
-    void keyPressEvent(QKeyEvent* event);
-    void keyReleaseEvent(QKeyEvent* event);
+
 
 private:
     int width;
-    qreal speed;
-    qreal maxSpeed;
+    qreal targetAngle;
 };
 
 #endif // HERO_H

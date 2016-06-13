@@ -6,6 +6,7 @@ Scene::Scene(QWidget *parent) : QGraphicsView(parent) {
     this->width = 800;
     this->height = 600;
     this->margin = 10;
+    this->setFocus();
     initView();
 }
 
@@ -22,9 +23,9 @@ void Scene::initView() {
     scene->setSceneRect(5, 5, width, height);
     setScene(scene);
 
-    hero = new Hero();
-    hero -> setPos(100, 200);
-    scene -> addItem(hero);
+    self = new Hero();
+    self -> setPos(100, 200);
+    scene -> addItem(self);
 
     startGame();
 }
@@ -50,9 +51,37 @@ void Scene::startGame() {
 }
 
 void Scene::initGame() {
-    hero -> setFocus();
+
 }
 
 void Scene::gameOver() {
+
+}
+
+void Scene::keyPressEvent(QKeyEvent *event) {
+    // movement is just for testing
+    // whether to move to judged by server instead of here
+    const qreal moveAmount = 3.0;
+
+    switch( event -> key() ){
+        case Qt::Key_W :
+            this->key_w_pressed = true;
+            self->moveBy(0, -moveAmount);
+            break;
+        case Qt::Key_A :
+            this->key_a_pressed = true;
+            self->moveBy(-moveAmount, 0);
+            break;
+        case Qt::Key_S :
+            this->key_s_pressed = true;
+            self->moveBy(0, moveAmount);
+            break;
+        case Qt::Key_D :
+            this->key_d_pressed = true;
+            self->moveBy(moveAmount, 0);
+            break;
+    }
+}
+void mousePressEvent(QMouseEvent *event) {
 
 }

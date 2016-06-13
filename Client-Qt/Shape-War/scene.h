@@ -4,6 +4,7 @@
 #include <QGraphicsView>
 #include <QColor>
 #include <hero.h>
+#include <QKeyEvent>
 
 class Scene : public QGraphicsView
 {
@@ -17,17 +18,27 @@ public slots:
     void gameOver();
 
 protected:
-    //void mousePressEvent(QMouseEvent *event);
-    //void keyPressEvent(QKeyEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
     void drawBackground(QPainter *painter, const QRectF &rect);
 
 private:
-    Hero* hero;
+    Hero* self;
     void initView();
     void initGame();
     int width;
     int height;
     int margin;
+
+    bool key_w_pressed;
+    bool key_a_pressed;
+    bool key_s_pressed;
+    bool key_d_pressed;
+
+    bool mouseLeftClicked;
+    bool mouseRightClicked;
+
+
 };
 
 #endif // SCENE_H
