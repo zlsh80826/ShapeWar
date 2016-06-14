@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QtWebSockets/QWebSocket>
 #include <QJsonDocument>
+#include "logindialog.h"
 
 Scene::Scene(QWidget *parent, const QUrl &url) : QGraphicsScene(parent), m_url(url) {
     LoginDialog* loginDialog = new LoginDialog();

@@ -21,6 +21,7 @@ SOURCES += main.cpp \
     pentagon.cpp \
     bullet.cpp \
     hpbar.cpp \
+    logindialog.cpp \
     self.cpp
 
 HEADERS  += \
@@ -32,6 +33,7 @@ HEADERS  += \
     pentagon.h \
     bullet.h \
     hpbar.h \
+    logindialog.h \
     self.h
 
 CONFIG += qt
