@@ -30,6 +30,7 @@ void Hero::setTargetAngle(qreal targetAngle) {
 }
 
 void Hero::read(const QJsonObject &json){
-    this -> setX(json["x"].toDouble());
-    this -> setY(json["y"].toDouble());
+    QJsonObject instance = json["me"].toObject();
+    this -> setX(instance["x"].toDouble());
+    this -> setY(instance["y"].toDouble());
 }

@@ -80,6 +80,8 @@ void Scene::onConnected()
 void Scene::onTextMessageReceived(QString message)
 {
     qDebug() << "Message received:" << message;
+    this -> self -> read(stringToJson(message));
+
 }
 //! [onTextMessageReceived]
 
