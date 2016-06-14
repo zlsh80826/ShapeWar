@@ -16,7 +16,6 @@ public:
     QPainterPath shape() const;
     void setTargetAngle(qreal targetAngle);
     void read(const QJsonObject &json);
-    void drawHp(QPainter*);
     HpBar* hpBar;
 
 private:
