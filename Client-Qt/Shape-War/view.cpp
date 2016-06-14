@@ -28,7 +28,7 @@ View::View(Scene *scene, QWebSocket& ws): QGraphicsView(scene), ws(ws)
 
     sendDelayTimer = new QTimer(this);
     connect(sendDelayTimer, SIGNAL(timeout()), this, SLOT(sendControlToServer()));
-    sendDelayTimer->start(sendDelay);
+    sendDelayTimer->start(20);
 
     key_a_pressed = key_d_pressed = key_s_pressed = key_w_pressed = false;
 
@@ -52,26 +52,22 @@ View::View(Scene *scene, QWebSocket& ws): QGraphicsView(scene), ws(ws)
 
 
 void View::keyPressEvent(QKeyEvent *event) {
-    // movement is just for testing
+    // ment is just for testing
     // whether to move to judged by server instead of here
     const qreal moveAmount = 3.0;
 
     switch( event -> key() ){
         case Qt::Key_W :
             this->key_w_pressed = true;
-            self->moveBy(0, -moveAmount);
             break;
         case Qt::Key_A :
             this->key_a_pressed = true;
-            self->moveBy(-moveAmount, 0);
             break;
         case Qt::Key_S :
             this->key_s_pressed = true;
-            self->moveBy(0, moveAmount);
             break;
         case Qt::Key_D :
             this->key_d_pressed = true;
-            self->moveBy(moveAmount, 0);
             break;
     }
 }

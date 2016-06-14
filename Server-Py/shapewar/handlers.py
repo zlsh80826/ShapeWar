@@ -1,9 +1,11 @@
+import json
 import logging
 import tornado.web
 from tornado.websocket import WebSocketHandler, WebSocketClosedError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from .database import DBHandlerMixin, User
+from .hero import Hero
 
 
 logger = logging.getLogger(__name__)
@@ -95,18 +97,8 @@ class Arena:
 
     def send_updates(self):
         self.tick_id += 1
-        self.broadcast_message({
+        self.broadcast_updates({
             "tick": self.tick_id,
-            "self": {
-                "maxHp": 10000,
-                "currentHp": 5000,
-                "experience": 400,
-                "level": 10,
-                "passives": [1, 2, 1, 3, 2, 1, 4, 3],
-                "angle": 245,
-                "x": 300 + (self.tick_id % 40),
-                "y": 400
-            },
             "bullets": [
                 {
                     "id": 0,
@@ -146,6 +138,15 @@ class Arena:
             ]
         })
 
+    def broadcast_updates(self, updates):
+        removal = set()
+        for client in self.clients:
+            try:
+                client.send_updates(updates)
+            except WebSocketClosedError:
+                removal.add(client)
+        self.clients -= removal
+
     def broadcast_message(self, message):
         removal = set()
         for client in self.clients:
@@ -163,10 +164,16 @@ class DummyArenaHandler(WebSocketHandler):
 
     def open(self):
         arena.clients.add(self)
+        self.hero = Hero()
         logger.info('%s connected', self.request.remote_ip)
 
     def on_message(self, message):
-        logger.info('%s said %r', self.request.remote_ip, message)
+        data = json.loads(message)
+        logger.debug('%s %r', self.request.remote_ip, data)
+        self.hero.accept_keys(**data['keys'])
+
+    def send_updates(self, data):
+        self.write_message({'self': self.hero.to_dict(), **data})
 
     def check_origin(self, origin):
         return True
