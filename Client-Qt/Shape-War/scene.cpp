@@ -4,8 +4,19 @@
 #include <QPainter>
 #include <QtWebSockets/QWebSocket>
 #include <QJsonDocument>
+#include "logindialog.h"
 
 Scene::Scene(QWidget *parent, const QUrl &url) : QGraphicsScene(parent), m_url(url) {
+    LoginDialog* loginDialog = new LoginDialog();
+
+    QObject::connect(
+        loginDialog,
+        SIGNAL (acceptLogin(QString&,QString&)),
+        this,
+        SLOT (slotAcceptUserLogin(QString&,QString&))
+    );
+    loginDialog->exec();
+
     this->width = 2000;
     this->height = 1500;
     this->margin = 10;
@@ -102,4 +113,11 @@ void Scene::onTextMessageReceived(QString message)
             heroes.push_back(hero);
         }
     }
+}
+
+void Scene::slotAcceptUserLogin(QString&username, QString&password) {
+    // test
+    qDebug() << "Get username: " << username << ", password: " << password;
+
+    // TODO: send the username and password to server
 }

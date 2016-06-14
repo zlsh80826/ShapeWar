@@ -34,6 +34,7 @@ public:
 public slots:
     void startGame();
     void gameOver();
+    void slotAcceptUserLogin(QString&,QString&);
 
 Q_SIGNALS:
     void closed();
