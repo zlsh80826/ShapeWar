@@ -99,6 +99,9 @@ class Arena:
         self.tick_id += 1
         self.broadcast_updates({
             "tick": self.tick_id,
+            "players": [
+                client.hero.to_player_dict() for client in self.clients
+            ],
             "bullets": [
                 {
                     "id": 0,
@@ -173,7 +176,7 @@ class DummyArenaHandler(WebSocketHandler):
         self.hero.accept_keys(**data['keys'])
 
     def send_updates(self, data):
-        self.write_message({'self': self.hero.to_dict(), **data})
+        self.write_message({'self': self.hero.to_self_dict(), **data})
 
     def check_origin(self, origin):
         return True

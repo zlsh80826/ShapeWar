@@ -50,14 +50,24 @@ class Hero:
         self.x += self.speed_x
         self.y += self.speed_y
 
-    def to_dict(self):
+    def to_self_dict(self):
         return {
-            'x': int(self.x),
-            'y': int(self.y),
-            'angle': 245,
+            'x': self.x,
+            'y': self.y,
+            'id': id(self),
             'maxHp': self.max_hp,
             'currentHp': self.current_hp,
             'level': self.level,
             'experience': self.experience,
-            'passives': [1, 2, 1, 3, 2, 1, 4, 3]
+            'passives': [1, 2, 1, 3, 2, 1, 4, 3],
+        }
+
+    def to_player_dict(self):
+        return {
+            'x': self.x,
+            'y': self.y,
+            'id': id(self),
+            'maxHp': self.max_hp,
+            'currentHp': self.current_hp,
+            'angle': self.angle
         }
