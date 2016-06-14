@@ -2,6 +2,7 @@
 #include <hero.h>
 #include <QPainter>
 #include <QtWebSockets/QWebSocket>
+#include <QJsonDocument>
 
 Scene::Scene(QWidget *parent, const QUrl &url) : QGraphicsScene(parent), m_url(url) {
     this->width = 2000;
@@ -81,3 +82,8 @@ void Scene::onTextMessageReceived(QString message)
     qDebug() << "Message received:" << message;
 }
 //! [onTextMessageReceived]
+
+QJsonObject Scene::stringToJson(const QString &message){
+    QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
+    return doc.object();
+}
