@@ -176,7 +176,9 @@ class DummyArenaHandler(WebSocketHandler):
         self.hero.accept_keys(**data['keys'])
 
     def send_updates(self, data):
-        self.write_message({'self': self.hero.to_self_dict(), **data})
+        message = dict(data)
+        message['self'] = self.hero.to_self_dict()
+        self.write_message(message)
 
     def check_origin(self, origin):
         return True
