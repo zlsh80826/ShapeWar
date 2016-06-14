@@ -2,9 +2,20 @@
 
 set -e
 
+exists () {
+    type "$1" &> /dev/null;
+}
+
 if [ ! -d venv ]; then
     echo 'virtual environment not found, bootstrapping...'
-    virtualenv venv -p python3
+    if exists virtualenv; then
+        virtualenv venv -p python3
+    elif exists virtualenv; then
+        pyvenv venv
+    else
+        echo 'Error: virtualenv, pyvenv unavailable'
+    fi
+
     source venv/bin/activate
     pip install --upgrade pip
     pip install -r requirements.txt
