@@ -49,7 +49,7 @@ private:
     int height;
     int margin;
     QColor backgroundColor;
-
+    QJsonObject stringToJson(const QString& message);
 };
 
 #endif // SCENE_H
