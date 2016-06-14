@@ -118,11 +118,41 @@ class Arena:
             },
             "bullets": [
                 {
-                    "id": 1,
+                    "id": 0,
                     "x": 250,
                     "y": 260 + (self.tick_id % 50)
                 },
             ],
+            "squares": [
+                {
+                    "id": 0,
+                    "x": 400,
+                    "y": 240,
+                    "angle": 12,
+                    "hp": 43,
+                    "maxHp": 100
+                }
+            ],
+            "triangles": [
+                {
+                    "id": 0,
+                    "x": 200,
+                    "y": 400,
+                    "angle": 40,
+                    "hp": 343,
+                    "maxHp": 1000
+                }
+            ],
+            "pentagons": [
+                {
+                    "id": 0,
+                    "x": 40,
+                    "y": 60,
+                    "angle": 34,
+                    "hp": 4300,
+                    "maxHp": 10000
+                }
+            ]
         })
 
     def broadcast_message(self, message):
