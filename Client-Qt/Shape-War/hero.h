@@ -2,6 +2,7 @@
 #define HERO_H
 #include <QGraphicsObject>
 #include <QJsonObject>
+#include <QJsonArray>
 
 class Hero : public QGraphicsObject {
     Q_OBJECT
@@ -21,14 +22,7 @@ private:
     int currentHp;
     int experience;
     int level;
-    int passiveHealthRegen;
-    int passivemaxHealth;
-    int passivebodyDamage;
-    int passiveBulletSpeed;
-    int passiveBulletPenetration;
-    int passiveBulletDamage;
-    int passiveReload;
-    int passiveMovementSpeed;
+    int passives[8];
 };
 
 #endif // HERO_H

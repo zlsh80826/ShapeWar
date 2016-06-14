@@ -22,6 +22,7 @@ QPainterPath Bullet::shape() const{
     return path;
 }
 
-void Bullet::setTargetAngle(qreal targetAngle){
-
+void Bullet::read(const QJsonObject &json){
+    this -> setX(json["x"].toDouble());
+    this -> setY(json["y"].toDouble());
 }

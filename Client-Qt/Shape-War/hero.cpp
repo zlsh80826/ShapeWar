@@ -39,11 +39,8 @@ void Hero::read(const QJsonObject &json){
     this -> experience = instance["experience"].toInt();
     this -> level = instance["level"].toInt();
 
-    QJsonObject passive = instance["passive"].toObject();
-    this -> passivebodyDamage = passive["bodyDamage"];
-    this -> passiveBulletDamage = passive["bulletDamage"];
-    this -> passiveBulletPenetration = passive["bulletPenetration"];
-    this -> passiveBulletSpeed = passive["bulletSpeed"];
-    this -> passiveHealthRegen = passive["healthRegen"];
-    this -> passivemaxHealth = passive["maxHealth"];
+    QJsonArray passivesArray = instance["passives"].toArray();
+    for(int i=0; i < passivesArray.size(); ++i){
+        this -> passives[i] = passivesArray[i].toInt();
+    }
 }
