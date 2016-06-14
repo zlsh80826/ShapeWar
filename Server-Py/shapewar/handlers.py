@@ -102,16 +102,7 @@ class Arena:
                 "currentHp": 5000,
                 "experience": 400,
                 "level": 10,
-                "passive": {
-                    "HealthRegen": 1,
-                    "maxHealth": 2,
-                    "bodyDamage": 1,
-                    "bulletSpeed": 3,
-                    "bulletPenetration": 2,
-                    "bulletDamage": 1,
-                    "reload": 4,
-                    "movementSpeed": 3
-                },
+                "passives": [1, 2, 1, 3, 2, 1, 4, 3],
                 "angle": 245,
                 "x": 300 + (self.tick_id % 40),
                 "y": 400
