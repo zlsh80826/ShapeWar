@@ -20,7 +20,8 @@ SOURCES += main.cpp \
     rectangle.cpp \
     pentagon.cpp \
     bullet.cpp \
-    logindialog.cpp
+    logindialog.cpp \
+    hpbar.cpp
 
 HEADERS  += \
     scene.h \
@@ -30,7 +31,8 @@ HEADERS  += \
     rectangle.h \
     pentagon.h \
     bullet.h \
-    logindialog.h
+    logindialog.h \
+    hpbar.h
 
 CONFIG += qt
 
