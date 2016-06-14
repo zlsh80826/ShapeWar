@@ -43,6 +43,7 @@ void Scene::initGame() {
     self = new Hero();
     self -> setPos(100, 200);
     this -> addItem(self);
+    this -> self -> setZValue(1);
 
     // test monster
     testTriangle = new Triangle();

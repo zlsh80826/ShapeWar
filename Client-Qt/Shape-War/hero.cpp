@@ -1,27 +1,43 @@
 #include <hero.h>
 #include <QPainter>
 #include <QKeyEvent>
+#include <QtMath>
 
 Hero::Hero() {
     this -> width = 60;
     this -> setFlags(QGraphicsItem::ItemIsFocusable);
-    printf("Hero_constructed");
+    QVector<QPoint> shapePoint;
+    double radian60 = qDegreesToRadians(30.0);
+    shapePoint.append(QPoint(qCos(radian60)*width/2 + 3, -qSin(radian60)*width/2 ));
+    shapePoint.append(QPoint(qCos(radian60)*width/2 + 30 , -qSin(radian60)*width/2 ));
+    shapePoint.append(QPoint(qCos(radian60)*width/2 + 30, qSin(radian60)*width/2 ));
+    shapePoint.append(QPoint(qCos(radian60)*width/2 + 3, qSin(radian60)*width/2 ));
+    this -> barrel = QPolygon(shapePoint);
 }
 
 QRectF Hero::boundingRect() const {
-    qreal halfPenWidth = 1/2;
-    return QRectF( -width/2 - halfPenWidth, -width/2 - halfPenWidth, width + halfPenWidth, width + halfPenWidth);
+    qreal halfPenWidth = 3/2;
+    // need to more exactly
+    return QRectF( -width - halfPenWidth, -width*2 - halfPenWidth, width*2 + halfPenWidth, width*4 + halfPenWidth);
 }
 
 void Hero::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+    QPen pen;
+    pen.setWidth(3);
+    pen.setColor(QColor(85, 85, 85, 255));
+    painter -> setPen(pen);
     painter -> setBrush(QBrush(QColor(0, 178, 255, 255), Qt::SolidPattern));
     painter -> setRenderHint( QPainter::Antialiasing );
-    painter -> drawPath(this->shape());
+    painter -> drawEllipse(-width/2, -width/2, width, width);
+    painter -> setBrush(QBrush(QColor(153, 153, 153, 255), Qt::SolidPattern));
+    painter -> drawPolygon(barrel);
+    this -> drawHp();
 }
 
 QPainterPath Hero::shape() const {
     QPainterPath path;
-    path.addRect(-width/2, -width/2, width, width);
+    path.addPolygon(barrel);
+    path.addEllipse(-width/2, -width/2, width, width);
     return path;
 }
 
@@ -43,4 +59,8 @@ void Hero::read(const QJsonObject &json){
     for(int i=0; i < passivesArray.size(); ++i){
         this -> passives[i] = passivesArray[i].toInt();
     }
+}
+
+void Hero::drawHp(){
+    // no idea
 }

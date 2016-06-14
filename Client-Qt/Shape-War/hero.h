@@ -1,6 +1,7 @@
 #ifndef HERO_H
 #define HERO_H
 #include <QGraphicsObject>
+#include <QPolygon>
 #include <QJsonObject>
 #include <QJsonArray>
 
@@ -14,6 +15,7 @@ public:
     QPainterPath shape() const;
     void setTargetAngle(qreal targetAngle);
     void read(const QJsonObject &json);
+    void drawHp();
 
 private:
     qreal width;
@@ -23,6 +25,7 @@ private:
     int experience;
     int level;
     int passives[8];
+    QPolygon barrel;
 };
 
 #endif // HERO_H
