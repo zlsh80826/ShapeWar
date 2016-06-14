@@ -25,7 +25,7 @@ private:
      * An editable combo box for allowing the user
      * to enter his username or select it from a list.
      */
-     QComboBox* comboUsername;
+     QLineEdit* editUsername;
 
     /*!
      * A field to let the user enters his password.
@@ -74,7 +74,7 @@ signals:
      * password the password entered in the dialog
      * index the number of the username selected in the combobox
      */
-     void acceptLogin( QString& username, QString& password, int& indexNumber );
+     void acceptLogin( QString& username, QString& password );
 public slots:
      void slotAcceptLogin();
 };

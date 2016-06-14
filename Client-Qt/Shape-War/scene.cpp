@@ -10,7 +10,7 @@ Scene::Scene(QWidget *parent, const QUrl &url) : QGraphicsScene(parent), m_url(u
 
     QObject::connect(
         loginDialog,
-        SIGNAL (acceptLogin(QString&,QString&,int&)),
+        SIGNAL (acceptLogin(QString&,QString&)),
         this,
         SLOT (slotAcceptUserLogin(QString&,QString&))
     );
@@ -98,6 +98,8 @@ QJsonObject Scene::stringToJson(const QString &message){
 }
 
 void Scene::slotAcceptUserLogin(QString&username, QString&password) {
+    // test
     qDebug() << "Get username: " << username << ", password: " << password;
+
     // TODO: send the username and password to server
 }
