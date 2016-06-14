@@ -82,7 +82,7 @@ void Scene::onConnected() {
 }
 
 void Scene::onTextMessageReceived(QString message) {
-    qDebug().noquote() << "Message received:" << message;
+    // qDebug().noquote() << "Message received:" << message;
     QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
     const auto &object = doc.object();
     this->self->read(object);
