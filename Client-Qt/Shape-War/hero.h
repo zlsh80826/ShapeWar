@@ -15,19 +15,16 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QPainterPath shape() const;
     void setTargetAngle(qreal targetAngle);
-    void read(const QJsonObject &json);
-    void drawHp(QPainter*);
     HpBar* hpBar;
 
-private:
+protected:
     qreal width;
-    qreal targetAngle;
     int maxHp;
     int currentHp;
-    int experience;
-    int level;
-    int passives[8];
     QPolygon barrel;
+
+public:
+    void read_player(const QJsonObject&);
 };
 
 #endif // HERO_H

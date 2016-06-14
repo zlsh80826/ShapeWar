@@ -20,7 +20,8 @@ SOURCES += main.cpp \
     rectangle.cpp \
     pentagon.cpp \
     bullet.cpp \
-    hpbar.cpp
+    hpbar.cpp \
+    self.cpp
 
 HEADERS  += \
     scene.h \
@@ -30,7 +31,8 @@ HEADERS  += \
     rectangle.h \
     pentagon.h \
     bullet.h \
-    hpbar.h
+    hpbar.h \
+    self.h
 
 CONFIG += qt
 

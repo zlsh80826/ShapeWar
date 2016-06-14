@@ -34,7 +34,6 @@ void Hero::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     painter -> drawPolygon(barrel);
     painter -> setBrush(QBrush(QColor(0, 178, 255, 255), Qt::SolidPattern));
     painter -> drawEllipse(-width/2, -width/2, width, width);
-    this -> drawHp(painter);
 }
 
 QPainterPath Hero::shape() const {
@@ -44,28 +43,11 @@ QPainterPath Hero::shape() const {
     return path;
 }
 
-void Hero::setTargetAngle(qreal targetAngle) {
-    this->targetAngle = targetAngle;
-}
 
-void Hero::read(const QJsonObject &json){
-    QJsonObject instance = json["self"].toObject();
-    this -> setX(instance["x"].toDouble());
-    this -> setY(instance["y"].toDouble());
-    this -> setTargetAngle(instance["angle"].toDouble());
-    this -> maxHp = instance["maxHp"].toInt();
-    this -> currentHp = instance["currentHp"].toInt();
-    this -> experience = instance["experience"].toInt();
-    this -> level = instance["level"].toInt();
-    this -> hpBar -> setPos(this->x(), this->y());
-    this -> hpBar ->setHp(this->currentHp, this->maxHp);
-
-    QJsonArray passivesArray = instance["passives"].toArray();
-    for(int i=0; i < passivesArray.size(); ++i){
-        this -> passives[i] = passivesArray[i].toInt();
-    }
-}
-
-void Hero::drawHp(QPainter* painter){
-    // no idea
+void Hero::read_player(const QJsonObject& data) {
+    this->maxHp = data["maxHp"].toInt();
+    this->currentHp = data["currentHp"].toInt();
+    this->setRotation(data["angle"].toDouble());
+    this->setX(data["x"].toDouble());
+    this->setY(data["y"].toDouble());
 }
