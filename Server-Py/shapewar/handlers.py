@@ -91,7 +91,7 @@ class Arena:
 
     def __init__(self):
         self.clients = set()
-        self.tick = 0
+        self.tick_id = 0
 
     def send_updates(self):
         self.tick_id += 1
