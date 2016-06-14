@@ -174,6 +174,7 @@ class DummyArenaHandler(WebSocketHandler):
         data = json.loads(message)
         logger.debug('%s %r', self.request.remote_ip, data)
         self.hero.accept_keys(**data['keys'])
+        self.hero.angle = data['angle']
 
     def send_updates(self, data):
         message = dict(data)

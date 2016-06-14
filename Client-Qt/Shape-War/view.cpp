@@ -132,8 +132,8 @@ void View::sendControlToServer() {
         {"S", key_s_pressed},
         {"D", key_d_pressed}
     });
+    data["angle"] = self->rotation();
     ws.sendTextMessage(QJsonDocument(data).toJson(QJsonDocument::Compact));
-    printf("%d %d %d %d, %d, %f", key_w_pressed, key_a_pressed, key_s_pressed, key_d_pressed, mouseClicked, self->rotation());
 }
 
 
