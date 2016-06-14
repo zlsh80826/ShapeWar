@@ -10,7 +10,8 @@ public:
     Rectangle();
     // need to optimize to boundingRegion
     QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+               QWidget *widget);
     QPainterPath shape() const;
     void read(const QJsonObject &json);
 

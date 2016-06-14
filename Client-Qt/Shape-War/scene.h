@@ -1,31 +1,30 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <QGraphicsView>
 #include <QColor>
+#include <QGraphicsView>
+#include <QKeyEvent>
+#include <QVector>
+#include <QtWebSockets/QWebSocket>
+#include <bullet.h>
 #include <hero.h>
+#include <math.h>
+#include <pentagon.h>
+#include <rectangle.h>
 #include <self.h>
 #include <triangle.h>
-#include <rectangle.h>
-#include <pentagon.h>
-#include <bullet.h>
-#include <QKeyEvent>
-#include <math.h>
-#include <QtWebSockets/QWebSocket>
-#include <QVector>
 
-class Scene : public QGraphicsScene
-{
+class Scene : public QGraphicsScene {
     Q_OBJECT
 public:
-    Scene(QWidget* parent = 0, const QUrl &url = QUrl());
-    Self* self;
+    Scene(QWidget *parent = 0, const QUrl &url = QUrl());
+    Self *self;
 
     // test object
-    Triangle* testTriangle;
-    Rectangle* testRectangle;
-    Pentagon* testPentagon;
-    Bullet* testBullet;
+    Triangle *testTriangle;
+    Rectangle *testRectangle;
+    Pentagon *testPentagon;
+    Bullet *testBullet;
 
     // connection
     QWebSocket m_webSocket;
@@ -34,7 +33,7 @@ public:
 public slots:
     void startGame();
     void gameOver();
-    void slotAcceptUserLogin(QString&,QString&);
+    void slotAcceptUserLogin(QString &, QString &);
 
 Q_SIGNALS:
     void closed();
@@ -52,7 +51,7 @@ private:
     int height;
     int margin;
     QColor backgroundColor;
-    QVector<Hero*> heroes;
+    QVector<Hero *> heroes;
 };
 
 #endif // SCENE_H

@@ -3,11 +3,11 @@
 
 #include "hero.h"
 
-class Self : public Hero
-{
+class Self : public Hero {
 public:
     Self();
     void read(const QJsonObject &json);
+
 private:
     int experience;
     int level;

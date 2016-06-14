@@ -9,7 +9,8 @@ public:
     HpBar(qreal initHp, qreal width, qreal offsetY);
     void setHp(int curHp, int width);
     QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+               QWidget *widget);
     QPainterPath shape() const;
 
 private:
