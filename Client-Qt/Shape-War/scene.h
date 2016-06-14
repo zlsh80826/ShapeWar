@@ -4,6 +4,7 @@
 #include <QGraphicsView>
 #include <QColor>
 #include <hero.h>
+#include <self.h>
 #include <triangle.h>
 #include <rectangle.h>
 #include <pentagon.h>
@@ -11,13 +12,14 @@
 #include <QKeyEvent>
 #include <math.h>
 #include <QtWebSockets/QWebSocket>
+#include <QVector>
 
 class Scene : public QGraphicsScene
 {
     Q_OBJECT
 public:
     Scene(QWidget* parent = 0, const QUrl &url = QUrl());
-    Hero* self;
+    Self* self;
 
     // test object
     Triangle* testTriangle;
@@ -49,7 +51,7 @@ private:
     int height;
     int margin;
     QColor backgroundColor;
-    QJsonObject stringToJson(const QString& message);
+    QVector<Hero*> heroes;
 };
 
 #endif // SCENE_H
