@@ -20,7 +20,7 @@ HpBar::HpBar(qreal initHp, qreal width, qreal offsetY){
 void HpBar::setHp(int curHp, int maxHp){
     this -> curHp = curHp;
     this -> maxHp = maxHp;
-    curHpWidth = width * (curHp/maxHp);
+    this -> curHpWidth = width * (this->curHp/this->maxHp);
 }
 
 QRectF HpBar::boundingRect() const{
@@ -33,15 +33,19 @@ void HpBar::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     pen.setWidth(3);
     pen.setColor(QColor(85, 85, 85, 255));
     painter -> setRenderHint( QPainter::Antialiasing );
-    painter -> setBrush(QBrush(QColor(134, 198, 128, 255), Qt::SolidPattern));
     painter -> setPen(pen);
-    painter -> drawEllipse(-width/2, offsetY, curHpWidth, 5);
-    painter -> drawEllipse(-width/2, offsetY, width, 5);
+    painter -> setBrush(QBrush(QColor(85, 85, 85, 255), Qt::SolidPattern));
+    painter -> drawRect(-width/2, offsetY, width, 6);
+    painter -> setBrush(QBrush(QColor(134, 198, 128, 255), Qt::SolidPattern));
+    painter -> drawRect(-width/2, offsetY, curHpWidth, 6);
+    //painter -> drawEllipse(-width/2, offsetY, curHpWidth, 6);
+    //painter -> drawEllipse(-width/2, offsetY, width, 6);
+
 }
 
 QPainterPath HpBar::shape() const{
     QPainterPath path;
-    path.addEllipse(-width/2, offsetY, curHpWidth, 5);
-    path.addEllipse(-width/2, offsetY, width, 5);
+    path.addEllipse(-width/2, offsetY, curHpWidth, 6);
+    path.addEllipse(-width/2, offsetY, width, 6);
     return path;
 }

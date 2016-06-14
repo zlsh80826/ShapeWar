@@ -15,9 +15,7 @@ Hero::Hero() {
     this -> barrel = QPolygon(shapePoint);
 
     // test hpBar
-    this -> hpBar = new HpBar(10000, 60, 60);
-    connect(this, SIGNAL(xChanged()), this->hpBar, SLOT(setPos(this->x(), this->y())));
-    connect(this, SIGNAL(yChanged()), this->hpBar, SLOT(setPos(this->x(), this->y())));
+    this -> hpBar = new HpBar(10000, 70, 60);
 }
 
 QRectF Hero::boundingRect() const {
@@ -59,6 +57,8 @@ void Hero::read(const QJsonObject &json){
     this -> currentHp = instance["currentHp"].toInt();
     this -> experience = instance["experience"].toInt();
     this -> level = instance["level"].toInt();
+    this -> hpBar -> setPos(this->x(), this->y());
+    this -> hpBar ->setHp(this->currentHp, this->maxHp);
 
     QJsonArray passivesArray = instance["passives"].toArray();
     for(int i=0; i < passivesArray.size(); ++i){
