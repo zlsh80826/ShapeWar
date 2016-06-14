@@ -13,6 +13,11 @@ Hero::Hero() {
     shapePoint.append(QPoint(qCos(radian60)*width/2 + 30, qSin(radian60)*width/2 ));
     shapePoint.append(QPoint(qCos(radian60)*width/2 + 3, qSin(radian60)*width/2 ));
     this -> barrel = QPolygon(shapePoint);
+
+    // test hpBar
+    this -> hpBar = new HpBar(10000, 60, 60);
+    connect(this, SIGNAL(xChanged()), this->hpBar, SLOT(setPos(this->x(), this->y())));
+    connect(this, SIGNAL(yChanged()), this->hpBar, SLOT(setPos(this->x(), this->y())));
 }
 
 QRectF Hero::boundingRect() const {
@@ -31,7 +36,7 @@ void Hero::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     painter -> drawPolygon(barrel);
     painter -> setBrush(QBrush(QColor(0, 178, 255, 255), Qt::SolidPattern));
     painter -> drawEllipse(-width/2, -width/2, width, width);
-    this -> drawHp();
+    this -> drawHp(painter);
 }
 
 QPainterPath Hero::shape() const {
@@ -61,6 +66,6 @@ void Hero::read(const QJsonObject &json){
     }
 }
 
-void Hero::drawHp(){
+void Hero::drawHp(QPainter* painter){
     // no idea
 }

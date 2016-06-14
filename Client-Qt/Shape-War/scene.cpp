@@ -39,10 +39,12 @@ void Scene::initGame() {
 
     this->setSceneRect(5, 5, width, height);
     this->backgroundColor = QColor(10, 10, 255, 30);
+
     // self should not be constructed here after server is completed ?
     self = new Hero();
     self -> setPos(100, 200);
     this -> addItem(self);
+    this -> addItem(self -> hpBar);
     this -> self -> setZValue(1);
 
     // test monster
