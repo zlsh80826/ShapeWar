@@ -8,7 +8,7 @@ View::View(Scene *scene): QGraphicsView(scene)
     this->setWindowTitle("Shape-War");
 
     setRenderHint(QPainter::Antialiasing, true);
-    setCacheMode(CacheBackground);    // I don't know why but this cause unexpected wrong
+    //setCacheMode(CacheBackground);    // I don't know why but this cause unexpected wrong
 
     // size control, maybe not necessary
     setMinimumSize(viewWidth, viewHeight);

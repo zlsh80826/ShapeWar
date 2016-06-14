@@ -1,13 +1,18 @@
 #include <scene.h>
 #include <hero.h>
 #include <QPainter>
+#include <QtWebSockets/QWebSocket>
 
-Scene::Scene(QWidget *parent) : QGraphicsScene(parent) {
+Scene::Scene(QWidget *parent, const QUrl &url) : QGraphicsScene(parent), m_url(url) {
     this->width = 2000;
     this->height = 1500;
     this->margin = 10;
     initGame();
     startGame();
+
+    connect(&m_webSocket, &QWebSocket::connected, this, &Scene::onConnected);
+    connect(&m_webSocket, &QWebSocket::disconnected, this, &Scene::closed);
+    m_webSocket.open(QUrl(url));
 }
 
 void Scene::drawBackground(QPainter *painter, const QRectF &rect) {
@@ -60,3 +65,19 @@ void Scene::gameOver() {
 
 }
 
+//! [onConnected]
+void Scene::onConnected()
+{
+    qDebug() << "WebSocket connected";
+    connect(&m_webSocket, &QWebSocket::textMessageReceived,
+            this, &Scene::onTextMessageReceived);
+    //m_webSocket.sendTextMessage(QStringLiteral("Hello, world!"));
+}
+//! [onConnected]
+
+//! [onTextMessageReceived]
+void Scene::onTextMessageReceived(QString message)
+{
+    qDebug() << "Message received:" << message;
+}
+//! [onTextMessageReceived]
