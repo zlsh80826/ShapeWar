@@ -1,6 +1,6 @@
 #include "view.h"
 
-View::View(Scene *scene): QGraphicsView(scene)
+View::View(Scene *scene, QWebSocket& ws): QGraphicsView(scene), ws(ws)
 {
     viewWidth = 500;
     viewHeight = 500;
@@ -125,6 +125,14 @@ void View::sendControlToServer() {
     // TODO: send all control messages of keyboard/mouse to server
 
     // debug print
+    QJsonObject data;
+    data["keys"] = QJsonObject({
+        {"W", key_w_pressed},
+        {"A", key_a_pressed},
+        {"S", key_s_pressed},
+        {"D", key_d_pressed}
+    });
+    ws.sendTextMessage(QJsonDocument(data).toJson(QJsonDocument::Compact));
     printf("%d %d %d %d, %d, %f", key_w_pressed, key_a_pressed, key_s_pressed, key_d_pressed, mouseClicked, self->rotation());
 }
 

@@ -91,12 +91,12 @@ class Arena:
 
     def __init__(self):
         self.clients = set()
-        self.frame_id = 0
+        self.tick_id = 0
 
     def send_updates(self):
-        self.frame_id += 1
+        self.tick_id += 1
         self.broadcast_message({
-            "frame": self.frame_id,
+            "tick": self.tick_id,
             "me": {
                 "maxHp": 10000,
                 "experience": 400,
@@ -104,7 +104,9 @@ class Arena:
                 "bulletSpeed": 40,
                 "bulletBodyDamage": 25,
                 "bodyDamage": 25,
-                "speed": 30
+                "speed": 30,
+                "x": 300,
+                "y": 400
             },
             "objects": [
                 {
