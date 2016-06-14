@@ -25,12 +25,12 @@ void Hero::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     QPen pen;
     pen.setWidth(3);
     pen.setColor(QColor(85, 85, 85, 255));
-    painter -> setPen(pen);
-    painter -> setBrush(QBrush(QColor(0, 178, 255, 255), Qt::SolidPattern));
     painter -> setRenderHint( QPainter::Antialiasing );
-    painter -> drawEllipse(-width/2, -width/2, width, width);
+    painter -> setPen(pen);
     painter -> setBrush(QBrush(QColor(153, 153, 153, 255), Qt::SolidPattern));
     painter -> drawPolygon(barrel);
+    painter -> setBrush(QBrush(QColor(0, 178, 255, 255), Qt::SolidPattern));
+    painter -> drawEllipse(-width/2, -width/2, width, width);
     this -> drawHp();
 }
 
