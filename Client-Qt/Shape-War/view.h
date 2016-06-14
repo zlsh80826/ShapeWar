@@ -7,6 +7,9 @@
 #include <QKeyEvent>
 #include <QDebug>
 #include <QTimer>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QWebSocket>
 #include <triangle.h>
 #include <rectangle.h>
 #include <pentagon.h>
@@ -16,7 +19,7 @@ class View : public QGraphicsView
     Q_OBJECT
 
 public:
-    View(Scene *scene);
+    View(Scene *scene, QWebSocket& ws);
 
 public slots:
     void settingCenter();
@@ -43,6 +46,8 @@ private:
 
     QTimer *sendDelayTimer;
     const int sendDelay = 500;
+
+    QWebSocket& ws;
 };
 
 #endif // VIEW_H

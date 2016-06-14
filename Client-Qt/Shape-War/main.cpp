@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     Scene scene(0, QUrl(QStringLiteral("ws://localhost:8888/arena/dummy")));
     QObject::connect(&scene, &Scene::closed, &a, &QCoreApplication::quit);
-    View view(&scene);
+    View view(&scene, scene.m_webSocket);
     view.show();
 
     return a.exec();
