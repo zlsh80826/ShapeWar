@@ -33,6 +33,10 @@ QPainterPath Pentagon::shape() const{
     return path;
 }
 
-void Pentagon::setTargetAngle(qreal targetAngle){
-
+void Pentagon::read(const QJsonObject &json){
+    this -> setX(json["x"].toDouble());
+    this -> setY(json["y"].toDouble());
+    this -> angle = json["angle"].toDouble();
+    this -> hp = json["hp"].toInt();
+    this -> maxHp = json["maxHp"].toInt();
 }

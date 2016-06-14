@@ -28,6 +28,10 @@ QPainterPath Triangle::shape() const{
     return path;
 }
 
-void Triangle::setTargetAngle(qreal targetAngle){
-
+void Triangle::read(const QJsonObject &json){
+    this -> setX(json["x"].toDouble());
+    this -> setY(json["y"].toDouble());
+    this -> angle = json["angle"].toDouble();
+    this -> hp = json["hp"].toInt();
+    this -> maxHp = json["maxHp"].toInt();
 }

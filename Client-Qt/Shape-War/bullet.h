@@ -1,6 +1,7 @@
 #ifndef BULLET_H
 #define BULLET_H
 #include <QGraphicsObject>
+#include <QJsonObject>
 
 class Bullet : public QGraphicsObject {
     Q_OBJECT
@@ -10,10 +11,9 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QPainterPath shape() const;
-    void setTargetAngle(qreal targetAngle);
+    void read(const QJsonObject &json);
 
 private:
     int radius;
-    qreal targetAngle;
 };
 #endif // BULLET_H

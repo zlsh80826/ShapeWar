@@ -29,6 +29,11 @@ QPainterPath Rectangle::shape() const{
     return path;
 }
 
-void Rectangle::setTargetAngle(qreal targetAngle){
-
+void Rectangle::read(const QJsonObject &json){
+    this -> setX(json["x"].toDouble());
+    this -> setY(json["y"].toDouble());
+    this -> angle = json["angle"].toDouble();
+    this -> hp = json["hp"].toInt();
+    this -> maxHp = json["maxHp"].toInt();
 }
+

@@ -1,6 +1,7 @@
 #ifndef RECTANGLE_H
 #define RECTANGLE_H
 #include <QGraphicsObject>
+#include <QJsonObject>
 #include <QPolygonF>
 
 class Rectangle : public QGraphicsObject {
@@ -11,11 +12,13 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QPainterPath shape() const;
-    void setTargetAngle(qreal targetAngle);
+    void read(const QJsonObject &json);
 
 private:
     int edge;
-    qreal targetAngle;
+    qreal angle;
     QPolygonF polygonShape;
+    int hp;
+    int maxHp;
 };
 #endif // RECTANGLE_H

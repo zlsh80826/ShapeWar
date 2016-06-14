@@ -2,6 +2,7 @@
 #define HERO_H
 #include <QGraphicsObject>
 #include <QJsonObject>
+#include <QJsonArray>
 
 class Hero : public QGraphicsObject {
     Q_OBJECT
@@ -17,6 +18,11 @@ public:
 private:
     qreal width;
     qreal targetAngle;
+    int maxHp;
+    int currentHp;
+    int experience;
+    int level;
+    int passives[8];
 };
 
 #endif // HERO_H
