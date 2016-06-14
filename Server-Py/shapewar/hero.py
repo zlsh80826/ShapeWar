@@ -32,7 +32,7 @@ class Hero:
         self.speed_x = 0
         self.speed_y = 0
         self.max_hp = 10000
-        self.current_hp = 10000
+        self.current_hp = 3000
         self.experience = 0
         self.level = 1
 

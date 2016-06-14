@@ -4,6 +4,7 @@
 #include <QPolygon>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <hpbar.h>
 
 class Hero : public QGraphicsObject {
     Q_OBJECT
@@ -15,7 +16,8 @@ public:
     QPainterPath shape() const;
     void setTargetAngle(qreal targetAngle);
     void read(const QJsonObject &json);
-    void drawHp();
+    void drawHp(QPainter*);
+    HpBar* hpBar;
 
 private:
     qreal width;
