@@ -76,7 +76,7 @@ void Scene::onConnected()
 
 void Scene::onTextMessageReceived(QString message)
 {
-    qDebug() << "Message received:" << message;
+    qDebug().noquote() << "Message received:" << message;
 }
 
 QJsonObject Scene::stringToJson(const QString &message){
