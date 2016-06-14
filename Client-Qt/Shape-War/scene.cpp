@@ -66,7 +66,6 @@ void Scene::gameOver() {
 
 }
 
-//! [onConnected]
 void Scene::onConnected()
 {
     qDebug() << "WebSocket connected";
@@ -74,14 +73,11 @@ void Scene::onConnected()
             this, &Scene::onTextMessageReceived);
     //m_webSocket.sendTextMessage(QStringLiteral("Hello, world!"));
 }
-//! [onConnected]
 
-//! [onTextMessageReceived]
 void Scene::onTextMessageReceived(QString message)
 {
     qDebug() << "Message received:" << message;
 }
-//! [onTextMessageReceived]
 
 QJsonObject Scene::stringToJson(const QString &message){
     QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
