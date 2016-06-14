@@ -91,7 +91,7 @@ void View::keyReleaseEvent(QKeyEvent *event) {
             this->key_d_pressed = false;
             break;
     }
-    qDebug() << "Released key: " << event->key();
+    //qDebug() << "Released key: " << event->key();
 }
 
 void View::settingCenter() {

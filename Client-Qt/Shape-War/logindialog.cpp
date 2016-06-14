@@ -93,10 +93,11 @@ void LoginDialog::slotAcceptLogin(){
         index // index in the username list
     );
 
-// close this dialog
- close();
+    // close this dialog
+    close();
 }
 
 void LoginDialog::setUsernamesList(const QStringList &usernames){
- comboUsername->addItems( usernames );
+    comboUsername->addItems( usernames );
 }
+
