@@ -33,4 +33,17 @@ void Hero::read(const QJsonObject &json){
     QJsonObject instance = json["self"].toObject();
     this -> setX(instance["x"].toDouble());
     this -> setY(instance["y"].toDouble());
+    this -> setTargetAngle(instance["angle"].toDouble());
+    this -> maxHp = instance["maxHp"].toInt();
+    this -> currentHp = instance["currentHp"].toInt();
+    this -> experience = instance["experience"].toInt();
+    this -> level = instance["level"].toInt();
+
+    QJsonObject passive = instance["passive"].toObject();
+    this -> passivebodyDamage = passive["bodyDamage"];
+    this -> passiveBulletDamage = passive["bulletDamage"];
+    this -> passiveBulletPenetration = passive["bulletPenetration"];
+    this -> passiveBulletSpeed = passive["bulletSpeed"];
+    this -> passiveHealthRegen = passive["healthRegen"];
+    this -> passivemaxHealth = passive["maxHealth"];
 }

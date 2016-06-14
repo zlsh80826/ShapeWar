@@ -17,6 +17,18 @@ public:
 private:
     qreal width;
     qreal targetAngle;
+    int maxHp;
+    int currentHp;
+    int experience;
+    int level;
+    int passiveHealthRegen;
+    int passivemaxHealth;
+    int passivebodyDamage;
+    int passiveBulletSpeed;
+    int passiveBulletPenetration;
+    int passiveBulletDamage;
+    int passiveReload;
+    int passiveMovementSpeed;
 };
 
 #endif // HERO_H
