@@ -97,35 +97,32 @@ class Arena:
         self.tick_id += 1
         self.broadcast_message({
             "tick": self.tick_id,
-            "me": {
+            "self": {
                 "maxHp": 10000,
+                "currentHp": 5000,
                 "experience": 400,
-                "reload": 2.5,
-                "bulletSpeed": 40,
-                "bulletBodyDamage": 25,
-                "bodyDamage": 25,
-                "speed": 30,
-                "x": 300,
+                "level": 10,
+                "passive": {
+                    "HealthRegen": 1,
+                    "maxHealth": 2,
+                    "bodyDamage": 1,
+                    "bulletSpeed": 3,
+                    "bulletPenetration": 2,
+                    "bulletDamage": 1,
+                    "reload": 4,
+                    "movementSpeed": 3
+                },
+                "angle": 245,
+                "x": 300 + (self.tick_id % 40),
                 "y": 400
             },
-            "objects": [
+            "bullets": [
                 {
                     "id": 1,
-                    "name": None,
-                    "shape": "circle3",
-                    "hp": 450,
-                    "maxHp": 2000,
-                    "position": [2400, 250]
+                    "x": 250,
+                    "y": 260 + (self.tick_id % 50)
                 },
-                {
-                    "id": 2,
-                    "name": 'my_name',
-                    "shape": "circle5",
-                    "hp": 5600,
-                    "maxHp": 10000,
-                    "position": [600, 800]
-                },
-            ]
+            ],
         })
 
     def broadcast_message(self, message):
