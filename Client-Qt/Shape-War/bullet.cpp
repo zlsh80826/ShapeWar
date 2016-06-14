@@ -11,6 +11,10 @@ QRectF Bullet::boundingRect() const{
 }
 
 void Bullet::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget){
+    QPen pen;
+    pen.setWidth(3);
+    pen.setColor(QColor(85, 85, 85, 255));
+    painter -> setPen(pen);
     painter -> setBrush(QBrush(QColor(241, 78, 84, 255), Qt::SolidPattern));
     painter -> setRenderHint( QPainter::Antialiasing );
     painter -> drawPath(this->shape());
