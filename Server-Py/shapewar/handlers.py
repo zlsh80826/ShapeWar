@@ -104,7 +104,9 @@ class Arena:
                 "bulletSpeed": 40,
                 "bulletBodyDamage": 25,
                 "bodyDamage": 25,
-                "speed": 30
+                "speed": 30,
+                "x": 300,
+                "y": 400
             },
             "objects": [
                 {
