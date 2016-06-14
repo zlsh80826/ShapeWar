@@ -31,6 +31,23 @@ View::View(Scene *scene): QGraphicsView(scene)
     sendDelayTimer->start(sendDelay);
 
     key_a_pressed = key_d_pressed = key_s_pressed = key_w_pressed = false;
+
+    expandBtn = new QPushButton("+", this);
+    expandBtn->setGeometry(0, viewHeight-buttonLen, buttonLen, buttonLen);
+    expandBtn->setVisible(true);
+    isExpanded = false;
+    connect(expandBtn, SIGNAL(clicked()), this, SLOT(showUpgrateOptions()));
+
+    properties.push_back(new QPair<QLabel *, QPushButton *>( new QLabel("Property 1", this), new QPushButton("+", this)));
+    properties.push_back(new QPair<QLabel *, QPushButton *>( new QLabel("Property 2", this), new QPushButton("+", this)));
+    properties.push_back(new QPair<QLabel *, QPushButton *>( new QLabel("Property 3", this), new QPushButton("+", this)));
+    for( unsigned int i = 0, size = properties.size() ; i<size ; i++ ) {
+        QPair<QLabel *, QPushButton *> * property = properties.at(i);
+        property->first->setGeometry(10, viewHeight - (i +1) * buttonDistance, labelWidth, buttonDistance - (buttonDistance - buttonLen));
+        property->second->setGeometry(labelWidth + 10, viewHeight - (i+1) * buttonDistance, buttonLen, buttonLen);
+        property->first->setVisible(false);
+        property->second->setVisible(false);
+    }
 }
 
 
@@ -109,4 +126,24 @@ void View::sendControlToServer() {
 
     // debug print
     printf("%d %d %d %d, %d, %f", key_w_pressed, key_a_pressed, key_s_pressed, key_d_pressed, mouseClicked, self->rotation());
+}
+
+
+void View::showUpgrateOptions() {
+    isExpanded = !isExpanded;
+    if(isExpanded) {
+        expandBtn->setText("-");
+        expandBtn->setGeometry(0, viewHeight - ( properties.size() + 1 ) * buttonDistance, buttonLen, buttonLen);
+        for(QPair<QLabel *, QPushButton *> * property : properties) {
+            property->first->setVisible(true);
+            property->second->setVisible(true);
+        }
+    } else {
+        expandBtn->setText("+");
+        expandBtn->setGeometry(0, viewHeight-buttonLen, buttonLen, buttonLen);
+        for(QPair<QLabel *, QPushButton *> * property : properties) {
+            property->first->setVisible(false);
+            property->second->setVisible(false);
+        }
+    }
 }

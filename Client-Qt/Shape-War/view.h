@@ -11,6 +11,10 @@
 #include <rectangle.h>
 #include <pentagon.h>
 
+#include <QPushButton>
+#include <QLabel>
+#include <QPair>
+
 class View : public QGraphicsView
 {
     Q_OBJECT
@@ -21,6 +25,7 @@ public:
 public slots:
     void settingCenter();
     void sendControlToServer();
+    void showUpgrateOptions();
 
 protected:
     void mousePressEvent(QMouseEvent *event);
@@ -43,6 +48,14 @@ private:
 
     QTimer *sendDelayTimer;
     const int sendDelay = 500;
+
+    // for upgrade option
+    const int buttonLen = 30;
+    const int buttonDistance = 33;
+    const int labelWidth = 100;
+    QPushButton *expandBtn;
+    bool isExpanded;
+    QVector<QPair<QLabel *, QPushButton *>* > properties;
 };
 
 #endif // VIEW_H
