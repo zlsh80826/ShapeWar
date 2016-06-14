@@ -120,6 +120,10 @@ void View::mouseMoveEvent(QMouseEvent *event) {
   // printf("self (%f, %f), mouse (%f,%f). degree of mouse relative to self is: %f",selfP.x(), selfP.y(), mouseP.x(), mouseP.y(),
   //                  targetAngle * 180.0 / 3.14 );
 }
+void View::wheelEvent(QWheelEvent *event) {
+    // eat this event to prevent it is passed to parent widget
+    // do nothing
+}
 
 void View::sendControlToServer() {
     // TODO: send all control messages of keyboard/mouse to server
