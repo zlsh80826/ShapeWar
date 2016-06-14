@@ -1,6 +1,6 @@
 #include <scene.h>
 #include <hero.h>
-#include "logindialog.h"
+#include <self.h>
 #include <QPainter>
 #include <QtWebSockets/QWebSocket>
 #include <QJsonDocument>
@@ -52,7 +52,7 @@ void Scene::initGame() {
     this->backgroundColor = QColor(10, 10, 255, 30);
 
     // self should not be constructed here after server is completed ?
-    self = new Hero();
+    self = new Self();
     self -> setPos(100, 200);
     this -> addItem(self);
     this -> addItem(self -> hpBar);
@@ -90,13 +90,28 @@ void Scene::onConnected()
 
 void Scene::onTextMessageReceived(QString message)
 {
-    //qDebug().noquote() << "Message received:" << message;
-    this -> self -> read(stringToJson(message));
-}
-
-QJsonObject Scene::stringToJson(const QString &message){
+    qDebug().noquote() << "Message received:" << message;
     QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
-    return doc.object();
+    const auto& object = doc.object();
+    this -> self -> read(object);
+
+    int self_id = object["self"].toObject()["id"].toInt();
+
+    for (Hero* hero: heroes) {
+        this->removeItem(hero);
+        delete hero;
+    }
+    heroes.clear();
+
+    for (const auto& hero_data: object["players"].toArray()) {
+        const auto& hero_object = hero_data.toObject();
+        if (hero_object["id"] != self_id) {
+            auto hero = new Hero;
+            hero->read_player(hero_object);
+            this->addItem(hero);
+            heroes.push_back(hero);
+        }
+    }
 }
 
 void Scene::slotAcceptUserLogin(QString&username, QString&password) {
