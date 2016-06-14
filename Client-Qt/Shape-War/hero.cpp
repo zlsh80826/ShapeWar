@@ -24,6 +24,12 @@ QPainterPath Hero::shape() const {
     path.addRect(-width/2, -width/2, width, width);
     return path;
 }
+
 void Hero::setTargetAngle(qreal targetAngle) {
     this->targetAngle = targetAngle;
+}
+
+void Hero::read(const QJsonObject &json){
+    this -> x = json["x"].toDouble();
+    this -> y = json["y"].toDouble();
 }
