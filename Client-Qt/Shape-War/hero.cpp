@@ -15,7 +15,7 @@ Hero::Hero() {
     this -> barrel = QPolygon(shapePoint);
 
     // test hpBar
-    this -> hpBar = new HpBar(10000, 70, 60);
+    this -> hpBar = new HpBar(10000, 60, 40);
 }
 
 QRectF Hero::boundingRect() const {
