@@ -10,10 +10,11 @@ if [ ! -d venv ]; then
     echo 'virtual environment not found, bootstrapping...'
     if exists virtualenv; then
         virtualenv venv -p python3
-    elif exists virtualenv; then
+    elif exists pyvenv; then
         pyvenv venv
     else
         echo 'Error: virtualenv, pyvenv unavailable'
+        exit
     fi
 
     source venv/bin/activate
