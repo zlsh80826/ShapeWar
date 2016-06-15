@@ -15,8 +15,8 @@ Scene::Scene(QWidget *parent)
                      this, SLOT(slotAcceptUserLogin(QString &, QString &, QString &, QString &, bool)));
     loginDialog->exec();
 
-    this->width = 2000;
-    this->height = 1500;
+    this->width = 5000;
+    this->height = 4000;
     this->margin = 10;
     initGame();
     startGame();
@@ -24,8 +24,16 @@ Scene::Scene(QWidget *parent)
     connect(&m_webSocket, &QWebSocket::connected, this, &Scene::onConnected);
     connect(&m_webSocket, &QWebSocket::disconnected, this, &Scene::closed);
     m_webSocket.open(QUrl(*dummy_url));
-}
 
+    sec = new QTimer(0);
+    this->recvs = 0;
+    connect(sec, SIGNAL(timeout()), this, SLOT(print_freq()));
+    sec->start(1000);
+}
+void Scene::print_freq() {
+    qDebug() << "recv per sec: "<< this->recvs;
+    this->recvs = 0;
+}
 void Scene::drawBackground(QPainter *painter, const QRectF &rect) {
     // need to change position to global
     painter->setBrush(backgroundColor);
@@ -80,6 +88,7 @@ void Scene::onConnected() {
 }
 
 void Scene::onTextMessageReceived(QString message) {
+    this->recvs++;
     // qDebug().noquote() << "Message received:" << message;
     QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
     const auto &object = doc.object();

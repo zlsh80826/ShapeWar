@@ -61,6 +61,11 @@ private:
     bool isExpanded;
     QVector<QPair<QLabel *, QPushButton *> *> properties;
     QWebSocket &ws;
+
+    QTimer *sec;
+    int sends;
+private slots:
+    void print_freq();
 };
 
 #endif // VIEW_H
