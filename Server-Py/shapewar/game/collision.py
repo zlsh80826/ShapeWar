@@ -44,7 +44,7 @@ def collide(obj, obk):
     rsum = obj.radius + obk.radius
     if dist > rsum:
         return
-    obj.accelerate(cmath.rect((rsum - dist) / rsum, phi))
-    obk.accelerate(cmath.rect((dist - rsum) / rsum, phi))
+    obj.accelerate(cmath.rect((rsum - dist) / rsum / 2, phi))
+    obk.accelerate(cmath.rect((dist - rsum) / rsum / 2, phi))
     obk.pos += obk.velocity
     obj.pos += obj.velocity
