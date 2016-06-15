@@ -18,8 +18,8 @@ cdef class MovableObject:
 
     def __init__(self):
         self.friction = 0.15
-        self.x_bound = 2000
-        self.y_bound = 1500
+        self.x_bound = 5000
+        self.y_bound = 4000
         self.spawn()
 
     cpdef void spawn(self):
