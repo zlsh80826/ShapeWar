@@ -2,6 +2,7 @@
 #include "hero.h"
 #include "logindialog.h"
 #include "self.h"
+#include "polygongroup.h"
 #include <QJsonDocument>
 #include <QPainter>
 #include <QtWebSockets/QWebSocket>
@@ -54,15 +55,14 @@ void Scene::initGame() {
     this->self->setZValue(1);
 
     // test monster
-    triangles = new TriangleGroup();
+    triangles = new PolygonGroup<Triangle>;
     triangles->addToParent(this);
 
-    rectangles = new RectangleGroup();
+    rectangles = new PolygonGroup<Rectangle>;
     rectangles->addToParent(this);
 
-    testPentagon = new Pentagon();
-    testPentagon->setPos(200, 300);
-    this->addItem(testPentagon);
+    pentagons = new PolygonGroup<Pentagon>;
+    pentagons->addToParent(this);
 
     testBullet = new Bullet();
     testBullet->setPos(300, 250);
@@ -84,8 +84,9 @@ void Scene::onTextMessageReceived(QString message) {
     QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
     const auto &object = doc.object();
     this->self->read(object);
-    this->triangles->read(object);
-    this->testPentagon->read(object["pentagons"].toArray()[0].toObject());
+    this->triangles->read(object["triangles"].toArray());
+    this->rectangles->read(object["squares"].toArray());
+    this->pentagons->read(object["pentagons"].toArray());
 
     auto self_id = object["self"].toObject()["id"];
 

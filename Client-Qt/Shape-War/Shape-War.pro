@@ -38,7 +38,8 @@ HEADERS  += \
     logindialog.h \
     self.h \
     trianglegroup.h \
-    rectanglegroup.h
+    rectanglegroup.h \
+    polygongroup.h
 
 CONFIG += qt
 

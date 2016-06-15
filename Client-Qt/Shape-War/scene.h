@@ -13,6 +13,7 @@
 #include <rectanglegroup.h>
 #include <self.h>
 #include <trianglegroup.h>
+#include "polygongroup.h"
 
 class Scene : public QGraphicsScene {
     Q_OBJECT
@@ -21,9 +22,9 @@ public:
     Self *self;
 
     // test object
-    TriangleGroup *triangles;
-    RectangleGroup *rectangles;
-    Pentagon *testPentagon;
+    PolygonGroup<Triangle> *triangles;
+    PolygonGroup<Rectangle> *rectangles;
+    PolygonGroup<Pentagon> *pentagons;
     Bullet *testBullet;
 
     // connection
