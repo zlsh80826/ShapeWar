@@ -30,6 +30,7 @@ private:
     QLineEdit *editPassword;
 
     QCheckBox *anonymousCheck;
+    QLabel *labelRegister;
     /*!
      * The standard dialog button box.
      */

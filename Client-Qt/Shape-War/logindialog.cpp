@@ -36,6 +36,12 @@ void LoginDialog::setUpGUI() {
     labelPassword->setText(tr("Password"));
     labelPassword->setBuddy(editPassword);
 
+
+    labelRegister = new QLabel(this);
+    labelRegister->setOpenExternalLinks(true);
+    labelRegister->setText("<a href=https://www.google.com.tw>Register</a>");
+
+
     // initialize buttons
     buttons = new QDialogButtonBox(this);
     buttons->addButton(QDialogButtonBox::Ok);
@@ -69,6 +75,7 @@ void LoginDialog::setUpGUI() {
     formGridLayout->addWidget(editPassword, rowCounting, 1);
     rowCounting++;
     formGridLayout->addWidget(anonymousCheck, rowCounting, 0);
+    formGridLayout->addWidget(labelRegister, rowCounting, 1);
     rowCounting++;
     formGridLayout->addWidget(buttons, rowCounting, 0, 1, 2);
 

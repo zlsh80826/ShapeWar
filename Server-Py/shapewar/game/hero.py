@@ -19,6 +19,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
 
         super().__init__()
 
+        self.radius = 30
         self.angle = 0
         self.acc = 0.6  # acceleration
         self.current_hp = self.max_hp
