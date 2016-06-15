@@ -98,7 +98,7 @@ void Scene::onTextMessageReceived(QString message) {
 
     for (const auto &hero_data : object["players"].toArray()) {
         const auto &hero_object = hero_data.toObject();
-        if (hero_object["id"] != self_id) {
+        if (hero_object["id"].toInt() != self_id) {
             auto hero = new Hero;
             hero->read_player(hero_object);
             this->addItem(hero);
