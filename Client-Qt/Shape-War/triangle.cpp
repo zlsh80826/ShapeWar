@@ -1,22 +1,23 @@
 #include "triangle.h"
 #include <QPainter>
+#include <QtMath>
 
 Triangle::Triangle() {
-    this->edge = 20;
+    this->axis = 20;
     this->setPos(-50, -50);
     QVector<QPoint> shapePoint;
-    shapePoint.append(QPoint(0, -(edge * 2) / 3));
-    shapePoint.append(QPoint(-edge / 2, edge / 3));
-    shapePoint.append(QPoint(edge / 2, edge / 3));
-    shapePoint.append(QPoint(0, -(edge * 2) / 3));
+    for(int i=0; i<=3 ; ++i){
+        double radian = qDegreesToRadians(360.0/3);
+        shapePoint.append( QPoint( axis*qCos(radian*(i%3)), axis*qSin(radian*(i%3)) ) );
+    }
     this->polygonShape = QPolygon(shapePoint);
-    this->hpBar = new HpBar(1000, 2 * edge, 2 * edge);
+    this->hpBar = new HpBar(1000, 2*axis, axis + 5);
 }
 
 QRectF Triangle::boundingRect() const {
     qreal halfPenWidth = 1;
-    return QRectF(-edge / 2 - halfPenWidth, (-edge * 2) / 3 - halfPenWidth,
-                  edge + halfPenWidth, edge + halfPenWidth);
+    return QRectF(-axis - halfPenWidth, -axis - halfPenWidth,
+                  axis*2 + halfPenWidth, axis*2 + halfPenWidth);
 }
 
 void Triangle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,

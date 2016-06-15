@@ -5,16 +5,12 @@
 Pentagon::Pentagon() {
     this->axis = 20;
     QVector<QPoint> shapePoint;
-    double radian18 = qDegreesToRadians(18.0);
-    double radian54 = qDegreesToRadians(54.0);
-    shapePoint.append(QPoint(0, -axis));
-    shapePoint.append(QPoint(-qCos(radian18) * axis, -qSin(radian18) * axis));
-    shapePoint.append(QPoint(-qCos(radian54) * axis, qSin(radian54) * axis));
-    shapePoint.append(QPoint(qCos(radian54) * axis, qSin(radian54) * axis));
-    shapePoint.append(QPoint(qCos(radian18) * axis, -qSin(radian18) * axis));
-    shapePoint.append(QPoint(0, -axis));
+    double radian = qDegreesToRadians(360.0/5);
+    for(int i=0; i<=5 ; ++i){
+        shapePoint.append( QPoint( axis*qCos(radian*(i%5)), axis*qSin(radian*(i%5)) ) );
+    }
     this->polygonShape = QPolygon(shapePoint);
-    this->hpBar = new HpBar(1000, axis, axis);
+    this->hpBar = new HpBar(1000, axis*2, axis+5);
 }
 
 QRectF Pentagon::boundingRect() const {
