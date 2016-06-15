@@ -8,7 +8,8 @@ HpBar::HpBar() {
     this->offsetY = 60;
     this->curHpWidth = width * (curHp / maxHp);
     this->revealTimer = new QTimer(this);
-    connect(this->revealTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
+    connect(this->revealTimer, SIGNAL(timeout()), this,
+            SLOT(decreaseOpacity()));
 }
 
 HpBar::HpBar(qreal initHp, qreal width, qreal offsetY) {
@@ -18,12 +19,13 @@ HpBar::HpBar(qreal initHp, qreal width, qreal offsetY) {
     this->offsetY = offsetY;
     this->curHpWidth = width * (curHp / maxHp);
     this->revealTimer = new QTimer(this);
-    connect(this->revealTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
+    connect(this->revealTimer, SIGNAL(timeout()), this,
+            SLOT(decreaseOpacity()));
 }
 
 void HpBar::setHp(int curHp, int maxHp) {
-    if( curHp == maxHp ){
-        this -> revealTimer->start(100);
+    if (curHp == maxHp) {
+        this->revealTimer->start(100);
     }
     this->revealTimer->stop();
     this->setOpacity(255);
@@ -59,6 +61,6 @@ QPainterPath HpBar::shape() const {
     return path;
 }
 
-void HpBar::decreaseOpacity(){
-    this -> setOpacity(this->opacity() - 1);
+void HpBar::decreaseOpacity() {
+    this->setOpacity(this->opacity() - 1);
 }
