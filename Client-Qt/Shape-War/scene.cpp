@@ -69,13 +69,13 @@ void Scene::initGame() {
     this->addItem(this->self->info);
 
     // test monster
-    triangles = new PolygonGroup<Triangle>;
+    triangles = new PolygonGroup<Triangle>(50);
     triangles->addToParent(this);
 
-    rectangles = new PolygonGroup<Rectangle>;
+    rectangles = new PolygonGroup<Rectangle>(250);
     rectangles->addToParent(this);
 
-    pentagons = new PolygonGroup<Pentagon>;
+    pentagons = new PolygonGroup<Pentagon>(10);
     pentagons->addToParent(this);
 
     bullets = new PolygonGroup<Bullet>;

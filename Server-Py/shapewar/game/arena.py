@@ -15,14 +15,14 @@ logger = logging.getLogger(__name__)
 
 class Arena:
 
-    tick_time = 20  # tick time in milliseconds
+    tick_time = 33  # tick time in milliseconds
 
     def __init__(self):
         self.clients = set()
 
-        self.squares = [garbage.Square(i) for i in range(300)]
-        self.triangles = [garbage.Triangle(i) for i in range(300)]
-        self.pentagons = [garbage.Pentagon(i) for i in range(300)]
+        self.squares = [garbage.Square(i) for i in range(250)]
+        self.triangles = [garbage.Triangle(i) for i in range(50)]
+        self.pentagons = [garbage.Pentagon(i) for i in range(10)]
         self.bullet_queue = collections.deque()
         self.bullets = [Bullet(i, self.bullet_queue) for i in range(300)]
         self.bullet_queue.extend(self.bullets)
@@ -35,7 +35,9 @@ class Arena:
     def perf_callback(self):
         self.pptid, diff = self.tick_id, self.tick_id - self.pptid
         logger.log(
-            logging.INFO if diff > 48 else logging.WARNING,
+            logging.INFO
+            if diff > 1000 / self.tick_time - 2
+            else logging.WARNING,
             '%d clients, %d ticks/s', len(self.clients), diff
         )
 
