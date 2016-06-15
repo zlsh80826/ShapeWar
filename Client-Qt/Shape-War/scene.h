@@ -54,6 +54,12 @@ private:
     QColor backgroundColor;
     QVector<Hero *> heroes;
     void fillServerInfo(QString &serverUrl, QString &port);
+
+
+    QTimer *sec;
+    int recvs;
+private slots:
+    void print_freq();
 };
 
 #endif // SCENE_H

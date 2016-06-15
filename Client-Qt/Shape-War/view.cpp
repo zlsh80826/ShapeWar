@@ -1,5 +1,4 @@
 #include "view.h"
-
 View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     viewWidth = 960;
     viewHeight = 768;
@@ -56,6 +55,15 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
         property->first->setVisible(false);
         property->second->setVisible(false);
     }
+
+    sec = new QTimer(0);
+    this->sends = 0;
+    connect(sec, SIGNAL(timeout()), this, SLOT(print_freq()));
+    sec->start(1000);
+}
+void View::print_freq() {
+    qDebug() << "send per sec: " << this->sends;
+    this->sends = 0;
 }
 
 void View::keyPressEvent(QKeyEvent *event) {
@@ -139,8 +147,8 @@ void View::wheelEvent(QWheelEvent *event) {
 }
 
 void View::sendControlToServer() {
+    this->sends++;
     // TODO: send all control messages of keyboard/mouse to server
-
     // debug print
     QJsonObject data;
     data["keys"] = QJsonObject({{"W", key_w_pressed},
