@@ -1,29 +1,28 @@
 #ifndef VIEW_H
 #define VIEW_H
 
-#include "scene.h"
 #include "hero.h"
-#include <QGraphicsView>
-#include <QKeyEvent>
+#include "scene.h"
 #include <QDebug>
-#include <QTimer>
-#include <QJsonObject>
+#include <QGraphicsView>
 #include <QJsonDocument>
+#include <QJsonObject>
+#include <QKeyEvent>
+#include <QTimer>
 #include <QWebSocket>
-#include <triangle.h>
-#include <rectangle.h>
 #include <pentagon.h>
+#include <rectangle.h>
+#include <triangle.h>
 
-#include <QPushButton>
 #include <QLabel>
 #include <QPair>
+#include <QPushButton>
 
-class View : public QGraphicsView
-{
+class View : public QGraphicsView {
     Q_OBJECT
 
 public:
-    View(Scene *scene, QWebSocket& ws);
+    View(Scene *scene, QWebSocket &ws);
 
 public slots:
     void settingCenter();
@@ -37,6 +36,7 @@ protected:
     void keyReleaseEvent(QKeyEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
+
 private:
     int viewWidth, viewHeight;
     Hero *self;
@@ -58,8 +58,8 @@ private:
     const int labelWidth = 100;
     QPushButton *expandBtn;
     bool isExpanded;
-    QVector<QPair<QLabel *, QPushButton *>* > properties;
-    QWebSocket& ws;
+    QVector<QPair<QLabel *, QPushButton *> *> properties;
+    QWebSocket &ws;
 };
 
 #endif // VIEW_H
