@@ -30,7 +30,7 @@ class Arena:
     def perf_callback(self):
         self.pptid, diff = self.tick_id, self.tick_id - self.pptid
         logger.log(
-            logging.INFO if diff == 50 else logging.WARNING,
+            logging.DEBUG if diff > 48 else logging.WARNING,
             'ticks per second = %d', diff
         )
 
