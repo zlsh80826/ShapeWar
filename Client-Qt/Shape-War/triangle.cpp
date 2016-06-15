@@ -6,18 +6,19 @@ Triangle::Triangle() {
     this->axis = 20;
     this->setPos(-50, -50);
     QVector<QPoint> shapePoint;
-    for(int i=0; i<=3 ; ++i){
-        double radian = qDegreesToRadians(360.0/3);
-        shapePoint.append( QPoint( axis*qCos(radian*(i%3)), axis*qSin(radian*(i%3)) ) );
+    for (int i = 0; i <= 3; ++i) {
+        double radian = qDegreesToRadians(360.0 / 3);
+        shapePoint.append(QPoint(axis * qCos(radian * (i % 3)),
+                                 axis * qSin(radian * (i % 3))));
     }
     this->polygonShape = QPolygon(shapePoint);
-    this->hpBar = new HpBar(1000, 2*axis, axis + 5);
+    this->hpBar = new HpBar(1000, 2 * axis, axis + 5);
 }
 
 QRectF Triangle::boundingRect() const {
     qreal halfPenWidth = 1;
     return QRectF(-axis - halfPenWidth, -axis - halfPenWidth,
-                  axis*2 + halfPenWidth, axis*2 + halfPenWidth);
+                  axis * 2 + halfPenWidth, axis * 2 + halfPenWidth);
 }
 
 void Triangle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
