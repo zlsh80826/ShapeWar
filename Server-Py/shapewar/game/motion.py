@@ -21,6 +21,9 @@ class MovableObject:
     y_bound = 1500
 
     def __init__(self):
+        self.spawn()
+
+    def spawn(self):
         self.pos = complex(
             random.randrange(self.x_bound),
             random.randrange(self.y_bound)

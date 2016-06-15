@@ -1,51 +1,15 @@
 import json
-import random
 import logging
+import itertools
 from tornado.websocket import WebSocketHandler, WebSocketClosedError
 from tornado.ioloop import PeriodicCallback
 
 from .hero import Hero
+from . import garbage
 
 
 logger = logging.getLogger(__name__)
 
-
-dummy_triangles = [
-    {
-        "id": i,
-        "x": random.randrange(2000),
-        "y": random.randrange(1500),
-        "angle": random.randrange(360),
-        "radius": 20,
-        "hp": 1000,
-        "maxHp": 1000
-    }
-    for i in range(300)
-]
-dummy_squares = [
-    {
-        "id": i,
-        "x": random.randrange(2000),
-        "y": random.randrange(1500),
-        "angle": random.randrange(360),
-        "radius": 18,
-        "hp": 903,
-        "maxHp": 2000
-    }
-    for i in range(300)
-]
-dummy_pentagons = [
-    {
-        "id": i,
-        "x": random.randrange(2000),
-        "y": random.randrange(1500),
-        "angle": random.randrange(360),
-        "radius": 30,
-        "hp": 4902,
-        "maxHp": 5000
-    }
-    for i in range(300)
-]
 
 
 class Arena:
@@ -54,6 +18,11 @@ class Arena:
 
     def __init__(self):
         self.clients = set()
+
+        self.squares = [garbage.Square(i) for i in range(300)]
+        self.triangles = [garbage.Triangle(i) for i in range(300)]
+        self.pentagons = [garbage.Pentagon(i) for i in range(300)]
+
         self.tick_id = 0
         self.tick_timer = PeriodicCallback(self.tick, self.tick_time)
 
@@ -69,6 +38,12 @@ class Arena:
         """this function is called every `self.tick_time` milliseconds
         to process each tick
         """
+        for polygon in itertools.chain(
+            self.squares,
+            self.triangles,
+            self.pentagons
+        ):
+            polygon.tick_angle()
         self.send_updates()
 
     def send_updates(self):
@@ -85,9 +60,9 @@ class Arena:
                     "y": 260 + (self.tick_id % 50)
                 },
             ],
-            "squares": dummy_squares,
-            "triangles": dummy_triangles,
-            "pentagons": dummy_pentagons
+            "squares": [square.to_dict() for square in self.squares],
+            "triangles": [triangle.to_dict() for triangle in self.triangles],
+            "pentagons": [pentagon.to_dict() for pentagon in self.pentagons]
         })
 
     def broadcast_updates(self, updates):
