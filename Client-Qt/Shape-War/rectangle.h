@@ -18,7 +18,7 @@ public:
     HpBar *hpBar;
 
 private:
-    int edge;
+    int axis;
     qreal angle;
     QPolygonF polygonShape;
     int hp;
