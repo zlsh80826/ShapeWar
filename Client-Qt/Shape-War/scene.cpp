@@ -86,6 +86,7 @@ void Scene::onTextMessageReceived(QString message) {
     QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
     const auto &object = doc.object();
     this->self->read(object);
+    this->testPentagon->read(object["pentagons"].toArray()[0].toObject());
 
     int self_id = object["self"].toObject()["id"].toInt();
 

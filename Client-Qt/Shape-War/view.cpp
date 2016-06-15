@@ -1,8 +1,8 @@
 #include "view.h"
 
 View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
-    viewWidth = 500;
-    viewHeight = 500;
+    viewWidth = 960;
+    viewHeight = 768;
     this->resize(viewWidth, viewHeight);
     this->setWindowTitle("Shape-War");
 
