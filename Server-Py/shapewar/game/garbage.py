@@ -3,9 +3,8 @@ import random
 
 class Garbage:
 
-    def __init__(self, manager, id):
+    def __init__(self, id):
         self.id = id
-        self.manager = manager
         self.spawn()
         self.visable = False
 
@@ -26,15 +25,15 @@ class Garbage:
         }
 
 
-class Triangle(Garbage):
+class Square(Garbage):
 
     radius = 5
     maxHp = 100
 
 
-class Square(Garbage):
+class Triangle(Garbage):
 
-    radius = 6
+    radius = 5
     maxHp = 400
 
 

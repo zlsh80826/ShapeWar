@@ -87,7 +87,7 @@ void Scene::onTextMessageReceived(QString message) {
     this->triangles->read(object);
     this->testPentagon->read(object["pentagons"].toArray()[0].toObject());
 
-    int self_id = object["self"].toObject()["id"].toInt();
+    auto self_id = object["self"].toObject()["id"];
 
     for (Hero *hero : heroes) {
         this->removeItem(hero);
@@ -97,7 +97,7 @@ void Scene::onTextMessageReceived(QString message) {
 
     for (const auto &hero_data : object["players"].toArray()) {
         const auto &hero_object = hero_data.toObject();
-        if (hero_object["id"].toInt() != self_id) {
+        if (hero_object["id"] != self_id) {
             auto hero = new Hero;
             hero->read_player(hero_object);
             this->addItem(hero);
