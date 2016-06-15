@@ -1,8 +1,8 @@
 #ifndef RECTANGLEGROUP_H
 #define RECTANGLEGROUP_H
-#include <QVector>
 #include <QGraphicsScene>
 #include <QJsonObject>
+#include <QVector>
 #include <rectangle.h>
 
 class RectangleGroup {

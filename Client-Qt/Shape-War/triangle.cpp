@@ -10,7 +10,7 @@ Triangle::Triangle() {
     shapePoint.append(QPoint(edge / 2, edge / 3));
     shapePoint.append(QPoint(0, -(edge * 2) / 3));
     this->polygonShape = QPolygon(shapePoint);
-    this->hpBar = new HpBar(1000, 2*edge, 2*edge);
+    this->hpBar = new HpBar(1000, 2 * edge, 2 * edge);
 }
 
 QRectF Triangle::boundingRect() const {
