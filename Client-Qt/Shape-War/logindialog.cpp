@@ -11,7 +11,9 @@ void LoginDialog::setUpGUI() {
     QGridLayout *formGridLayout = new QGridLayout(this);
 
     editServerIP = new QLineEdit(this);
+    editServerIP->setText("127.0.0.1");
     editPort = new QLineEdit(this);
+    editPort->setText("8888");
     editUsername = new QLineEdit(this);
     // initialize the password field so that it does not echo characters
     editPassword = new QLineEdit(this);
