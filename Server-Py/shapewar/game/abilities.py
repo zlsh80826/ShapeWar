@@ -1,4 +1,3 @@
-import types
 import logging
 
 
@@ -95,11 +94,14 @@ class Abilities:
         return BoundAbalitiy(self.abilities[index], self.hero)
 
 
-def update_property_mixin_namespace(namespace):
+def get_property_mixin_namespace():
+    namespace = {}
     for abality in Abilities.abilities:
         namespace[abality.name] = abality
+    return namespace
 
 
-PropertyMixin = types.new_class(
+PropertyMixin = type(
     'PropertyMixin',
-    exec_body=update_property_mixin_namespace)
+    (),
+    get_property_mixin_namespace())
