@@ -25,7 +25,7 @@ public:
     View(Scene *scene, QWebSocket &ws);
 
 public slots:
-    void settingCenter();
+    void settingCenter_updateTargetAngle();
     void sendControlToServer();
     void showUpgrateOptions();
 
@@ -39,6 +39,7 @@ protected:
 
 private:
     int viewWidth, viewHeight;
+    qreal calcRargetAngle(QPointF &mouseP);
     Hero *self;
 
     bool key_w_pressed;

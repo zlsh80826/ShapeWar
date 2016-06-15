@@ -23,8 +23,8 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     this->self = scene->self;
     this->centerOn(this->self->pos());
 
-    connect(self, SIGNAL(xChanged()), this, SLOT(settingCenter()));
-    connect(self, SIGNAL(yChanged()), this, SLOT(settingCenter()));
+    connect(self, SIGNAL(xChanged()), this, SLOT(settingCenter_updateTargetAngle()));
+    connect(self, SIGNAL(yChanged()), this, SLOT(settingCenter_updateTargetAngle()));
 
     sendDelayTimer = new QTimer(this);
     connect(sendDelayTimer, SIGNAL(timeout()), this,
@@ -101,8 +101,10 @@ void View::keyReleaseEvent(QKeyEvent *event) {
     // qDebug() << "Released key: " << event->key();
 }
 
-void View::settingCenter() {
+void View::settingCenter_updateTargetAngle() {
     this->centerOn(this->self->pos());
+    QPointF mouseP = this->mapToScene( this->mapFromGlobal(QCursor::pos()) );
+    self->setRotation( this->calcRargetAngle(mouseP));
 }
 
 void View::mousePressEvent(QMouseEvent *event) {
@@ -113,19 +115,24 @@ void View::mouseReleaseEvent(QMouseEvent *event) {
 }
 void View::mouseMoveEvent(QMouseEvent *event) {
     QPointF mouseP = this->mapToScene(event->pos());
+    self->setRotation( this->calcRargetAngle(mouseP) );
+    // printf("self (%f, %f), mouse (%f,%f). degree of mouse relative to self
+    // is: %f",selfP.x(), selfP.y(), mouseP.x(), mouseP.y(),
+    //                  targetAngle * 180.0 / 3.14 );
+}
+qreal View::calcRargetAngle(QPointF &mouseP) {
     QPointF selfP = self->pos();
-
     qreal tangent = (mouseP.y() - selfP.y()) / (mouseP.x() - selfP.x());
     qreal targetAngle = atan(tangent);
     if (mouseP.x() < selfP.x())
         targetAngle += M_PI;
     else if (mouseP.y() < selfP.y())
         targetAngle += M_PI * 2;
-    self->setRotation(targetAngle * 180 / 3.14);
-    // printf("self (%f, %f), mouse (%f,%f). degree of mouse relative to self
-    // is: %f",selfP.x(), selfP.y(), mouseP.x(), mouseP.y(),
-    //                  targetAngle * 180.0 / 3.14 );
+    targetAngle *= 180;
+    targetAngle /= 3.14;
+    return targetAngle;
 }
+
 void View::wheelEvent(QWheelEvent *event) {
     // eat this event to prevent it is passed to parent widget
     // do nothing
