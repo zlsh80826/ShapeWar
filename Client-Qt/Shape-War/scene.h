@@ -21,7 +21,7 @@ public:
     Self *self;
 
     // test object
-    TriangleGroup* triangles;
+    TriangleGroup *triangles;
     Rectangle *testRectangle;
     Pentagon *testPentagon;
     Bullet *testBullet;

@@ -55,7 +55,7 @@ void Scene::initGame() {
 
     // test monster
     triangles = new TriangleGroup();
-    triangles -> addToParent(this);
+    triangles->addToParent(this);
 
     testRectangle = new Rectangle();
     testRectangle->setPos(200, 200);
