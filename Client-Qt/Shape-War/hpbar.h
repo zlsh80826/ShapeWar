@@ -1,6 +1,7 @@
 #ifndef HPBAR_H
 #define HPBAR_H
 #include <QGraphicsObject>
+#include <QTimer>
 
 class HpBar : public QGraphicsObject {
     Q_OBJECT
@@ -13,12 +14,16 @@ public:
                QWidget *widget);
     QPainterPath shape() const;
 
+private slots:
+    void decreaseOpacity();
+
 private:
     qreal curHp;
     qreal maxHp;
     qreal width;
     qreal offsetY;
     qreal curHpWidth;
+    QTimer* revealTimer;
 };
 
 #endif // HPBAR_H
