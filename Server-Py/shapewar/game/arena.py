@@ -10,6 +10,19 @@ from .hero import Hero
 logger = logging.getLogger(__name__)
 
 
+dummy_triangles = [
+    {
+        "id": i,
+        "x": random.randrange(1000),
+        "y": random.randrange(1000),
+        "angle": random.randrange(360),
+        "hp": 343,
+        "maxHp": 1000
+    }
+    for i in range(300)
+]
+
+
 class Arena:
 
     tick_time = 20  # tick time in milliseconds
@@ -57,16 +70,7 @@ class Arena:
                     "maxHp": 100
                 }
             ],
-            "triangles": [
-                {
-                    "id": 0,
-                    "x": 200,
-                    "y": 400,
-                    "angle": 40,
-                    "hp": 343,
-                    "maxHp": 1000
-                }
-            ],
+            "triangles": dummy_triangles,
             "pentagons": [
                 {
                     "id": 0,
