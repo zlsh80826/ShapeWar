@@ -23,6 +23,7 @@ private:
     QPolygonF polygonShape;
     int hp;
     int maxHp;
+    void update();
 };
 
 #endif // TRIANGLE_H
