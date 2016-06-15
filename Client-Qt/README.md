@@ -1,5 +1,7 @@
-Client - Qt Implementation
-==========================
+Client
+======
+
+Qt 5 client implementation
 
 Building
 --------
@@ -10,3 +12,5 @@ cd build
 qmake ../Shape-War
 make -j
 ```
+
+The resulting binary is called `Shape-War`.
