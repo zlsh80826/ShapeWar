@@ -10,6 +10,8 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QStringList>
+#include <QCheckBox>
+#include <QSpacerItem>
 
 /*!
  '''Makes class LoginDialog a child to its parent, QDialog
@@ -17,20 +19,17 @@
 class LoginDialog : public QDialog {
     Q_OBJECT
 private:
+    QLabel *labelServerUrl;
+    QLabel *labelPort;
     QLabel *labelUsername;
     QLabel *labelPassword;
 
-    /*!
-     * An editable combo box for allowing the user
-     * to enter his username or select it from a list.
-     */
+    QLineEdit *editServerUrl;
+    QLineEdit *editPort;
     QLineEdit *editUsername;
-
-    /*!
-     * A field to let the user enters his password.
-     */
     QLineEdit *editPassword;
 
+    QCheckBox *anonymousCheck;
     /*!
      * The standard dialog button box.
      */
@@ -73,9 +72,10 @@ signals:
      * password the password entered in the dialog
      * index the number of the username selected in the combobox
      */
-    void acceptLogin(QString &username, QString &password);
+    void acceptLogin(QString &serverUrl, QString & port, QString &username, QString &password, bool isAnonymous);
 public slots:
     void slotAcceptLogin();
+    void anonymousCheckOnclicked();
 };
 
 #endif // LOGINDIALOG_H

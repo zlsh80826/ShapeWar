@@ -10,18 +10,30 @@ void LoginDialog::setUpGUI() {
     // set up the layout
     QGridLayout *formGridLayout = new QGridLayout(this);
 
+    editServerUrl = new QLineEdit(this);
+    editPort = new QLineEdit(this);
     editUsername = new QLineEdit(this);
     // initialize the password field so that it does not echo characters
     editPassword = new QLineEdit(this);
     editPassword->setEchoMode(QLineEdit::Password);
 
     // initialize the labels
+    labelServerUrl = new QLabel(this);
+    labelServerUrl->setText(tr("ServerUrl"));
+    labelServerUrl->setBuddy(editServerUrl);
+
+    labelPort = new QLabel(this);
+    labelPort->setText(tr("Port"));
+    labelPort->setBuddy(editPort);
+
     labelUsername = new QLabel(this);
-    labelPassword = new QLabel(this);
     labelUsername->setText(tr("Username"));
     labelUsername->setBuddy(editUsername);
+
+    labelPassword = new QLabel(this);
     labelPassword->setText(tr("Password"));
     labelPassword->setBuddy(editPassword);
+
 
     // initialize buttons
     buttons = new QDialogButtonBox(this);
@@ -37,12 +49,27 @@ void LoginDialog::setUpGUI() {
     connect(buttons->button(QDialogButtonBox::Ok), SIGNAL(clicked()), this,
             SLOT(slotAcceptLogin()));
 
+    anonymousCheck = new QCheckBox("Play anonymous", this);
+    connect(anonymousCheck, SIGNAL(clicked()), this,
+            SLOT(anonymousCheckOnclicked()));
+
     // place components into the dialog
-    formGridLayout->addWidget(labelUsername, 0, 0);
-    formGridLayout->addWidget(editUsername, 0, 1);
-    formGridLayout->addWidget(labelPassword, 1, 0);
-    formGridLayout->addWidget(editPassword, 1, 1);
-    formGridLayout->addWidget(buttons, 2, 0, 1, 2);
+    int rowCounting = 0;
+    formGridLayout->addWidget(labelServerUrl, rowCounting, 0);
+    formGridLayout->addWidget(editServerUrl, rowCounting, 1);
+    rowCounting++;
+    formGridLayout->addWidget(labelPort, rowCounting, 0);
+    formGridLayout->addWidget(editPort, rowCounting, 1);
+    rowCounting++;
+    formGridLayout->addWidget(labelUsername, rowCounting, 0);
+    formGridLayout->addWidget(editUsername, rowCounting, 1);
+    rowCounting++;
+    formGridLayout->addWidget(labelPassword, rowCounting, 0);
+    formGridLayout->addWidget(editPassword, rowCounting, 1);
+    rowCounting++;
+    formGridLayout->addWidget(anonymousCheck, rowCounting, 0);
+    rowCounting++;
+    formGridLayout->addWidget(buttons, rowCounting, 0, 1, 2);
 
     setLayout(formGridLayout);
 }
@@ -52,13 +79,25 @@ void LoginDialog::setPassword(QString &password) {
 }
 
 void LoginDialog::slotAcceptLogin() {
+    QString serverUrl = editServerUrl->text();
+    QString port = editPort->text();
     QString username = editUsername->text();
     QString password = editPassword->text();
-
-    emit acceptLogin(username, // current username
-                     password  // current password
+    bool isAnonymous = anonymousCheck->isChecked();
+    emit acceptLogin(serverUrl,
+                     port,
+                     username, // current username
+                     password,  // current password
+                     isAnonymous
                      );
 
     // close this dialog
     close();
+}
+void LoginDialog::anonymousCheckOnclicked() {
+    if( anonymousCheck->isChecked() ) {
+        editPassword->setEnabled(false);
+    } else {
+        editPassword->setEnabled(true);
+    }
 }
