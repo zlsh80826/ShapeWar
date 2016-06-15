@@ -3,6 +3,7 @@
 
 Triangle::Triangle() {
     this->edge = 20;
+    this->setPos(-50, -50);
     QVector<QPoint> shapePoint;
     shapePoint.append(QPoint(0, -(edge * 2) / 3));
     shapePoint.append(QPoint(-edge / 2, edge / 3));
