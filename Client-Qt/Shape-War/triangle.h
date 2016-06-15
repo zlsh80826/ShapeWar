@@ -3,6 +3,7 @@
 #include <QGraphicsObject>
 #include <QJsonObject>
 #include <QPolygonF>
+#include <hpbar.h>
 
 class Triangle : public QGraphicsObject {
     Q_OBJECT
@@ -14,6 +15,7 @@ public:
                QWidget *widget);
     QPainterPath shape() const;
     void read(const QJsonObject &json);
+    HpBar* hpBar;
 
 private:
     int edge;
