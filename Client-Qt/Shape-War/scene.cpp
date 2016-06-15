@@ -57,9 +57,8 @@ void Scene::initGame() {
     triangles = new TriangleGroup();
     triangles->addToParent(this);
 
-    testRectangle = new Rectangle();
-    testRectangle->setPos(200, 200);
-    this->addItem(testRectangle);
+    rectangles = new RectangleGroup();
+    rectangles->addToParent(this);
 
     testPentagon = new Pentagon();
     testPentagon->setPos(200, 300);
