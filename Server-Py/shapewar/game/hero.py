@@ -1,58 +1,36 @@
 from collections import defaultdict
+import math
+import cmath
 import logging
 
 from . import abilities
+from .motion import MovableObject
+
 
 logger = logging.getLogger(__name__)
 
 
-def apply_friction(v, a):
-    if v > 0:
-        return max(0, v - a)
-    elif v < 0:
-        return min(0, v + a)
-    return 0
-
-
-def limit_speed(v, limit):
-    if v < -limit:
-        return -limit
-    if v > limit:
-        return limit
-    return v
-
-
-class Hero(abilities.PropertyMixin):
+class Hero(abilities.PropertyMixin, MovableObject):
 
     def __init__(self):
         self.skill_points = 0
         self.levels = defaultdict(int)
         self.abilities = abilities.Abilities(self)
 
-        self.x = 0
-        self.y = 0
-        self.angle = 245
+        super().__init__()
+
+        self.angle = 0
         self.acc = 0.6  # acceleration
-        self.friction = 0.3
-        self.speed_x = 0
-        self.speed_y = 0
-        self.current_hp = 3000
+        self.current_hp = self.max_hp
         self.experience = 0
         self.level = 1
 
     def accept_keys(self, W, A, S, D):
-        self.speed_x = apply_friction(self.speed_x, self.friction)
-        self.speed_y = apply_friction(self.speed_y, self.friction)
-        self.speed_x = limit_speed(
-            self.speed_x + (D - A) * self.acc,
-            self.max_speed
-        )
-        self.speed_y = limit_speed(
-            self.speed_y + (S - W) * self.acc,
-            self.max_speed
-        )
-        self.x += self.speed_x
-        self.y += self.speed_y
+        self.apply_friction()
+        if W or A or S or D:
+            self.accelerate(cmath.rect(self.acc, math.atan2(S - W, D - A)))
+        self.pos += self.velocity
+        logger.info('v = %r', self.velocity)
 
     def to_self_dict(self):
         return {
