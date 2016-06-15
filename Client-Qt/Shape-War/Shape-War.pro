@@ -24,7 +24,8 @@ SOURCES += main.cpp \
     logindialog.cpp \
     self.cpp \
     trianglegroup.cpp \
-    rectanglegroup.cpp
+    rectanglegroup.cpp \
+    pentagongroup.cpp
 
 HEADERS  += \
     scene.h \
@@ -38,7 +39,8 @@ HEADERS  += \
     logindialog.h \
     self.h \
     trianglegroup.h \
-    rectanglegroup.h
+    rectanglegroup.h \
+    pentagongroup.h
 
 CONFIG += qt
 

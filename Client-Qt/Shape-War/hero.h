@@ -26,6 +26,7 @@ protected:
 
 public:
     void read_player(const QJsonObject &);
+    void update();
 };
 
 #endif // HERO_H

@@ -15,7 +15,7 @@ void RectangleGroup::addToParent(QGraphicsScene *parent) {
 
 void RectangleGroup::read(const QJsonObject &json) {
     QJsonArray rectangleInfo = json["rectangles"].toArray();
-    for (int i = 0; (i < rectangleInfo.size()) || i < rectangles.size(); ++i) {
+    for (int i = 0; (i < rectangleInfo.size()) && i < rectangles.size(); ++i) {
         rectangles[i]->read(rectangleInfo[i].toObject());
     }
 }

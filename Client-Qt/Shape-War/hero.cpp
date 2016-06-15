@@ -55,4 +55,10 @@ void Hero::read_player(const QJsonObject &data) {
     this->setRotation(data["angle"].toDouble());
     this->setX(data["x"].toDouble());
     this->setY(data["y"].toDouble());
+    this->update();
+}
+
+void Hero::update(){
+    this->hpBar->setHp(this->currentHp, this->maxHp);
+    this->hpBar->setPos(this->x(), this->y());
 }

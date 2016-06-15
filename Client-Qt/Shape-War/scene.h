@@ -9,7 +9,7 @@
 #include <bullet.h>
 #include <hero.h>
 #include <math.h>
-#include <pentagon.h>
+#include <pentagongroup.h>
 #include <rectanglegroup.h>
 #include <self.h>
 #include <trianglegroup.h>
@@ -23,7 +23,7 @@ public:
     // test object
     TriangleGroup *triangles;
     RectangleGroup *rectangles;
-    Pentagon *testPentagon;
+    PentagonGroup *pentagons;
     Bullet *testBullet;
 
     // connection

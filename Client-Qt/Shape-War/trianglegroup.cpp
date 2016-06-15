@@ -16,7 +16,7 @@ void TriangleGroup::addToParent(QGraphicsScene *parent) {
 
 void TriangleGroup::read(const QJsonObject &json) {
     QJsonArray triangleInfo = json["triangles"].toArray();
-    for (int i = 0; (i < triangleInfo.size()) || i < triangles.size(); ++i) {
+    for (int i = 0; (i < triangleInfo.size()) && i < triangles.size(); ++i) {
         triangles[i]->read(triangleInfo[i].toObject());
     }
 }

@@ -60,9 +60,8 @@ void Scene::initGame() {
     rectangles = new RectangleGroup();
     rectangles->addToParent(this);
 
-    testPentagon = new Pentagon();
-    testPentagon->setPos(200, 300);
-    this->addItem(testPentagon);
+    pentagons = new PentagonGroup();
+    pentagons->addToParent(this);
 
     testBullet = new Bullet();
     testBullet->setPos(300, 250);
@@ -85,7 +84,8 @@ void Scene::onTextMessageReceived(QString message) {
     const auto &object = doc.object();
     this->self->read(object);
     this->triangles->read(object);
-    this->testPentagon->read(object["pentagons"].toArray()[0].toObject());
+    this->rectangles->read(object);
+    this->pentagons->read(object);
 
     auto self_id = object["self"].toObject()["id"];
 
