@@ -24,7 +24,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
         self.radius = 30
         self.angle = 0
         self.acc = 0.6  # acceleration
-        self.current_hp = self.max_hp
+        self.hp = self.max_hp
         self.experience = 0
         self.level = 1
 
@@ -41,7 +41,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
             'y': self.y,
             'id': id(self),
             'maxHp': self.max_hp,
-            'currentHp': self.current_hp,
+            'currentHp': self.hp,
             'level': self.level,
             'experience': self.experience,
             'passives': [ability.level for ability in self.abilities],
@@ -52,20 +52,21 @@ class Hero(abilities.PropertyMixin, MovableObject):
             'x': self.x,
             'y': self.y,
             'id': id(self),
-            'maxHp': self.max_hp,
-            'currentHp': self.current_hp,
+            'maxHp': self.hp,
+            'currentHp': self.hp,
             'angle': self.angle
         }
 
     def shoot(self, bullet):
         bullet.hp = self.bullet_hp
-        bullet.damage = self.bullet_damage
+        bullet.body_damage = self.bullet_damage
         bullet.pos = self.pos + cmath.rect(
             self.radius, math.radians(self.angle))
         bullet.velocity = cmath.rect(
             self.bullet_speed, math.radians(self.angle)) + self.velocity
         bullet.visible = True
         bullet.timeout = 50 * 2
+        bullet.owner = self
 
 
 class Bullet(MovableObject):

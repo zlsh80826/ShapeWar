@@ -1,5 +1,7 @@
 import collections
 import cmath
+from . import hero
+from . import garbage
 
 
 RangeKey = collections.namedtuple('RangeKey', 'left right')
@@ -48,3 +50,26 @@ def collide(obj, obk):
     obk.accelerate(cmath.rect((dist - rsum) / rsum / 2, phi))
     obk.pos += obk.velocity
     obj.pos += obj.velocity
+    if get_team(obj) != get_team(obk):
+        deduct_hp(obj, obk)
+        deduct_hp(obk, obj)
+
+
+def get_team(obj):
+    if isinstance(obj, garbage.Garbage):
+        return garbage.Garbage
+    if isinstance(obj, hero.Bullet):
+        return obj.owner
+    if isinstance(obj, hero.Hero):
+        return obj
+
+
+def deduct_hp(obj, by):
+    obj.hp -= by.body_damage
+    if obj.hp <= 0:
+        obj.hp = 0
+        obj.visible = False
+        if isinstance(by, hero.Bullet):
+            by.owner.experience += 10
+        if isinstance(by, hero.Hero):
+            by.experience += 10

@@ -12,6 +12,7 @@ cdef class Garbage(MovableObject):
         int maxHp
         double angular_velocity
         double max_speed
+        int body_damage
 
     def __init__(self, id):
         super().__init__()
@@ -50,6 +51,7 @@ cdef class Square(Garbage):
         super(Square, self).__init__(id)
         self.radius = 20
         self.max_speed = 5
+        self.body_damage = 3
 
 
 cdef class Triangle(Garbage):
@@ -59,6 +61,7 @@ cdef class Triangle(Garbage):
         super(Triangle, self).__init__(id)
         self.radius = 20
         self.max_speed = 5
+        self.body_damage = 5
 
 
 cdef class Pentagon(Garbage):
@@ -68,3 +71,4 @@ cdef class Pentagon(Garbage):
         super(Pentagon, self).__init__(id)
         self.radius = 20
         self.max_speed = 5
+        self.body_damage = 7
