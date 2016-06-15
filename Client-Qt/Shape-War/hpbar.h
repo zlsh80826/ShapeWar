@@ -23,7 +23,7 @@ private:
     qreal width;
     qreal offsetY;
     qreal curHpWidth;
-    QTimer* revealTimer;
+    QTimer *revealTimer;
 };
 
 #endif // HPBAR_H
