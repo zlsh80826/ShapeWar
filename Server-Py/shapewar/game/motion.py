@@ -17,8 +17,8 @@ def value_limit(value, minimum, maximum):
 class MovableObject:
 
     friction = 0.15
-    x_bound = 2000
-    y_bound = 1500
+    x_bound = 5000
+    y_bound = 4000
 
     def __init__(self):
         self.spawn()

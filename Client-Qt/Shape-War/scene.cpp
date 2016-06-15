@@ -15,8 +15,8 @@ Scene::Scene(QWidget *parent)
                      this, SLOT(slotAcceptUserLogin(QString &, QString &, QString &, QString &, bool)));
     loginDialog->exec();
 
-    this->width = 2000;
-    this->height = 1500;
+    this->width = 5000;
+    this->height = 4000;
     this->margin = 10;
     initGame();
     startGame();

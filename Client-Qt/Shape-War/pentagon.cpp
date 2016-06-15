@@ -22,6 +22,7 @@ QRectF Pentagon::boundingRect() const {
 
 void Pentagon::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                      QWidget *widget) {
+
     QPen pen;
     pen.setWidth(3);
     pen.setColor(QColor(85, 85, 85, 255));
