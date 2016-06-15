@@ -1,5 +1,7 @@
+from collections import defaultdict
 import logging
 
+from . import abilities
 
 logger = logging.getLogger(__name__)
 
@@ -20,18 +22,20 @@ def limit_speed(v, limit):
     return v
 
 
-class Hero:
+class Hero(abilities.PropertyMixin):
 
     def __init__(self):
+        self.skill_points = 0
+        self.levels = defaultdict(int)
+        self.abilities = abilities.Abilities(self)
+
         self.x = 0
         self.y = 0
         self.angle = 245
         self.acc = 0.6  # acceleration
         self.friction = 0.3
-        self.max_speed = 5
         self.speed_x = 0
         self.speed_y = 0
-        self.max_hp = 10000
         self.current_hp = 3000
         self.experience = 0
         self.level = 1
@@ -59,7 +63,7 @@ class Hero:
             'currentHp': self.current_hp,
             'level': self.level,
             'experience': self.experience,
-            'passives': [1, 2, 1, 3, 2, 1, 4, 3],
+            'passives': [ability.level for ability in self.abilities],
         }
 
     def to_player_dict(self):

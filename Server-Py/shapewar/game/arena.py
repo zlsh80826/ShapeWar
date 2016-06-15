@@ -104,8 +104,8 @@ arena = Arena()
 class ArenaHandler(WebSocketHandler):
 
     def open(self):
-        arena.clients.add(self)
         self.hero = Hero()
+        arena.clients.add(self)
         logger.info('%s connected', self.request.remote_ip)
 
     def on_message(self, message):
