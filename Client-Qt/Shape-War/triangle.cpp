@@ -1,5 +1,6 @@
 #include "triangle.h"
 #include <QPainter>
+#include <QJsonValue>
 
 Triangle::Triangle() {
     this->edge = 20;
@@ -41,4 +42,6 @@ void Triangle::read(const QJsonObject &json) {
     this->angle = json["angle"].toDouble();
     this->hp = json["hp"].toInt();
     this->maxHp = json["maxHp"].toInt();
+    QJsonValue tmp;
+    tmp.
 }
