@@ -49,7 +49,7 @@ void Pentagon::read(const QJsonObject &json) {
     update();
 }
 
-void Pentagon::update(){
+void Pentagon::update() {
     this->hpBar->setPos(this->x(), this->y());
     this->hpBar->setHp(this->hp, this->maxHp);
     this->setRotation(this->angle);

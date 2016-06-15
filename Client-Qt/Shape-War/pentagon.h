@@ -15,7 +15,7 @@ public:
                QWidget *widget);
     QPainterPath shape() const;
     void read(const QJsonObject &json);
-    HpBar* hpBar;
+    HpBar *hpBar;
 
 private:
     int axis;

@@ -12,7 +12,7 @@ Rectangle::Rectangle() {
     shapePoint.append(QPoint(-edge / 2, -edge / 2));
     this->polygonShape = QPolygon(shapePoint);
 
-    this -> hpBar = new HpBar(1000, edge, edge);
+    this->hpBar = new HpBar(1000, edge, edge);
 }
 
 QRectF Rectangle::boundingRect() const {
@@ -47,7 +47,7 @@ void Rectangle::read(const QJsonObject &json) {
     update();
 }
 
-void Rectangle::update(){
+void Rectangle::update() {
     this->hpBar->setHp(this->hp, this->maxHp);
     this->hpBar->setPos(this->x(), this->y());
     this->setRotation(this->angle);
