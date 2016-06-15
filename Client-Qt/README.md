@@ -1,4 +1,12 @@
 Client - Qt Implementation
 ==========================
 
-This is a placeholder
+Building
+--------
+
+```bash
+mkdir build
+cd build
+qmake ../Shape-War
+make -j
+```
