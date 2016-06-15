@@ -10,6 +10,7 @@ Triangle::Triangle() {
     shapePoint.append(QPoint(edge / 2, edge / 3));
     shapePoint.append(QPoint(0, -(edge * 2) / 3));
     this->polygonShape = QPolygon(shapePoint);
+    this->hpBar = new HpBar(1000, 2 * edge, 2 * edge);
 }
 
 QRectF Triangle::boundingRect() const {
@@ -41,4 +42,11 @@ void Triangle::read(const QJsonObject &json) {
     this->angle = json["angle"].toDouble();
     this->hp = json["hp"].toInt();
     this->maxHp = json["maxHp"].toInt();
+    this->update();
+}
+
+void Triangle::update() {
+    this->setRotation(angle);
+    this->hpBar->setPos(this->x(), this->y());
+    this->hpBar->setHp(this->hp, this->maxHp);
 }

@@ -14,6 +14,7 @@ Pentagon::Pentagon() {
     shapePoint.append(QPoint(qCos(radian18) * axis, -qSin(radian18) * axis));
     shapePoint.append(QPoint(0, -axis));
     this->polygonShape = QPolygon(shapePoint);
+    this->hpBar = new HpBar(1000, axis, axis);
 }
 
 QRectF Pentagon::boundingRect() const {
@@ -45,4 +46,11 @@ void Pentagon::read(const QJsonObject &json) {
     this->angle = json["angle"].toDouble();
     this->hp = json["hp"].toInt();
     this->maxHp = json["maxHp"].toInt();
+    update();
+}
+
+void Pentagon::update() {
+    this->hpBar->setPos(this->x(), this->y());
+    this->hpBar->setHp(this->hp, this->maxHp);
+    this->setRotation(this->angle);
 }
