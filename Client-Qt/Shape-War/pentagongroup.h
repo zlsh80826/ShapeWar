@@ -1,0 +1,4 @@
+#ifndef PENTAGONGROUP_H
+#define PENTAGONGROUP_H
+
+#endif // PENTAGONGROUP_H
