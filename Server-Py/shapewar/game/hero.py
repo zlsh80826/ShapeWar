@@ -52,7 +52,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
             'x': self.x,
             'y': self.y,
             'id': id(self),
-            'maxHp': self.hp,
+            'maxHp': self.max_hp,
             'currentHp': self.hp,
             'angle': self.angle
         }
