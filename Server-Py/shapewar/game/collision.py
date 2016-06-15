@@ -14,7 +14,6 @@ def y_key(obj):
 
 def range_overlaps(objects, key):
     targets = sorted(objects, key=key)
-    print(targets)
     while targets:
         right = targets.pop()
         for left in reversed(targets):
