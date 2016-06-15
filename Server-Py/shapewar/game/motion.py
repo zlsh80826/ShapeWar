@@ -17,8 +17,8 @@ def value_limit(value, minimum, maximum):
 class MovableObject:
 
     friction = 0.15
-    x_bound = 1000
-    y_bound = 1000
+    x_bound = 2000
+    y_bound = 1500
 
     def __init__(self):
         self.pos = complex(
