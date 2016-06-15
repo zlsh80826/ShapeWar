@@ -10,7 +10,7 @@ void LoginDialog::setUpGUI() {
     // set up the layout
     QGridLayout *formGridLayout = new QGridLayout(this);
 
-    editServerUrl = new QLineEdit(this);
+    editServerIP = new QLineEdit(this);
     editPort = new QLineEdit(this);
     editUsername = new QLineEdit(this);
     // initialize the password field so that it does not echo characters
@@ -18,9 +18,9 @@ void LoginDialog::setUpGUI() {
     editPassword->setEchoMode(QLineEdit::Password);
 
     // initialize the labels
-    labelServerUrl = new QLabel(this);
-    labelServerUrl->setText(tr("ServerUrl"));
-    labelServerUrl->setBuddy(editServerUrl);
+    labelServerIP = new QLabel(this);
+    labelServerIP->setText(tr("ServerIP"));
+    labelServerIP->setBuddy(editServerIP);
 
     labelPort = new QLabel(this);
     labelPort->setText(tr("Port"));
@@ -55,8 +55,8 @@ void LoginDialog::setUpGUI() {
 
     // place components into the dialog
     int rowCounting = 0;
-    formGridLayout->addWidget(labelServerUrl, rowCounting, 0);
-    formGridLayout->addWidget(editServerUrl, rowCounting, 1);
+    formGridLayout->addWidget(labelServerIP, rowCounting, 0);
+    formGridLayout->addWidget(editServerIP, rowCounting, 1);
     rowCounting++;
     formGridLayout->addWidget(labelPort, rowCounting, 0);
     formGridLayout->addWidget(editPort, rowCounting, 1);
@@ -79,12 +79,12 @@ void LoginDialog::setPassword(QString &password) {
 }
 
 void LoginDialog::slotAcceptLogin() {
-    QString serverUrl = editServerUrl->text();
+    QString serverIP = editServerIP->text();
     QString port = editPort->text();
     QString username = editUsername->text();
     QString password = editPassword->text();
     bool isAnonymous = anonymousCheck->isChecked();
-    emit acceptLogin(serverUrl,
+    emit acceptLogin(serverIP,
                      port,
                      username, // current username
                      password,  // current password

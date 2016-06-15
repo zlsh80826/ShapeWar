@@ -7,8 +7,8 @@
 #include <QPainter>
 #include <QtWebSockets/QWebSocket>
 
-Scene::Scene(QWidget *parent, const QUrl &url)
-    : QGraphicsScene(parent), m_url(url) {
+Scene::Scene(QWidget *parent)
+    : QGraphicsScene(parent) {
     LoginDialog *loginDialog = new LoginDialog();
 
     QObject::connect(loginDialog, SIGNAL(acceptLogin(QString &, QString &, QString &, QString &, bool)),
@@ -23,7 +23,7 @@ Scene::Scene(QWidget *parent, const QUrl &url)
 
     connect(&m_webSocket, &QWebSocket::connected, this, &Scene::onConnected);
     connect(&m_webSocket, &QWebSocket::disconnected, this, &Scene::closed);
-    m_webSocket.open(QUrl(url));
+    m_webSocket.open(QUrl(*dummy_url));
 }
 
 void Scene::drawBackground(QPainter *painter, const QRectF &rect) {
@@ -107,13 +107,24 @@ void Scene::onTextMessageReceived(QString message) {
     }
 }
 
-void Scene::slotAcceptUserLogin(QString & serverUrl , QString & port, QString &username, QString &password, bool isAnonymous) {
+void Scene::slotAcceptUserLogin(QString & serverIP , QString & port, QString &username, QString &password, bool isAnonymous) {
     // test
-    qDebug() << "Get serverUrl: " << serverUrl
+    fillServerInfo(serverIP, port);
+    qDebug() << "Get serverIP: " << serverIP
                     << ", port: " << port
                     << ", username: " << username
                     << ", password: " << password
                     << ", anonymous: " << isAnonymous;
 
     // TODO: send the username and password to server
+}
+
+void Scene::fillServerInfo(QString &serverIP, QString &port)  {
+    QString partUrl = "ws://";
+    partUrl += serverIP;
+    partUrl += ":";
+    partUrl += port;
+    qDebug() << partUrl;
+
+    dummy_url = new QUrl(partUrl + "/arena/dummy");
 }

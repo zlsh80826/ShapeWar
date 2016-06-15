@@ -19,12 +19,12 @@
 class LoginDialog : public QDialog {
     Q_OBJECT
 private:
-    QLabel *labelServerUrl;
+    QLabel *labelServerIP;
     QLabel *labelPort;
     QLabel *labelUsername;
     QLabel *labelPassword;
 
-    QLineEdit *editServerUrl;
+    QLineEdit *editServerIP;
     QLineEdit *editPort;
     QLineEdit *editUsername;
     QLineEdit *editPassword;
@@ -72,7 +72,7 @@ signals:
      * password the password entered in the dialog
      * index the number of the username selected in the combobox
      */
-    void acceptLogin(QString &serverUrl, QString & port, QString &username, QString &password, bool isAnonymous);
+    void acceptLogin(QString &ServerIP, QString & port, QString &username, QString &password, bool isAnonymous);
 public slots:
     void slotAcceptLogin();
     void anonymousCheckOnclicked();

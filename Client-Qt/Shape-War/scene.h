@@ -18,7 +18,7 @@
 class Scene : public QGraphicsScene {
     Q_OBJECT
 public:
-    Scene(QWidget *parent = 0, const QUrl &url = QUrl());
+    Scene(QWidget *parent = 0);
     Self *self;
 
     // test object
@@ -29,7 +29,7 @@ public:
 
     // connection
     QWebSocket m_webSocket;
-    QUrl m_url;
+    QUrl *dummy_url;
 
 public slots:
     void startGame();
@@ -53,6 +53,7 @@ private:
     int margin;
     QColor backgroundColor;
     QVector<Hero *> heroes;
+    void fillServerInfo(QString &serverUrl, QString &port);
 };
 
 #endif // SCENE_H
