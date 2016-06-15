@@ -6,19 +6,20 @@ Rectangle::Rectangle() {
     this->axis = 20;
     this->setPos(-50, -50);
     QVector<QPoint> shapePoint;
-    double radian = qDegreesToRadians(360.0/4);
-    for(int i=0; i<=4 ; ++i){
-        shapePoint.append( QPoint( axis*qCos(radian*(i%4)), axis*qSin(radian*(i%4)) ) );
+    double radian = qDegreesToRadians(360.0 / 4);
+    for (int i = 0; i <= 4; ++i) {
+        shapePoint.append(QPoint(axis * qCos(radian * (i % 4)),
+                                 axis * qSin(radian * (i % 4))));
     }
     this->polygonShape = QPolygon(shapePoint);
 
-    this->hpBar = new HpBar(1000, 2*axis, axis + 5);
+    this->hpBar = new HpBar(1000, 2 * axis, axis + 5);
 }
 
 QRectF Rectangle::boundingRect() const {
     qreal halfPenWidth = 1;
-    return QRectF( -axis - halfPenWidth, -axis - halfPenWidth,
-                  axis*2 + halfPenWidth, axis*2 + halfPenWidth);
+    return QRectF(-axis - halfPenWidth, -axis - halfPenWidth,
+                  axis * 2 + halfPenWidth, axis * 2 + halfPenWidth);
 }
 
 void Rectangle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
