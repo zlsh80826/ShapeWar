@@ -40,7 +40,7 @@ protected:
 private:
     int viewWidth, viewHeight;
     qreal calcRargetAngle(QPointF &mouseP);
-    Hero *self;
+    Self *self;
 
     bool key_w_pressed;
     bool key_a_pressed;

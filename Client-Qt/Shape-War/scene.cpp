@@ -67,7 +67,6 @@ void Scene::initGame() {
     // test name
     this->self->info->setName("test");
     this->addItem(this->self->info);
-
     // test monster
     triangles = new PolygonGroup<Triangle>;
     triangles->addToParent(this);
