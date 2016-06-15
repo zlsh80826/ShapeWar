@@ -47,4 +47,3 @@ void Rectangle::read(const QJsonObject &json) {
     this->hpBar->setHp(json["hp"].toInt(), json["maxHp"].toInt());
     this->hpBar->setPos(this->x(), this->y());
 }
-

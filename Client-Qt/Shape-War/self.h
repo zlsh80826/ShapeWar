@@ -7,7 +7,7 @@ class Self : public Hero {
 public:
     Self();
     void read(const QJsonObject &json);
-    SelfInfo* info;
+    SelfInfo *info;
 
 private:
     int experience;

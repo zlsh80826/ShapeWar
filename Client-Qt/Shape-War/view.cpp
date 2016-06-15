@@ -22,8 +22,10 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     this->self = scene->self;
     this->centerOn(this->self->pos());
 
-    connect(self, SIGNAL(xChanged()), this, SLOT(settingCenter_updateTargetAngle()));
-    connect(self, SIGNAL(yChanged()), this, SLOT(settingCenter_updateTargetAngle()));
+    connect(self, SIGNAL(xChanged()), this,
+            SLOT(settingCenter_updateTargetAngle()));
+    connect(self, SIGNAL(yChanged()), this,
+            SLOT(settingCenter_updateTargetAngle()));
 
     sendDelayTimer = new QTimer(this);
     connect(sendDelayTimer, SIGNAL(timeout()), this,
@@ -111,8 +113,8 @@ void View::keyReleaseEvent(QKeyEvent *event) {
 
 void View::settingCenter_updateTargetAngle() {
     this->centerOn(this->self->pos());
-    QPointF mouseP = this->mapToScene( this->mapFromGlobal(QCursor::pos()) );
-    self->setRotation( this->calcRargetAngle(mouseP));
+    QPointF mouseP = this->mapToScene(this->mapFromGlobal(QCursor::pos()));
+    self->setRotation(this->calcRargetAngle(mouseP));
 }
 
 void View::mousePressEvent(QMouseEvent *event) {
@@ -123,7 +125,7 @@ void View::mouseReleaseEvent(QMouseEvent *event) {
 }
 void View::mouseMoveEvent(QMouseEvent *event) {
     QPointF mouseP = this->mapToScene(event->pos());
-    self->setRotation( this->calcRargetAngle(mouseP) );
+    self->setRotation(this->calcRargetAngle(mouseP));
     // printf("self (%f, %f), mouse (%f,%f). degree of mouse relative to self
     // is: %f",selfP.x(), selfP.y(), mouseP.x(), mouseP.y(),
     //                  targetAngle * 180.0 / 3.14 );

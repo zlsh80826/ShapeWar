@@ -1,6 +1,9 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include "polygongroup.h"
+#include "rectangle.h"
+#include "triangle.h"
 #include <QColor>
 #include <QGraphicsView>
 #include <QKeyEvent>
@@ -11,9 +14,6 @@
 #include <math.h>
 #include <pentagon.h>
 #include <self.h>
-#include "rectangle.h"
-#include "triangle.h"
-#include "polygongroup.h"
 
 class Scene : public QGraphicsScene {
     Q_OBJECT
@@ -54,7 +54,6 @@ private:
     QColor backgroundColor;
     QVector<Hero *> heroes;
     void fillServerInfo(QString &serverUrl, QString &port);
-
 
     QTimer *sec;
     int recvs;
