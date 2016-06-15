@@ -13,11 +13,36 @@ logger = logging.getLogger(__name__)
 dummy_triangles = [
     {
         "id": i,
-        "x": random.randrange(1000),
-        "y": random.randrange(1000),
+        "x": random.randrange(2000),
+        "y": random.randrange(1500),
         "angle": random.randrange(360),
+        "radius": 20,
         "hp": 343,
         "maxHp": 1000
+    }
+    for i in range(300)
+]
+dummy_squares = [
+    {
+        "id": i,
+        "x": random.randrange(2000),
+        "y": random.randrange(1500),
+        "angle": random.randrange(360),
+        "radius": 18,
+        "hp": 903,
+        "maxHp": 2000
+    }
+    for i in range(300)
+]
+dummy_pentagons = [
+    {
+        "id": i,
+        "x": random.randrange(2000),
+        "y": random.randrange(1500),
+        "angle": random.randrange(360),
+        "radius": 30,
+        "hp": 4902,
+        "maxHp": 5000
     }
     for i in range(300)
 ]
@@ -60,27 +85,9 @@ class Arena:
                     "y": 260 + (self.tick_id % 50)
                 },
             ],
-            "squares": [
-                {
-                    "id": 0,
-                    "x": 400,
-                    "y": 240,
-                    "angle": 12,
-                    "hp": 43,
-                    "maxHp": 100
-                }
-            ],
+            "squares": dummy_squares,
             "triangles": dummy_triangles,
-            "pentagons": [
-                {
-                    "id": 0,
-                    "x": random.randrange(500),
-                    "y": random.randrange(500),
-                    "angle": 34,
-                    "hp": 4300,
-                    "maxHp": 10000
-                }
-            ]
+            "pentagons": dummy_pentagons
         })
 
     def broadcast_updates(self, updates):
