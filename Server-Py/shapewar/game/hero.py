@@ -30,7 +30,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
         if W or A or S or D:
             self.accelerate(cmath.rect(self.acc, math.atan2(S - W, D - A)))
         self.pos += self.velocity
-        logger.info('v = %r', self.velocity)
+        self.limit_pos()
 
     def to_self_dict(self):
         return {

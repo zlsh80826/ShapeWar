@@ -46,3 +46,9 @@ class MovableObject:
         r, phi = cmath.polar(self.velocity)
         r = min(r, self.max_speed)
         self.velocity = cmath.rect(r, phi)
+
+    def limit_pos(self):
+        self.pos = complex(
+            value_limit(self.pos.real, 0, self.x_bound),
+            value_limit(self.pos.imag, 0, self.y_bound)
+        )
