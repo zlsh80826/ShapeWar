@@ -1,4 +1,5 @@
 #include "hpbar.h"
+#include <QDebug>
 #include <QPainter>
 
 HpBar::HpBar() {
@@ -8,8 +9,8 @@ HpBar::HpBar() {
     this->offsetY = 60;
     this->curHpWidth = width * (curHp / maxHp);
     this->revealTimer = new QTimer(this);
-    connect(this->revealTimer, SIGNAL(timeout()), this,
-            SLOT(decreaseOpacity()));
+    QObject::connect(this->revealTimer, SIGNAL(timeout()), this,
+                     SLOT(decreaseOpacity()));
 }
 
 HpBar::HpBar(qreal initHp, qreal width, qreal offsetY) {
@@ -25,10 +26,12 @@ HpBar::HpBar(qreal initHp, qreal width, qreal offsetY) {
 
 void HpBar::setHp(int curHp, int maxHp) {
     if (curHp == maxHp) {
-        this->revealTimer->start(100);
+        if (!this->revealTimer->isActive())
+            this->revealTimer->start(20);
+    } else {
+        this->revealTimer->stop();
+        this->setOpacity(255);
     }
-    this->revealTimer->stop();
-    this->setOpacity(255);
     this->curHp = curHp;
     this->maxHp = maxHp;
     this->curHpWidth = width * (this->curHp / this->maxHp);
@@ -36,7 +39,8 @@ void HpBar::setHp(int curHp, int maxHp) {
 
 QRectF HpBar::boundingRect() const {
     qreal penWidth = 3;
-    return QRectF(-width / 2 - penWidth, offsetY, width, 5 + penWidth);
+    return QRectF(-width / 2 - penWidth, offsetY, width + penWidth,
+                  5 + penWidth);
 }
 
 void HpBar::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
@@ -50,8 +54,6 @@ void HpBar::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->drawRect(-width / 2, offsetY, width, 6);
     painter->setBrush(QBrush(QColor(134, 198, 128, 255), Qt::SolidPattern));
     painter->drawRect(-width / 2, offsetY, curHpWidth, 6);
-    // painter -> drawEllipse(-width/2, offsetY, curHpWidth, 6);
-    // painter -> drawEllipse(-width/2, offsetY, width, 6);
 }
 
 QPainterPath HpBar::shape() const {
@@ -62,5 +64,5 @@ QPainterPath HpBar::shape() const {
 }
 
 void HpBar::decreaseOpacity() {
-    this->setOpacity(this->opacity() - 1);
+    this->setOpacity(this->opacity() - 0.01);
 }
