@@ -2,6 +2,7 @@
 #include "hero.h"
 #include "logindialog.h"
 #include "self.h"
+#include "selfinfo.h"
 #include "polygongroup.h"
 #include <QJsonDocument>
 #include <QPainter>
@@ -61,6 +62,9 @@ void Scene::initGame() {
     this->addItem(self);
     this->addItem(self->hpBar);
     this->self->setZValue(1);
+    // test name
+    this->self->info->setName("test");
+    this->addItem(this->self->info);
 
     // test monster
     triangles = new PolygonGroup<Triangle>;

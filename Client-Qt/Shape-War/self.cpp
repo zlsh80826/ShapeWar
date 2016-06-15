@@ -13,8 +13,8 @@ void Self::read(const QJsonObject &json) {
     this->hpBar->setPos(this->x(), this->y());
     this->hpBar->setHp(instance["maxHp"].toInt(), instance["currentHp"].toInt());
 
-    this->info->lv = this->level;
-    this->info->exp =this->experience;
+    this->info->setLv(this->level);
+    this->info->setExp(this->experience);
 
     QJsonArray passivesArray = instance["passives"].toArray();
     for (int i = 0; i < passivesArray.size(); ++i) {

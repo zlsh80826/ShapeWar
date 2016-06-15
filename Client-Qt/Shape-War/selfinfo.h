@@ -2,14 +2,17 @@
 #define SELFINFO_H
 #include <QGraphicsObject>
 
-class SelfInfo : QGraphicsObject{
-
+class SelfInfo : public QGraphicsObject {
+    Q_OBJECT
 public:
     SelfInfo();
-    SelfInfo(QString);
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget);
+    void setName(QString);
+    void setLv(int);
+    void setScore(int);
+    void setExp(int);
 
 private:
     QString name;
@@ -20,3 +23,5 @@ private:
 };
 
 #endif // SELFINFO_H
+
+
