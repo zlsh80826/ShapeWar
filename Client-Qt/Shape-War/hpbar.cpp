@@ -1,6 +1,6 @@
 #include "hpbar.h"
-#include <QPainter>
 #include <QDebug>
+#include <QPainter>
 
 HpBar::HpBar() {
     this->curHp = 1;
@@ -10,7 +10,7 @@ HpBar::HpBar() {
     this->curHpWidth = width * (curHp / maxHp);
     this->revealTimer = new QTimer(this);
     QObject::connect(this->revealTimer, SIGNAL(timeout()), this,
-            SLOT(decreaseOpacity()));
+                     SLOT(decreaseOpacity()));
 }
 
 HpBar::HpBar(qreal initHp, qreal width, qreal offsetY) {
@@ -26,9 +26,9 @@ HpBar::HpBar(qreal initHp, qreal width, qreal offsetY) {
 
 void HpBar::setHp(int curHp, int maxHp) {
     if (curHp == maxHp) {
-        if(!this->revealTimer->isActive())
+        if (!this->revealTimer->isActive())
             this->revealTimer->start(20);
-    }else{
+    } else {
         this->revealTimer->stop();
         this->setOpacity(255);
     }
@@ -39,7 +39,8 @@ void HpBar::setHp(int curHp, int maxHp) {
 
 QRectF HpBar::boundingRect() const {
     qreal penWidth = 3;
-    return QRectF(-width / 2 - penWidth, offsetY, width+penWidth, 5 + penWidth);
+    return QRectF(-width / 2 - penWidth, offsetY, width + penWidth,
+                  5 + penWidth);
 }
 
 void HpBar::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
