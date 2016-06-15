@@ -1,7 +1,6 @@
 #include "triangle.h"
 #include <QPainter>
 
-
 Triangle::Triangle() {
     this->edge = 20;
     this->setPos(-50, -50);
