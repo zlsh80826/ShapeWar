@@ -3,6 +3,7 @@
 
 Rectangle::Rectangle() {
     this->edge = 20;
+    this->setPos(-50, -50);
     QVector<QPoint> shapePoint;
     shapePoint.append(QPoint(-edge / 2, -edge / 2));
     shapePoint.append(QPoint(-edge / 2, edge / 2));
@@ -10,6 +11,8 @@ Rectangle::Rectangle() {
     shapePoint.append(QPoint(edge / 2, -edge / 2));
     shapePoint.append(QPoint(-edge / 2, -edge / 2));
     this->polygonShape = QPolygon(shapePoint);
+
+    this -> hpBar = new HpBar(1000, edge, edge);
 }
 
 QRectF Rectangle::boundingRect() const {
@@ -41,4 +44,11 @@ void Rectangle::read(const QJsonObject &json) {
     this->angle = json["angle"].toDouble();
     this->hp = json["hp"].toInt();
     this->maxHp = json["maxHp"].toInt();
+    update();
+}
+
+void Rectangle::update(){
+    this->hpBar->setHp(this->hp, this->maxHp);
+    this->hpBar->setPos(this->x(), this->y());
+    this->setRotation(this->angle);
 }
