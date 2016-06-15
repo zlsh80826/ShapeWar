@@ -17,7 +17,7 @@ dummy_triangles = [
         "y": random.randrange(1500),
         "angle": random.randrange(360),
         "radius": 20,
-        "hp": 343,
+        "hp": 1000,
         "maxHp": 1000
     }
     for i in range(300)
