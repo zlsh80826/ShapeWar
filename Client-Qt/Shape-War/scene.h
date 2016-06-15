@@ -12,7 +12,7 @@
 #include <pentagon.h>
 #include <rectangle.h>
 #include <self.h>
-#include <triangle.h>
+#include <trianglegroup.h>
 
 class Scene : public QGraphicsScene {
     Q_OBJECT
@@ -21,7 +21,7 @@ public:
     Self *self;
 
     // test object
-    Triangle *testTriangle;
+    TriangleGroup* triangles;
     Rectangle *testRectangle;
     Pentagon *testPentagon;
     Bullet *testBullet;
