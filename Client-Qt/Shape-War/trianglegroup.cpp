@@ -10,6 +10,7 @@ TriangleGroup::TriangleGroup() {
 void TriangleGroup::addToParent(QGraphicsScene *parent) {
     for (int i = 0; i < count; ++i) {
         parent->addItem(triangles[i]);
+        parent->addItem(triangles[i]->hpBar);
     }
 }
 

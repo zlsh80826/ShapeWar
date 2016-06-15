@@ -54,13 +54,11 @@ void Scene::initGame() {
     this->self->setZValue(1);
 
     // test monster
-    testTriangle = new Triangle();
-    testTriangle->setPos(100, 300);
-    this->addItem(testTriangle);
+    triangles = new TriangleGroup();
+    triangles->addToParent(this);
 
-    testRectangle = new Rectangle();
-    testRectangle->setPos(200, 200);
-    this->addItem(testRectangle);
+    rectangles = new RectangleGroup();
+    rectangles->addToParent(this);
 
     testPentagon = new Pentagon();
     testPentagon->setPos(200, 300);
@@ -86,6 +84,7 @@ void Scene::onTextMessageReceived(QString message) {
     QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
     const auto &object = doc.object();
     this->self->read(object);
+    this->triangles->read(object);
     this->testPentagon->read(object["pentagons"].toArray()[0].toObject());
 
     auto self_id = object["self"].toObject()["id"];
