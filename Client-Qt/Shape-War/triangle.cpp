@@ -42,13 +42,7 @@ void Triangle::read(const QJsonObject &json) {
     this->setX(json["x"].toDouble());
     this->setY(json["y"].toDouble());
     this->angle = json["angle"].toDouble();
-    this->hp = json["hp"].toInt();
-    this->maxHp = json["maxHp"].toInt();
-    this->update();
-}
-
-void Triangle::update() {
     this->setRotation(angle);
     this->hpBar->setPos(this->x(), this->y());
-    this->hpBar->setHp(this->hp, this->maxHp);
+    this->hpBar->setHp(json["hp"].toInt(), json["maxHp"].toInt());
 }

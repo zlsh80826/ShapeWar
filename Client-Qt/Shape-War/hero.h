@@ -20,8 +20,6 @@ public:
 
 protected:
     qreal width;
-    int maxHp;
-    int currentHp;
     QPolygon barrel;
 
 public:

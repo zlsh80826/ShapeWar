@@ -43,13 +43,8 @@ void Rectangle::read(const QJsonObject &json) {
     this->setX(json["x"].toDouble());
     this->setY(json["y"].toDouble());
     this->angle = json["angle"].toDouble();
-    this->hp = json["hp"].toInt();
-    this->maxHp = json["maxHp"].toInt();
-    update();
+    this->setRotation(this->angle);
+    this->hpBar->setHp(json["hp"].toInt(), json["maxHp"].toInt());
+    this->hpBar->setPos(this->x(), this->y());
 }
 
-void Rectangle::update() {
-    this->hpBar->setHp(this->hp, this->maxHp);
-    this->hpBar->setPos(this->x(), this->y());
-    this->setRotation(this->angle);
-}
