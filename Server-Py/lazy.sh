@@ -2,6 +2,8 @@
 
 set -e
 
+cd "$(dirname ${BASH_SOURCE[0]})"
+
 exists () {
     type "$1" &> /dev/null;
 }
