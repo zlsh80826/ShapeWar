@@ -1,6 +1,9 @@
 #ifndef POLYGONGROUP_H
 #define POLYGONGROUP_H
 
+#include <QGraphicsScene>
+#include <QJsonArray>
+#include <QVector>
 
 template <class Polygon> class PolygonGroup {
 private:
