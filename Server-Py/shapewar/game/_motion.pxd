@@ -5,6 +5,7 @@ cdef class MovableObject:
     cdef public int y_bound
     cdef public complex velocity
     cdef public complex pos
+    cdef public double radius
 
     cpdef void spawn(self)
 

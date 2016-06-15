@@ -6,6 +6,7 @@ from tornado.ioloop import PeriodicCallback
 
 from .hero import Hero
 from . import garbage
+from .collision import bounding_box_collision_pairs, collide
 
 
 logger = logging.getLogger(__name__)
@@ -53,6 +54,13 @@ class Arena:
             self.pentagons
         ):
             polygon.tick_angle()
+
+        for obj, obk in bounding_box_collision_pairs(
+            self.triangles + self.squares + self.pentagons +
+            [client.hero for client in self.clients]
+        ):
+            collide(obj, obk)
+
         self.send_updates()
 
     def send_updates(self):

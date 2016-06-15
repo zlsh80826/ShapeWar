@@ -1,4 +1,5 @@
 import collections
+import cmath
 
 
 RangeKey = collections.namedtuple('RangeKey', 'left right')
@@ -17,7 +18,6 @@ def range_overlaps(objects, key):
     while targets:
         right = targets.pop()
         for left in reversed(targets):
-            print(key(left), key(right))
             if key(left).right > key(right).left:
                 # ensure object order so doing set intersection will work
                 # consider also: using a forzenset
@@ -37,3 +37,14 @@ def bounding_box_collision_pairs(objects):
 def check_circle_collision(obj, obk):
     return \
         (obj.x - obk.x) ** 2 + (obj.y - obk.y) ** 2 < obj.radius + obk.radius
+
+
+def collide(obj, obk):
+    dist, phi = cmath.polar(obj.pos - obk.pos)
+    rsum = obj.radius + obk.radius
+    if dist > rsum:
+        return
+    obj.accelerate(cmath.rect((rsum - dist) / rsum, phi))
+    obk.accelerate(cmath.rect((dist - rsum) / rsum, phi))
+    obk.pos += obk.velocity
+    obj.pos += obj.velocity
