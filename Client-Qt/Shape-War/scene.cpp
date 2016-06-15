@@ -72,9 +72,8 @@ void Scene::initGame() {
     pentagons = new PolygonGroup<Pentagon>;
     pentagons->addToParent(this);
 
-    testBullet = new Bullet();
-    testBullet->setPos(300, 250);
-    this->addItem(testBullet);
+    bullets = new PolygonGroup<Bullet>;
+    bullets->addToParentNoHPBar(this);
 }
 
 void Scene::gameOver() {
@@ -96,6 +95,7 @@ void Scene::onTextMessageReceived(QString message) {
     this->triangles->read(object["triangles"].toArray());
     this->rectangles->read(object["squares"].toArray());
     this->pentagons->read(object["pentagons"].toArray());
+    this->bullets->read(object["bullets"].toArray());
 
     auto self_id = object["self"].toObject()["id"];
 

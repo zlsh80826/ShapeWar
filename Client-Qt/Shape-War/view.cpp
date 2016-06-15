@@ -148,13 +148,12 @@ void View::wheelEvent(QWheelEvent *event) {
 
 void View::sendControlToServer() {
     this->sends++;
-    // TODO: send all control messages of keyboard/mouse to server
-    // debug print
     QJsonObject data;
     data["keys"] = QJsonObject({{"W", key_w_pressed},
                                 {"A", key_a_pressed},
                                 {"S", key_s_pressed},
                                 {"D", key_d_pressed}});
+    data["mouse"] = mouseClicked;
     data["angle"] = self->rotation();
     ws.sendTextMessage(QJsonDocument(data).toJson(QJsonDocument::Compact));
 }

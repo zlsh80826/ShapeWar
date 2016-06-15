@@ -1,10 +1,11 @@
 import json
 import logging
 import itertools
+import collections
 from tornado.websocket import WebSocketHandler, WebSocketClosedError
 from tornado.ioloop import PeriodicCallback
 
-from .hero import Hero
+from .hero import Hero, Bullet
 from . import garbage
 from .collision import bounding_box_collision_pairs, collide
 
@@ -22,6 +23,9 @@ class Arena:
         self.squares = [garbage.Square(i) for i in range(300)]
         self.triangles = [garbage.Triangle(i) for i in range(300)]
         self.pentagons = [garbage.Pentagon(i) for i in range(300)]
+        self.bullet_queue = collections.deque()
+        self.bullets = [Bullet(i, self.bullet_queue) for i in range(300)]
+        self.bullet_queue.extend(self.bullets)
 
         self.tick_id = 0
         self.tick_timer = PeriodicCallback(self.tick, self.tick_time)
@@ -55,10 +59,21 @@ class Arena:
         ):
             polygon.tick_angle()
 
-        for obj, obk in bounding_box_collision_pairs(
-            self.triangles + self.squares + self.pentagons +
-            [client.hero for client in self.clients]
-        ):
+        for bullet in self.bullets:
+            if bullet.visible:
+                bullet.tick()
+
+        for obj, obk in bounding_box_collision_pairs([
+            obj for obj in
+            itertools.chain(
+                self.triangles,
+                self.squares,
+                self.pentagons,
+                self.bullets,
+                [client.hero for client in self.clients]
+            )
+            if obj.visible
+        ]):
             collide(obj, obk)
 
         self.send_updates()
@@ -70,13 +85,7 @@ class Arena:
             "players": [
                 client.hero.to_player_dict() for client in self.clients
             ],
-            "bullets": [
-                {
-                    "id": 0,
-                    "x": 250,
-                    "y": 260 + (self.tick_id % 50)
-                },
-            ],
+            "bullets": [bullet.to_dict() for bullet in self.bullets],
             "squares": [square.to_dict() for square in self.squares],
             "triangles": [triangle.to_dict() for triangle in self.triangles],
             "pentagons": [pentagon.to_dict() for pentagon in self.pentagons]
@@ -116,6 +125,8 @@ class ArenaHandler(WebSocketHandler):
         logger.debug('%s %r', self.request.remote_ip, data)
         self.hero.accept_keys(**data['keys'])
         self.hero.angle = data['angle']
+        if data['mouse']:
+            self.hero.shoot(arena.bullet_queue.pop())
 
     def send_updates(self, data):
         message = dict(data)

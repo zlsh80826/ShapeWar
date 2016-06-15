@@ -6,7 +6,7 @@ cdef class Garbage(MovableObject):
 
     cdef public:
         int id
-        bint visable
+        bint visible
         double angle
         int hp
         int maxHp
@@ -17,7 +17,7 @@ cdef class Garbage(MovableObject):
         super().__init__()
         self.spawn()
         self.id = id
-        self.visable = False
+        self.visible = True
 
     cpdef void tick_angle(self):
         self.angle += self.angular_velocity
@@ -25,7 +25,7 @@ cdef class Garbage(MovableObject):
 
     cpdef void spawn(self):
         super(Garbage, self).spawn()
-        self.visable = True
+        self.visible = True
         self.angle = random.randrange(360)
         self.hp = self.maxHp
         self.angular_velocity = random.random() - 0.5
@@ -38,7 +38,8 @@ cdef class Garbage(MovableObject):
             'angle': self.angle,
             'hp': self.hp,
             'maxHp': self.maxHp,
-            'radius': self.radius
+            'radius': self.radius,
+            'visible': self.visible
         }
 
 
