@@ -1,6 +1,7 @@
 #ifndef LOGINDIALOG_H
 #define LOGINDIALOG_H
 
+#include <QCheckBox>
 #include <QComboBox>
 #include <QDebug>
 #include <QDialog>
@@ -9,9 +10,8 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
-#include <QStringList>
-#include <QCheckBox>
 #include <QSpacerItem>
+#include <QStringList>
 
 /*!
  '''Makes class LoginDialog a child to its parent, QDialog
@@ -73,7 +73,8 @@ signals:
      * password the password entered in the dialog
      * index the number of the username selected in the combobox
      */
-    void acceptLogin(QString &ServerIP, QString & port, QString &username, QString &password, bool isAnonymous);
+    void acceptLogin(QString &ServerIP, QString &port, QString &username,
+                     QString &password, bool isAnonymous);
 public slots:
     void slotAcceptLogin();
     void anonymousCheckOnclicked();

@@ -1,18 +1,21 @@
 #include "scene.h"
 #include "hero.h"
 #include "logindialog.h"
-#include "self.h"
 #include "polygongroup.h"
+#include "self.h"
+#include "selfinfo.h"
 #include <QJsonDocument>
 #include <QPainter>
 #include <QtWebSockets/QWebSocket>
 
-Scene::Scene(QWidget *parent)
-    : QGraphicsScene(parent) {
+Scene::Scene(QWidget *parent) : QGraphicsScene(parent) {
     LoginDialog *loginDialog = new LoginDialog();
 
-    QObject::connect(loginDialog, SIGNAL(acceptLogin(QString &, QString &, QString &, QString &, bool)),
-                     this, SLOT(slotAcceptUserLogin(QString &, QString &, QString &, QString &, bool)));
+    QObject::connect(
+        loginDialog,
+        SIGNAL(acceptLogin(QString &, QString &, QString &, QString &, bool)),
+        this, SLOT(slotAcceptUserLogin(QString &, QString &, QString &,
+                                       QString &, bool)));
     loginDialog->exec();
 
     this->width = 5000;
@@ -31,7 +34,7 @@ Scene::Scene(QWidget *parent)
     sec->start(1000);
 }
 void Scene::print_freq() {
-    qDebug() << "recv per sec: "<< this->recvs;
+    qDebug() << "recv per sec: " << this->recvs;
     this->recvs = 0;
 }
 void Scene::drawBackground(QPainter *painter, const QRectF &rect) {
@@ -61,6 +64,9 @@ void Scene::initGame() {
     this->addItem(self);
     this->addItem(self->hpBar);
     this->self->setZValue(1);
+    // test name
+    this->self->info->setName("test");
+    this->addItem(this->self->info);
 
     // test monster
     triangles = new PolygonGroup<Triangle>;
@@ -116,19 +122,19 @@ void Scene::onTextMessageReceived(QString message) {
     }
 }
 
-void Scene::slotAcceptUserLogin(QString & serverIP , QString & port, QString &username, QString &password, bool isAnonymous) {
+void Scene::slotAcceptUserLogin(QString &serverIP, QString &port,
+                                QString &username, QString &password,
+                                bool isAnonymous) {
     // test
     fillServerInfo(serverIP, port);
-    qDebug() << "Get serverIP: " << serverIP
-                    << ", port: " << port
-                    << ", username: " << username
-                    << ", password: " << password
-                    << ", anonymous: " << isAnonymous;
+    qDebug() << "Get serverIP: " << serverIP << ", port: " << port
+             << ", username: " << username << ", password: " << password
+             << ", anonymous: " << isAnonymous;
 
     // TODO: send the username and password to server
 }
 
-void Scene::fillServerInfo(QString &serverIP, QString &port)  {
+void Scene::fillServerInfo(QString &serverIP, QString &port) {
     QString partUrl = "ws://";
     partUrl += serverIP;
     partUrl += ":";

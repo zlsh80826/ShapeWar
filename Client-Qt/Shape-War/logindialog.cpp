@@ -36,7 +36,6 @@ void LoginDialog::setUpGUI() {
     labelPassword->setText(tr("Password"));
     labelPassword->setBuddy(editPassword);
 
-
     labelRegister = new QLabel(this);
     labelRegister->setOpenExternalLinks(true);
     labelRegister->setText("<a href=https://www.google.com.tw>Register</a>");
@@ -91,18 +90,16 @@ void LoginDialog::slotAcceptLogin() {
     QString username = editUsername->text();
     QString password = editPassword->text();
     bool isAnonymous = anonymousCheck->isChecked();
-    emit acceptLogin(serverIP,
-                     port,
+    emit acceptLogin(serverIP, port,
                      username, // current username
-                     password,  // current password
-                     isAnonymous
-                     );
+                     password, // current password
+                     isAnonymous);
 
     // close this dialog
     close();
 }
 void LoginDialog::anonymousCheckOnclicked() {
-    if( anonymousCheck->isChecked() ) {
+    if (anonymousCheck->isChecked()) {
         editPassword->setEnabled(false);
     } else {
         editPassword->setEnabled(true);

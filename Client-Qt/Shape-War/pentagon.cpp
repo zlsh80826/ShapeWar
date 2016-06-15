@@ -46,4 +46,3 @@ void Pentagon::read(const QJsonObject &json) {
     this->angle = json["angle"].toDouble();
     this->setRotation(this->angle);
 }
-
