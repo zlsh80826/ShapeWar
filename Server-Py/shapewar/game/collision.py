@@ -14,10 +14,10 @@ def y_key(obj):
 
 
 def range_overlaps(objects, key):
-    targets = sorted(objects, key=key)
+    targets = sorted(objects, key=key, reverse=True)
     while targets:
-        right = targets.pop()
-        for left in reversed(targets):
+        left = targets.pop()
+        for right in reversed(targets):
             if key(left).right > key(right).left:
                 # ensure object order so doing set intersection will work
                 # consider also: using a forzenset
