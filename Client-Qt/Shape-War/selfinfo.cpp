@@ -1,7 +1,7 @@
 #include "selfinfo.h"
-#include <QPainter>
 #include <QDebug>
 #include <QFont>
+#include <QPainter>
 
 SelfInfo::SelfInfo() {
     this->score = 0;
@@ -37,24 +37,23 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     pen.setColor(QColor(61, 61, 61, 255));
     painter->setPen(pen);
     painter->setBrush(QBrush(QColor(61, 61, 61, 255), Qt::SolidPattern));
-    painter->drawRect(QRect(-maxScoreWidth/2, 50, maxScoreWidth, 20));
+    painter->drawRect(QRect(-maxScoreWidth / 2, 50, maxScoreWidth, 20));
     painter->setBrush(QBrush(QColor(108, 240, 162, 255), Qt::SolidPattern));
-    painter->drawRect(QRect(-maxScoreWidth/2, 50, scoreWidth, 20));
+    painter->drawRect(QRect(-maxScoreWidth / 2, 50, scoreWidth, 20));
     painter->setBrush(QBrush(QColor(61, 61, 61, 255), Qt::SolidPattern));
-    painter->drawRect(QRect(-maxExpWidth/2, 80, maxExpWidth, 20));
+    painter->drawRect(QRect(-maxExpWidth / 2, 80, maxExpWidth, 20));
     painter->setBrush(QBrush(QColor(240, 217, 108, 255), Qt::SolidPattern));
-    painter->drawRect(QRect(-maxExpWidth/2, 80, this->expWidth, 20));
-
+    painter->drawRect(QRect(-maxExpWidth / 2, 80, this->expWidth, 20));
 }
 
 void SelfInfo::setExp(int new_exp) {
     this->exp = new_exp;
-    this->expWidth = this->maxExpWidth*(this->exp/(this->lv*1000));
+    this->expWidth = this->maxExpWidth * (this->exp / (this->lv * 1000));
 }
 
 void SelfInfo::setScore(int new_score) {
     this->score = new_score;
-    this->scoreWidth = this->maxScoreWidth*(this->score/this->maxScore);
+    this->scoreWidth = this->maxScoreWidth * (this->score / this->maxScore);
 }
 
 void SelfInfo::setLv(int new_lv) {

@@ -36,11 +36,9 @@ void LoginDialog::setUpGUI() {
     labelPassword->setText(tr("Password"));
     labelPassword->setBuddy(editPassword);
 
-
     labelRegister = new QLabel(this);
     labelRegister->setOpenExternalLinks(true);
     labelRegister->setText("<a href=https://www.google.com.tw>Register</a>");
-
 
     // initialize buttons
     buttons = new QDialogButtonBox(this);

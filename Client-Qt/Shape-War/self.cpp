@@ -15,7 +15,7 @@ void Self::read(const QJsonObject &json) {
                        instance["currentHp"].toInt());
 
     this->info->setLv(this->level);
-    //this->info->setExp(this->experience);
+    // this->info->setExp(this->experience);
 
     QJsonArray passivesArray = instance["passives"].toArray();
     for (int i = 0; i < passivesArray.size(); ++i) {
