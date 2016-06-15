@@ -50,9 +50,9 @@ QPainterPath Hero::shape() const {
 }
 
 void Hero::read_player(const QJsonObject &data) {
-    this->maxHp = data["maxHp"].toInt();
-    this->currentHp = data["currentHp"].toInt();
     this->setRotation(data["angle"].toDouble());
     this->setX(data["x"].toDouble());
     this->setY(data["y"].toDouble());
+    this->hpBar->setHp( data["currentHp"].toInt(), data["maxHp"].toInt());
+    this->hpBar->setPos(this->x(), this->y());
 }

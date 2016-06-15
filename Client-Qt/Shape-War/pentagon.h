@@ -21,8 +21,5 @@ private:
     int axis;
     qreal angle;
     QPolygonF polygonShape;
-    int hp;
-    int maxHp;
-    void update();
 };
 #endif // PENTAGON_H
