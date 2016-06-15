@@ -10,9 +10,9 @@
 #include <hero.h>
 #include <math.h>
 #include <pentagon.h>
+#include <rectanglegroup.h>
 #include <self.h>
 #include <trianglegroup.h>
-#include <rectanglegroup.h>
 
 class Scene : public QGraphicsScene {
     Q_OBJECT

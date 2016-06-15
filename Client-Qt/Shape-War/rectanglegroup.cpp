@@ -1,5 +1,5 @@
-#include <QJsonArray>
 #include "rectanglegroup.h"
+#include <QJsonArray>
 
 RectangleGroup::RectangleGroup() {
     this->count = 300;
