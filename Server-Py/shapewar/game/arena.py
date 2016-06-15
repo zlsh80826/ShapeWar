@@ -11,7 +11,6 @@ from . import garbage
 logger = logging.getLogger(__name__)
 
 
-
 class Arena:
 
     tick_time = 20  # tick time in milliseconds
@@ -25,6 +24,15 @@ class Arena:
 
         self.tick_id = 0
         self.tick_timer = PeriodicCallback(self.tick, self.tick_time)
+        self.pptid = 0
+        self.perf_timer = PeriodicCallback(self.perf_callback, 1000)
+
+    def perf_callback(self):
+        self.pptid, diff = self.tick_id, self.tick_id - self.pptid
+        logger.log(
+            logging.INFO if diff > 48 else logging.WARNING,
+            'ticks per second = %d', diff
+        )
 
     def bind_application(self, application):
         if hasattr(self, 'application'):
@@ -32,6 +40,7 @@ class Arena:
                 'This arena is bounded to %r already' % self.application)
         self.application = application
         self.tick_timer.start()
+        self.perf_timer.start()
         logger.info('started arena')
 
     def tick(self):
