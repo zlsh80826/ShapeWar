@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     bullet.cpp \
     hpbar.cpp \
     logindialog.cpp \
-    self.cpp
+    self.cpp \
+    trianglegroup.cpp
 
 HEADERS  += \
     scene.h \
@@ -34,7 +35,8 @@ HEADERS  += \
     bullet.h \
     hpbar.h \
     logindialog.h \
-    self.h
+    self.h \
+    trianglegroup.h
 
 CONFIG += qt
 
