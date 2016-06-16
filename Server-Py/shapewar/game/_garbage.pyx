@@ -61,7 +61,7 @@ cdef class Triangle(Garbage):
         super(Triangle, self).__init__(id)
         self.radius = 20
         self.max_speed = 5
-        self.body_damage = 30
+        self.body_damage = 15
 
 
 cdef class Pentagon(Garbage):
@@ -71,4 +71,4 @@ cdef class Pentagon(Garbage):
         super(Pentagon, self).__init__(id)
         self.radius = 25
         self.max_speed = 5
-        self.body_damage = 70
+        self.body_damage = 25
