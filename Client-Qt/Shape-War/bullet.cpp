@@ -29,6 +29,7 @@ QPainterPath Bullet::shape() const {
 }
 
 void Bullet::read(const QJsonObject &json) {
+    this->setVisible(json["visible"].toBool());
     this->setX(json["x"].toDouble());
     this->setY(json["y"].toDouble());
 }

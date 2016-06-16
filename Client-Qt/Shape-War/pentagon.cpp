@@ -39,6 +39,8 @@ QPainterPath Pentagon::shape() const {
 }
 
 void Pentagon::read(const QJsonObject &json) {
+    this->setVisible(json["visible"].toBool());
+    this->hpBar->setVisible(json["visible"].toBool());
     this->setX(json["x"].toDouble());
     this->setY(json["y"].toDouble());
     this->hpBar->setPos(this->x(), this->y());
