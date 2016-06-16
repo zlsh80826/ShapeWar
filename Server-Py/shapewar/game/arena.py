@@ -83,6 +83,9 @@ class Arena:
         for obj, obk in bounding_box_collision_pairs(target_objects):
             collide(obj, obk)
 
+        for client in self.clients:
+            client.hero.tick_keys(self)
+
         self.send_updates()
 
     def send_updates(self):
@@ -129,11 +132,8 @@ class ArenaHandler(WebSocketHandler):
 
     def on_message(self, message):
         data = json.loads(message)
+        self.hero.last_control = data
         logger.debug('%s %r', self.request.remote_ip, data)
-        self.hero.accept_keys(**data['keys'])
-        self.hero.angle = data['angle']
-        if data['mouse']:
-            self.hero.shoot(arena.bullet_queue.pop())
 
     def send_updates(self, data):
         message = dict(data)

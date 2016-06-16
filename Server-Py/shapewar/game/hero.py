@@ -22,11 +22,31 @@ class Hero(abilities.PropertyMixin, MovableObject):
         super().__init__()
 
         self.radius = 30
-        self.angle = 0
         self.acc = 0.6  # acceleration
         self.hp = self.max_hp
         self.experience = 0
         self.level = 1
+
+        self.last_control = {
+            'keys': {'W': False, 'A': False, 'S': False, 'D': False},
+            'angle': 0,
+            'mouse': False
+        }
+        self.cooldown = 0
+
+    @property
+    def angle(self):
+        return self.last_control['angle']
+
+    def tick_keys(self, arena):
+        if not self.visible:
+            return
+        if self.cooldown > 0:
+            self.cooldown -= 1
+        elif self.last_control['mouse']:
+            self.shoot(arena.bullet_queue.pop())
+            self.cooldown += self.reload
+        self.accept_keys(**self.last_control['keys'])
 
     def accept_keys(self, W, A, S, D):
         self.apply_friction()
@@ -59,7 +79,9 @@ class Hero(abilities.PropertyMixin, MovableObject):
         bullet.hp = self.bullet_hp
         bullet.body_damage = self.bullet_damage
         bullet.pos = self.pos + cmath.rect(
-            self.radius, math.radians(self.angle))
+            self.radius,
+            math.radians(self.angle)
+        )
         bullet.velocity = cmath.rect(
             self.bullet_speed, math.radians(self.angle)) + self.velocity
         bullet.visible = True
@@ -84,7 +106,6 @@ class Bullet(MovableObject):
         self.max_speed = 10000
 
     def tick(self):
-        self.pos += self.velocity
         self.timeout -= 1
         if self.timeout == 0 or self.hp < 0:
             self.visible = False

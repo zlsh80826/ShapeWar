@@ -63,15 +63,15 @@ class Abilities:
         ),
         UpgradableAbility(
             'body_damage', 'Body Damage',
-            [4, 5, 6, 7, 8, 9, 10, 11, 12]
+            [8, 10, 12, 14, 16, 18, 20, 22, 24]
         ),
         UpgradableAbility(
             'bullet_speed', 'Bullet Speed',
-            [4, 5, 6, 7, 8, 9, 10, 11, 12]
+            [8, 10, 12, 14, 16, 18, 20, 22, 24, 26]
         ),
         UpgradableAbility(
             'bullet_hp', 'Bullet Penetration',
-            [100, 110, 120, 130, 140, 150, 160, 170, 180]
+            [100, 150, 200, 250, 300, 350, 400, 450, 500]
         ),
         UpgradableAbility(
             'bullet_damage', 'Bullet Damage',
@@ -83,7 +83,7 @@ class Abilities:
         ),
         UpgradableAbility(
             'max_speed', 'Movement Speed',
-            [5, 6, 7, 8, 9, 10, 11, 12, 13]
+            [7, 8, 9, 10, 11, 12, 13, 14, 15]
         )
     )
 
