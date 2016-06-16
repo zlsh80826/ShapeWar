@@ -18,7 +18,7 @@ cdef class Garbage(MovableObject):
         super().__init__()
         self.spawn()
         self.id = id
-        self.visible = True
+        self.visible = False
 
     cpdef void tick_angle(self):
         self.angle += self.angular_velocity

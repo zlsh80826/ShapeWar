@@ -2,6 +2,7 @@ import json
 import logging
 import itertools
 import collections
+import random
 from tornado.websocket import WebSocketHandler, WebSocketClosedError
 from tornado.ioloop import PeriodicCallback
 
@@ -59,7 +60,11 @@ class Arena:
             self.triangles,
             self.pentagons
         ):
-            polygon.tick_angle()
+            if polygon.visible:
+                polygon.tick_angle()
+            else:
+                if random.random() < .01:
+                    polygon.spawn()
 
         for bullet in self.bullets:
             if bullet.visible:
