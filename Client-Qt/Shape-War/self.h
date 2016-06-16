@@ -4,6 +4,7 @@
 #include "hero.h"
 #include "selfinfo.h"
 class Self : public Hero {
+    Q_OBJECT
 public:
     Self();
     void read(const QJsonObject &json);

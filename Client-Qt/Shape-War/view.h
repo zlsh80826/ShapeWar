@@ -28,6 +28,7 @@ public slots:
     void settingCenter_updateTargetAngle();
     void sendControlToServer();
     void showUpgrateOptions();
+    void onUpgradePointChanged();
 
 protected:
     void mousePressEvent(QMouseEvent *event);

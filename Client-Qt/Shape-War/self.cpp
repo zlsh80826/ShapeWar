@@ -2,6 +2,7 @@
 
 Self::Self() : Hero() {
     this->info = new SelfInfo();
+    this->upgradePoints = 0;
 }
 
 void Self::read(const QJsonObject &json) {
@@ -27,11 +28,8 @@ int Self::getUpgradePoints() const {
     return upgradePoints;
 }
 void Self::setUpgradePoints(int value) {
-    static int lastValue;
-    upgradePoints = value;
-    if(value != lastValue) {
-        lastValue = value;
+    if(upgradePoints != value) {
+        upgradePoints = value;
         emit upgradePointsChanged();
     }
 }
-void Self::upgradePointsChanged() {}

@@ -55,6 +55,7 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
         property->first->setVisible(false);
         property->second->setVisible(false);
     }
+    connect( self, SIGNAL(upgradePointsChanged()), this, SLOT(onUpgradePointChanged()));
 
     sec = new QTimer(0);
     this->sends = 0;
@@ -144,6 +145,15 @@ qreal View::calcRargetAngle(QPointF &mouseP) {
 void View::wheelEvent(QWheelEvent *event) {
     // eat this event to prevent it is passed to parent widget
     // do nothing
+    printf("From %d to", self->getUpgradePoints());
+    if(event->orientation() == Qt::Vertical) {
+        if(event->delta() > 0) {
+            self->setUpgradePoints( self->getUpgradePoints() + 1 );
+        } else {
+            self->setUpgradePoints( self->getUpgradePoints() - 1 );
+        }
+    }
+    printf(" %d", self->getUpgradePoints());
 }
 
 void View::sendControlToServer() {
@@ -175,6 +185,16 @@ void View::showUpgrateOptions() {
         for (QPair<QLabel *, QPushButton *> *property : properties) {
             property->first->setVisible(false);
             property->second->setVisible(false);
+        }
+    }
+}
+
+void View::onUpgradePointChanged() {
+    bool enanbled = (self->getUpgradePoints() > 0) ? true : false;
+    for(QPair<QLabel *, QPushButton *>* property : properties) {
+        if(nowValue > 0) {
+            property->first->setEnabled(enanbled);
+            property->second->setEnabled(enanbled);
         }
     }
 }
