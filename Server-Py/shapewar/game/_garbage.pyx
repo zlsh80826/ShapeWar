@@ -69,6 +69,6 @@ cdef class Pentagon(Garbage):
     def __init__(self, id):
         self.maxHp = 1000
         super(Pentagon, self).__init__(id)
-        self.radius = 20
+        self.radius = 25
         self.max_speed = 5
         self.body_damage = 70

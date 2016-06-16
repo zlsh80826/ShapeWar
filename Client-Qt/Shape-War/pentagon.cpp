@@ -3,7 +3,7 @@
 #include <QtMath>
 
 Pentagon::Pentagon() {
-    this->axis = 20;
+    this->axis = 25;
     QVector<QPoint> shapePoint;
     double radian = qDegreesToRadians(360.0 / 5);
     for (int i = 0; i <= 5; ++i) {
