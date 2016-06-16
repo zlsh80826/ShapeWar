@@ -47,6 +47,8 @@ class Hero(abilities.PropertyMixin, MovableObject):
             self.shoot(arena.bullet_queue.pop())
             self.cooldown += self.reload
         self.accept_keys(**self.last_control['keys'])
+        if self.hp > 0:
+            self.hp = min(self.max_hp, self.hp_regen + self.hp)
 
     def accept_keys(self, W, A, S, D):
         self.apply_friction()
