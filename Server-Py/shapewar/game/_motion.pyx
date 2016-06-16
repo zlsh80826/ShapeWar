@@ -17,7 +17,7 @@ cdef double value_limit(double value, double minimum, double maximum):
 cdef class MovableObject:
 
     def __init__(self):
-        self.friction = 0.15
+        self.friction = 0.1
         self.x_bound = 5000
         self.y_bound = 4000
         self.spawn()
