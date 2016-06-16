@@ -17,6 +17,7 @@
 #include <QLabel>
 #include <QPair>
 #include <QPushButton>
+#include <QButtonGroup>
 
 class View : public QGraphicsView {
     Q_OBJECT
@@ -25,10 +26,11 @@ public:
     View(Scene *scene, QWebSocket &ws);
 
 public slots:
-    void settingCenter_updateTargetAngle();
+    void onSelfPosChanged();
     void sendControlToServer();
     void showUpgrateOptions();
     void onUpgradePointChanged();
+    void onPropertyBtnClicked(int);
 
 protected:
     void mousePressEvent(QMouseEvent *event);
@@ -61,6 +63,7 @@ private:
     QPushButton *expandBtn;
     bool isExpanded;
     QVector<QPair<QLabel *, QPushButton *> *> properties;
+    QButtonGroup *propertyBtnPtrGroup;
     QWebSocket &ws;
 
     QTimer *sec;
