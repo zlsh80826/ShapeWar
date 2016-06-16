@@ -40,7 +40,7 @@ protected:
 private:
     int viewWidth, viewHeight;
     qreal calcRargetAngle(QPointF &mouseP);
-    Hero *self;
+    Self *self;
 
     bool key_w_pressed;
     bool key_a_pressed;
@@ -56,7 +56,7 @@ private:
     // for upgrade option
     const int buttonLen = 30;
     const int buttonDistance = 33;
-    const int labelWidth = 100;
+    const int labelWidth = 150;
     QPushButton *expandBtn;
     bool isExpanded;
     QVector<QPair<QLabel *, QPushButton *> *> properties;

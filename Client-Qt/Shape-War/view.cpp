@@ -40,12 +40,10 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     isExpanded = false;
     connect(expandBtn, SIGNAL(clicked()), this, SLOT(showUpgrateOptions()));
 
-    properties.push_back(new QPair<QLabel *, QPushButton *>(
-        new QLabel("Property 1", this), new QPushButton("+", this)));
-    properties.push_back(new QPair<QLabel *, QPushButton *>(
-        new QLabel("Property 2", this), new QPushButton("+", this)));
-    properties.push_back(new QPair<QLabel *, QPushButton *>(
-        new QLabel("Property 3", this), new QPushButton("+", this)));
+    for(int i=0, size=this->self->passiveNames.size() ; i<size ; i++) {
+        properties.push_back(new QPair<QLabel *, QPushButton *>(
+            new QLabel(self->passiveNames.at(i), this), new QPushButton("+", this)));
+    }
     for (unsigned int i = 0, size = properties.size(); i < size; i++) {
         QPair<QLabel *, QPushButton *> *property = properties.at(i);
         property->first->setGeometry(

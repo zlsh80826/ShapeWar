@@ -22,3 +22,16 @@ void Self::read(const QJsonObject &json) {
         this->passives[i] = passivesArray[i].toInt();
     }
 }
+
+int Self::getUpgradePoints() const {
+    return upgradePoints;
+}
+void Self::setUpgradePoints(int value) {
+    static int lastValue;
+    upgradePoints = value;
+    if(value != lastValue) {
+        lastValue = value;
+        emit upgradePointsChanged();
+    }
+}
+void Self::upgradePointsChanged() {}
