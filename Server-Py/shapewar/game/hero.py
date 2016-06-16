@@ -31,9 +31,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
     def accept_keys(self, W, A, S, D):
         self.apply_friction()
         if W or A or S or D:
-            self.accelerate(cmath.rect(self.acc, math.atan2(S - W, D - A)))
-        self.pos += self.velocity
-        self.limit_pos()
+            self.velocity += cmath.rect(self.acc, math.atan2(S - W, D - A))
 
     def to_self_dict(self):
         return {
@@ -72,6 +70,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
 class Bullet(MovableObject):
 
     def __init__(self, id, bqueue):
+        super().__init__()
         self.bqueue = bqueue
         self.id = id
         self.radius = 20

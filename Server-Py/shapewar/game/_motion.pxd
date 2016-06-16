@@ -11,6 +11,6 @@ cdef class MovableObject:
 
     cpdef void apply_friction(self)
 
-    cpdef void accelerate(self, acc)
+    cpdef void tick_pos(self)
 
     cpdef void limit_pos(self)

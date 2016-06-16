@@ -65,7 +65,7 @@ class Arena:
             if bullet.visible:
                 bullet.tick()
 
-        for obj, obk in bounding_box_collision_pairs([
+        target_objects = [
             obj for obj in
             itertools.chain(
                 self.triangles,
@@ -75,7 +75,12 @@ class Arena:
                 [client.hero for client in self.clients]
             )
             if obj.visible
-        ]):
+        ]
+
+        for obj in target_objects:
+            obj.tick_pos()
+
+        for obj, obk in bounding_box_collision_pairs(target_objects):
             collide(obj, obk)
 
         self.send_updates()

@@ -42,12 +42,12 @@ cdef class MovableObject:
         r = max(0, r - self.friction)
         self.velocity = cmath.rect(r, phi)
 
-    cpdef void accelerate(self, acc):
-        """apply acceleration to velocity"""
-        self.velocity += acc
+    cpdef void tick_pos(self):
         r, phi = cmath.polar(self.velocity)
         r = min(r, self.max_speed)
         self.velocity = cmath.rect(r, phi)
+        self.pos += self.velocity
+        self.limit_pos()
 
     cpdef void limit_pos(self):
         self.pos = complex(
