@@ -22,3 +22,7 @@ void Self::read(const QJsonObject &json) {
         this->passives[i] = passivesArray[i].toInt();
     }
 }
+
+void Self::setInfoPos(QPointF pos) {
+    info->setPos(pos);
+}

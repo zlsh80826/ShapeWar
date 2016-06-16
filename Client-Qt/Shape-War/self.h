@@ -8,6 +8,7 @@ public:
     Self();
     void read(const QJsonObject &json);
     SelfInfo *info;
+    void setInfoPos(QPointF);
 
 private:
     int experience;

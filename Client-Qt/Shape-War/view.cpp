@@ -62,6 +62,10 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     this->sends = 0;
     connect(sec, SIGNAL(timeout()), this, SLOT(print_freq()));
     sec->start(1000);
+
+    // self->setInfoPos(this->mapToScene(QPoint(10, 10)));
+    // qDebug() << this->mapToScene(QPoint(10, 10)).x()  << ", "
+    // << this->mapFromScene(QPoint(10, 10)).y() << "\n";
 }
 void View::print_freq() {
     qDebug() << "send per sec: " << this->sends;
@@ -115,6 +119,7 @@ void View::settingCenter_updateTargetAngle() {
     this->centerOn(this->self->pos());
     QPointF mouseP = this->mapToScene(this->mapFromGlobal(QCursor::pos()));
     self->setRotation(this->calcRargetAngle(mouseP));
+    self->setInfoPos(this->mapToScene(QPoint(InfoCenterX, InfoCenterY)));
 }
 
 void View::mousePressEvent(QMouseEvent *event) {

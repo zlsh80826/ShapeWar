@@ -62,6 +62,9 @@ private:
     QVector<QPair<QLabel *, QPushButton *> *> properties;
     QWebSocket &ws;
 
+    const int InfoCenterX = 350;
+    const int InfoCenterY = 50;
+
     QTimer *sec;
     int sends;
 private slots:
