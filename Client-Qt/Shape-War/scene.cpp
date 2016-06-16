@@ -107,6 +107,7 @@ void Scene::onTextMessageReceived(QString message) {
 
     for (Hero *hero : heroes) {
         this->removeItem(hero);
+        this->removeItem(hero->hpBar);
         delete hero;
     }
     heroes.clear();
@@ -117,6 +118,7 @@ void Scene::onTextMessageReceived(QString message) {
             auto hero = new Hero;
             hero->read_player(hero_object);
             this->addItem(hero);
+            this->addItem(hero->hpBar);
             heroes.push_back(hero);
         }
     }
