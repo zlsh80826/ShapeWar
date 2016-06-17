@@ -1,7 +1,5 @@
 #include "view.h"
 View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
-    viewWidth = 960;
-    viewHeight = 768;
     this->resize(viewWidth, viewHeight);
     this->setWindowTitle("Shape-War");
 
@@ -33,6 +31,7 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     sendDelayTimer->start(20);
 
     key_a_pressed = key_d_pressed = key_s_pressed = key_w_pressed = false;
+    mouseClicked = false;
 
     expandBtn = new QPushButton("+", this);
     expandBtn->setGeometry(0, viewHeight - buttonLen, buttonLen, buttonLen);
@@ -66,6 +65,10 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     this->sends = 0;
     connect(sec, SIGNAL(timeout()), this, SLOT(print_freq()));
     sec->start(1000);
+
+    // self->setInfoPos(this->mapToScene(QPoint(10, 10)));
+    // qDebug() << this->mapToScene(QPoint(10, 10)).x()  << ", "
+    // << this->mapFromScene(QPoint(10, 10)).y() << "\n";
 }
 void View::print_freq() {
     qDebug() << "send per sec: " << this->sends;
@@ -119,6 +122,7 @@ void View::onSelfPosChanged() {
     this->centerOn(this->self->pos());
     QPointF mouseP = this->mapToScene(this->mapFromGlobal(QCursor::pos()));
     self->setRotation(this->calcRargetAngle(mouseP));
+    self->setInfoPos(this->mapToScene(QPoint(InfoCenterX, InfoCenterY)));
 }
 
 void View::mousePressEvent(QMouseEvent *event) {

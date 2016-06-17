@@ -9,6 +9,7 @@ public:
     Self();
     void read(const QJsonObject &json);
     SelfInfo *info;
+    void setInfoPos(QPointF);
     const QStringList passiveNames = ( QStringList()
                                         << "Health Regen"
                                         << "Max Health"

@@ -41,7 +41,8 @@ protected:
     void wheelEvent(QWheelEvent *event);
 
 private:
-    int viewWidth, viewHeight;
+    const int viewWidth = 960;
+    const int viewHeight = 768;
     qreal calcRargetAngle(QPointF &mouseP);
     Self *self;
 
@@ -65,6 +66,9 @@ private:
     QVector<QPair<QLabel *, QPushButton *> *> properties;
     QButtonGroup *propertyBtnPtrGroup;
     QWebSocket &ws;
+
+    const int InfoCenterX = viewWidth/2;
+    const int InfoCenterY = viewHeight - 200;
 
     QTimer *sec;
     int sends;
