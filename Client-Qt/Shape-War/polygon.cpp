@@ -10,6 +10,7 @@ Polygon::Polygon(int edgeCount) {
     this->disappearTimer = new QTimer(this);
     this->reviveTimer = new QTimer(this);
     this->edgeCount = edgeCount;
+    this->setOpacity(1);
     QObject::connect(this->disappearTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
     QObject::connect(this->reviveTimer, SIGNAL(timeout()), this, SLOT(increaseOpacity()));
 }
@@ -43,7 +44,6 @@ QPainterPath Polygon::shape() const {
 }
 
 void Polygon::read(const QJsonObject &json) {
-    this->hpBar->setOpacity(this->opacity());
     bool next_active = json["visible"].toBool();
     if( (this->stage != ACTIVE) && (next_active==false) )
         return;
@@ -72,6 +72,7 @@ void Polygon::setStage(bool control) {
 
 void Polygon::disappear() {
     this->disappearTimer->start(20);
+    this->hpBar->setVisible(false);
 }
 
 void Polygon::decreaseOpacity() {
@@ -90,6 +91,7 @@ void Polygon::increaseOpacity() {
     if(this->opacity() >= 0.95){
         this->setOpacity(1);
         this->reviveTimer->stop();
+        this->hpBar->setVisible(true);
         return ;
     }
     this->setOpacity(this->opacity()+0.08);
