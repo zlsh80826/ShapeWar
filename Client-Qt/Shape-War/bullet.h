@@ -19,8 +19,9 @@ private:
     int radius;
     void disappear();
     QTimer* disappearTimer;
-    void setActive(bool);
-    bool active;
+    void setStage(bool);
+    int stage;
+    enum{ACTIVE, DISAPPEARING, INACTIVE};
 
 private slots:
     void decreaseOpacity();
