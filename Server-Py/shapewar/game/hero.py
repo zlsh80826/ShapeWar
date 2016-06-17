@@ -97,7 +97,7 @@ class Bullet(MovableObject):
         super().__init__()
         self.bqueue = bqueue
         self.id = id
-        self.radius = 10
+        self.radius = 25
         self.angle = 0
         self.visible = False
         self.maxHp = 1
