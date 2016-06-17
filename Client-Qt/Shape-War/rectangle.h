@@ -3,6 +3,7 @@
 #include <QGraphicsObject>
 #include <QJsonObject>
 #include <QPolygonF>
+#include <QTimer>
 #include <hpbar.h>
 
 class Rectangle : public QGraphicsObject {
@@ -20,6 +21,17 @@ public:
 private:
     int axis;
     qreal angle;
-    QPolygonF polygonShape;
+    QPolygon polygonShape;
+    int stage;
+    enum{ACTIVE, DISAPPEARING, INACTIVE};
+    QTimer* disappearTimer;
+    QTimer* reviveTimer;
+    void setStage(bool);
+    void disappear();
+    void constructPolygon();
+
+private slots:
+    void decreaseOpacity();
+    void increaseOpacity();
 };
 #endif // RECTANGLE_H

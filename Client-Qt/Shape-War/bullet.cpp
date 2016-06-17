@@ -3,7 +3,7 @@
 #include <QDebug>
 
 Bullet::Bullet() {
-    this->radius = 25;
+    this->radius = 20;
     this->disappearTimer = new QTimer(this);
     this->stage = INACTIVE;
     QObject::connect(this->disappearTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
