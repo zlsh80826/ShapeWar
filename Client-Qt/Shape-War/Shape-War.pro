@@ -16,9 +16,6 @@ SOURCES += main.cpp \
     scene.cpp \
     hero.cpp \
     view.cpp \
-    triangle.cpp \
-    rectangle.cpp \
-    pentagon.cpp \
     bullet.cpp \
     hpbar.cpp \
     logindialog.cpp \
@@ -30,9 +27,6 @@ HEADERS  += \
     scene.h \
     hero.h \
     view.h \
-    triangle.h \
-    rectangle.h \
-    pentagon.h \
     bullet.h \
     hpbar.h \
     logindialog.h \

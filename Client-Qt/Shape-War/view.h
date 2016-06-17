@@ -10,10 +10,6 @@
 #include <QKeyEvent>
 #include <QTimer>
 #include <QWebSocket>
-#include <pentagon.h>
-#include <rectangle.h>
-#include <triangle.h>
-
 #include <QLabel>
 #include <QPair>
 #include <QPushButton>

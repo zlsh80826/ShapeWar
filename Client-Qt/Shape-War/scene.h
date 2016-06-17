@@ -2,8 +2,6 @@
 #define SCENE_H
 
 #include "polygongroup.h"
-#include "rectangle.h"
-#include "triangle.h"
 #include <QColor>
 #include <QGraphicsView>
 #include <QKeyEvent>
@@ -12,7 +10,6 @@
 #include <bullet.h>
 #include <hero.h>
 #include <math.h>
-#include <pentagon.h>
 #include <polygon.h>
 #include <self.h>
 
