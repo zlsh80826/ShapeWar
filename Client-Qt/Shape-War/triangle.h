@@ -21,6 +21,17 @@ private:
     int axis;
     qreal angle;
     QPolygonF polygonShape;
+    int stage;
+    enum{ACTIVE, DISAPPEARING, INACTIVE};
+    QTimer* disappearTimer;
+    QTimer* reviveTimer;
+    void setStage(bool);
+    void disappear();
+    void constructPolygon();
+
+private slots:
+    void decreaseOpacity();
+    void increaseOpacity();
 };
 
 #endif // TRIANGLE_H

@@ -5,7 +5,6 @@
 
 Rectangle::Rectangle() {
     this->axis = 20;
-    this->setPos(-50, -50);
     this->constructPolygon();
     this->hpBar = new HpBar(1000, 2 * axis, axis + 5);
     this->stage=INACTIVE;
@@ -78,6 +77,7 @@ void Rectangle::decreaseOpacity() {
     }
     this->setOpacity(this->opacity()-0.08);
     this->axis += 1;
+    this->constructPolygon();
 }
 
 void Rectangle::increaseOpacity() {
