@@ -68,7 +68,7 @@ private:
     QWebSocket &ws;
 
     const int InfoCenterX = viewWidth/2;
-    const int InfoCenterY = viewHeight - 200;
+    const int InfoCenterY = viewHeight - 120;
 
     QTimer *sec;
     int sends;

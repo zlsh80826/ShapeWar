@@ -8,7 +8,6 @@ SelfInfo::SelfInfo() {
     this->maxScore = 50000;
     this->lv = 1;
     this->exp = 0;
-    this->setPos(480, 600);
     this->expWidth = 200;
     this->maxExpWidth = 600;
     this->scoreWidth = 100;
@@ -33,7 +32,7 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setPen(pen);
     painter->setFont(QFont("sansaerif", 40, QFont::Bold));
-    painter->drawText(-50, 20, name);
+    painter->drawText(-50, 30, name);
     pen.setColor(QColor(61, 61, 61, 255));
     painter->setPen(pen);
     painter->setBrush(QBrush(QColor(61, 61, 61, 255), Qt::SolidPattern));
