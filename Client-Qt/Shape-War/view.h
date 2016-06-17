@@ -71,8 +71,9 @@ private:
     QButtonGroup *propertyBtnPtrGroup;
     QWebSocket &ws;
 
+    const int InfoHeightOffset = 120;
     int InfoCenterX = viewWidth/2;
-    int InfoCenterY = viewHeight - 200;
+    int InfoCenterY = viewHeight - InfoHeightOffset;
 
     QTimer *sec;
     int sends;

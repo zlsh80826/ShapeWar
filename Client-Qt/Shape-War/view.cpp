@@ -180,7 +180,7 @@ void View::resizeEvent(QResizeEvent *event)
     }
 
     InfoCenterX = nowViewWidth/2;
-    InfoCenterY = nowViewHeight - 150;
+    InfoCenterY = nowViewHeight - InfoHeightOffset;
     self->setInfoPos(this->mapToScene(QPoint(InfoCenterX, InfoCenterY)));
     this->centerOn(self);
 }
