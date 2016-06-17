@@ -13,6 +13,7 @@
 #include <hero.h>
 #include <math.h>
 #include <pentagon.h>
+#include <polygon.h>
 #include <self.h>
 
 class Scene : public QGraphicsScene {
@@ -21,9 +22,9 @@ public:
     Scene(QWidget *parent = 0);
     Self *self;
 
-    PolygonGroup<Triangle> *triangles;
-    PolygonGroup<Rectangle> *rectangles;
-    PolygonGroup<Pentagon> *pentagons;
+    PolygonGroup<Polygon> *triangles;
+    PolygonGroup<Polygon> *rectangles;
+    PolygonGroup<Polygon> *pentagons;
     PolygonGroup<Bullet> *bullets;
 
     // connection

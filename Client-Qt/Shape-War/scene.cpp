@@ -2,6 +2,7 @@
 #include "hero.h"
 #include "logindialog.h"
 #include "polygongroup.h"
+#include "polygon.h"
 #include "self.h"
 #include "selfinfo.h"
 #include <QJsonDocument>
@@ -69,16 +70,16 @@ void Scene::initGame() {
     this->addItem(this->self->info);
 
     // test monster
-    triangles = new PolygonGroup<Triangle>(50);
+    triangles = new PolygonGroup<Polygon>(3, 50);
     triangles->addToParent(this);
 
-    rectangles = new PolygonGroup<Rectangle>(250);
+    rectangles = new PolygonGroup<Polygon>(4, 250);
     rectangles->addToParent(this);
 
-    pentagons = new PolygonGroup<Pentagon>(10);
+    pentagons = new PolygonGroup<Polygon>(5, 10);
     pentagons->addToParent(this);
 
-    bullets = new PolygonGroup<Bullet>;
+    bullets = new PolygonGroup<Bullet>(0);
     bullets->addToParentNoHPBar(this);
 }
 

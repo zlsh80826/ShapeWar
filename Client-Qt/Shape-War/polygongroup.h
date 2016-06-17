@@ -11,9 +11,9 @@ private:
     QVector<Polygon *> polygons;
 
 public:
-    PolygonGroup(int count = 300) : count(count) {
+    PolygonGroup(int edgeCount, int count = 300) : count(count) {
         for (int i = 0; i < count; ++i)
-            polygons.append(new Polygon);
+            polygons.append(new Polygon(edgeCount));
     }
 
     void addToParent(QGraphicsScene *parent) {

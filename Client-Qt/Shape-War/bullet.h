@@ -7,7 +7,7 @@
 class Bullet : public QGraphicsObject {
     Q_OBJECT
 public:
-    Bullet();
+    Bullet(int);
     // need to optimize to boundingRegion
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
