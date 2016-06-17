@@ -39,6 +39,7 @@ void Bullet::read(const QJsonObject &json) {
     this->setActive(next_active);
     this->setX(json["x"].toDouble());
     this->setY(json["y"].toDouble());
+    this->radius = json["radius"].toInt();
 }
 
 void Bullet::setActive(bool visible) {
@@ -50,7 +51,6 @@ void Bullet::setActive(bool visible) {
         this->active = true;
         this->disappearTimer->stop();
         this->setOpacity(1);
-        this->radius = 20;
     }
 }
 
