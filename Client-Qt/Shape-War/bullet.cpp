@@ -1,8 +1,12 @@
 #include "bullet.h"
 #include <QPainter>
+#include <QDebug>
 
 Bullet::Bullet() {
     this->radius = 20;
+    this->disappearTimer = new QTimer(this);
+    this->active = false;
+    QObject::connect(this->disappearTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
 }
 
 QRectF Bullet::boundingRect() const {
@@ -29,7 +33,32 @@ QPainterPath Bullet::shape() const {
 }
 
 void Bullet::read(const QJsonObject &json) {
-    this->setVisible(json["visible"].toBool());
+    bool next_active = json["visible"].toBool();
+    if( (this->active == false) && (next_active==false) )
+        return;
+    this->setActive(next_active);
     this->setX(json["x"].toDouble());
     this->setY(json["y"].toDouble());
+}
+
+void Bullet::setActive(bool visible) {
+    //QGraphicsObject::setVisible(visible);
+    if(visible == false) {
+        this->active = false;
+        this->disappear();
+    } else {
+        this->active = true;
+        this->disappearTimer->stop();
+        this->setOpacity(1);
+        this->radius = 20;
+    }
+}
+
+void Bullet::disappear() {
+    this->disappearTimer->start(15);
+}
+
+void Bullet::decreaseOpacity() {
+    this->setOpacity(this->opacity()-0.1);
+    this->radius += 1;
 }
