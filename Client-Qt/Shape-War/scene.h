@@ -21,11 +21,10 @@ public:
     Scene(QWidget *parent = 0);
     Self *self;
 
-    // test object
     PolygonGroup<Triangle> *triangles;
     PolygonGroup<Rectangle> *rectangles;
     PolygonGroup<Pentagon> *pentagons;
-    Bullet *testBullet;
+    PolygonGroup<Bullet> *bullets;
 
     // connection
     QWebSocket m_webSocket;

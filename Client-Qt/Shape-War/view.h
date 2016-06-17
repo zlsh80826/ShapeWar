@@ -17,6 +17,7 @@
 #include <QLabel>
 #include <QPair>
 #include <QPushButton>
+#include <QButtonGroup>
 
 class View : public QGraphicsView {
     Q_OBJECT
@@ -25,9 +26,11 @@ public:
     View(Scene *scene, QWebSocket &ws);
 
 public slots:
-    void settingCenter_updateTargetAngle();
+    void onSelfPosChanged();
     void sendControlToServer();
     void showUpgrateOptions();
+    void onUpgradePointChanged();
+    void onPropertyBtnClicked(int);
 
 protected:
     void mousePressEvent(QMouseEvent *event);
@@ -38,7 +41,8 @@ protected:
     void wheelEvent(QWheelEvent *event);
 
 private:
-    int viewWidth, viewHeight;
+    const int viewWidth = 960;
+    const int viewHeight = 768;
     qreal calcRargetAngle(QPointF &mouseP);
     Self *self;
 
@@ -56,14 +60,15 @@ private:
     // for upgrade option
     const int buttonLen = 30;
     const int buttonDistance = 33;
-    const int labelWidth = 100;
+    const int labelWidth = 150;
     QPushButton *expandBtn;
     bool isExpanded;
     QVector<QPair<QLabel *, QPushButton *> *> properties;
+    QButtonGroup *propertyBtnPtrGroup;
     QWebSocket &ws;
 
-    const int InfoCenterX = 350;
-    const int InfoCenterY = 50;
+    const int InfoCenterX = viewWidth/2;
+    const int InfoCenterY = viewHeight - 200;
 
     QTimer *sec;
     int sends;

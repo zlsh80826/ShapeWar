@@ -2,6 +2,7 @@
 
 Self::Self() : Hero() {
     this->info = new SelfInfo();
+    this->upgradePoints = 0;
 }
 
 void Self::read(const QJsonObject &json) {
@@ -11,8 +12,8 @@ void Self::read(const QJsonObject &json) {
     this->experience = instance["experience"].toInt();
     this->level = instance["level"].toInt();
     this->hpBar->setPos(this->x(), this->y());
-    this->hpBar->setHp(instance["maxHp"].toInt(),
-                       instance["currentHp"].toInt());
+    this->hpBar->setHp(instance["currentHp"].toInt(),
+                       instance["maxHp"].toInt());
 
     this->info->setLv(this->level);
     // this->info->setExp(this->experience);
@@ -25,4 +26,13 @@ void Self::read(const QJsonObject &json) {
 
 void Self::setInfoPos(QPointF pos) {
     info->setPos(pos);
+}
+int Self::getUpgradePoints() const {
+    return upgradePoints;
+}
+void Self::setUpgradePoints(int value) {
+    if(upgradePoints != value) {
+        upgradePoints = value;
+        emit upgradePointsChanged();
+    }
 }

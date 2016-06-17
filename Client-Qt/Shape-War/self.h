@@ -4,16 +4,30 @@
 #include "hero.h"
 #include "selfinfo.h"
 class Self : public Hero {
+    Q_OBJECT
 public:
     Self();
     void read(const QJsonObject &json);
     SelfInfo *info;
     void setInfoPos(QPointF);
-
+    const QStringList passiveNames = ( QStringList()
+                                        << "Health Regen"
+                                        << "Max Health"
+                                        << "Body Damage"
+                                        << "Bullet Penetration"
+                                        << "Bullet Damage"
+                                        << "Reload"
+                                        << "Movement Speed" );
+    int getUpgradePoints() const;
+    void setUpgradePoints(int value);
+signals:
+    void upgradePointsChanged();
 private:
     int experience;
     int level;
     int passives[8];
+
+    int upgradePoints;
 };
 
 #endif // SELF_H

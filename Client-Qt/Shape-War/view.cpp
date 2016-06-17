@@ -1,7 +1,5 @@
 #include "view.h"
 View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
-    viewWidth = 960;
-    viewHeight = 768;
     this->resize(viewWidth, viewHeight);
     this->setWindowTitle("Shape-War");
 
@@ -23,9 +21,9 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     this->centerOn(this->self->pos());
 
     connect(self, SIGNAL(xChanged()), this,
-            SLOT(settingCenter_updateTargetAngle()));
+            SLOT(onSelfPosChanged()));
     connect(self, SIGNAL(yChanged()), this,
-            SLOT(settingCenter_updateTargetAngle()));
+            SLOT(onSelfPosChanged()));
 
     sendDelayTimer = new QTimer(this);
     connect(sendDelayTimer, SIGNAL(timeout()), this,
@@ -33,6 +31,7 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     sendDelayTimer->start(20);
 
     key_a_pressed = key_d_pressed = key_s_pressed = key_w_pressed = false;
+    mouseClicked = false;
 
     expandBtn = new QPushButton("+", this);
     expandBtn->setGeometry(0, viewHeight - buttonLen, buttonLen, buttonLen);
@@ -40,12 +39,11 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     isExpanded = false;
     connect(expandBtn, SIGNAL(clicked()), this, SLOT(showUpgrateOptions()));
 
-    properties.push_back(new QPair<QLabel *, QPushButton *>(
-        new QLabel("Property 1", this), new QPushButton("+", this)));
-    properties.push_back(new QPair<QLabel *, QPushButton *>(
-        new QLabel("Property 2", this), new QPushButton("+", this)));
-    properties.push_back(new QPair<QLabel *, QPushButton *>(
-        new QLabel("Property 3", this), new QPushButton("+", this)));
+    for(int i=0, size = self->passiveNames.size() ; i<size ; i++) {
+        properties.push_back(new QPair<QLabel *, QPushButton *>(
+            new QLabel( self->passiveNames.at(i), this), new QPushButton("+", this)));
+    }
+    propertyBtnPtrGroup = new QButtonGroup(this);
     for (unsigned int i = 0, size = properties.size(); i < size; i++) {
         QPair<QLabel *, QPushButton *> *property = properties.at(i);
         property->first->setGeometry(
@@ -56,7 +54,12 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
                                       buttonLen, buttonLen);
         property->first->setVisible(false);
         property->second->setVisible(false);
+        property->first->setStyleSheet("QLabel { background-color : green; color : white; }");
+
+        propertyBtnPtrGroup->addButton(property->second, i);
     }
+    connect( self, SIGNAL(upgradePointsChanged()), this, SLOT(onUpgradePointChanged()));
+    connect( propertyBtnPtrGroup, SIGNAL(buttonClicked(int)), this, SLOT(onPropertyBtnClicked(int)) );
 
     sec = new QTimer(0);
     this->sends = 0;
@@ -115,7 +118,7 @@ void View::keyReleaseEvent(QKeyEvent *event) {
     // qDebug() << "Released key: " << event->key();
 }
 
-void View::settingCenter_updateTargetAngle() {
+void View::onSelfPosChanged() {
     this->centerOn(this->self->pos());
     QPointF mouseP = this->mapToScene(this->mapFromGlobal(QCursor::pos()));
     self->setRotation(this->calcRargetAngle(mouseP));
@@ -151,17 +154,27 @@ qreal View::calcRargetAngle(QPointF &mouseP) {
 void View::wheelEvent(QWheelEvent *event) {
     // eat this event to prevent it is passed to parent widget
     // do nothing
+
+    // below are just testing other things
+    printf("From %d to", self->getUpgradePoints());
+    if(event->orientation() == Qt::Vertical) {
+        if(event->delta() > 0) {
+            self->setUpgradePoints( self->getUpgradePoints() + 1 );
+        } else {
+            self->setUpgradePoints( self->getUpgradePoints() - 1 );
+        }
+    }
+    printf(" %d", self->getUpgradePoints());
 }
 
 void View::sendControlToServer() {
     this->sends++;
-    // TODO: send all control messages of keyboard/mouse to server
-    // debug print
     QJsonObject data;
     data["keys"] = QJsonObject({{"W", key_w_pressed},
                                 {"A", key_a_pressed},
                                 {"S", key_s_pressed},
                                 {"D", key_d_pressed}});
+    data["mouse"] = mouseClicked;
     data["angle"] = self->rotation();
     ws.sendTextMessage(QJsonDocument(data).toJson(QJsonDocument::Compact));
 }
@@ -185,4 +198,17 @@ void View::showUpgrateOptions() {
             property->second->setVisible(false);
         }
     }
+}
+
+void View::onUpgradePointChanged() {
+    bool enanbled = (self->getUpgradePoints() > 0) ? true : false;
+    for(QPair<QLabel *, QPushButton *>* property : properties) {
+        property->first->setEnabled(enanbled);
+        property->second->setEnabled(enanbled);
+    }
+}
+
+void View::onPropertyBtnClicked(int clickedBtnId) {
+    qDebug() << "Button clicked: " << this->self->passiveNames.at(clickedBtnId);
+    // TODO: handle the message want to  pass to server
 }

@@ -23,6 +23,12 @@ public:
         }
     }
 
+    void addToParentNoHPBar(QGraphicsScene * parent) {
+        for (int i = 0; i < count; ++i) {
+            parent->addItem(polygons[i]);
+        }
+    }
+
     void read(const QJsonArray &polygonInfo) {
         for (int i = 0; i < polygonInfo.size() and i < count; ++i) {
             polygons[i]->read(polygonInfo[i].toObject());

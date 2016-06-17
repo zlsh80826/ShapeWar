@@ -1,10 +1,12 @@
 import json
 import logging
 import itertools
+import collections
+import random
 from tornado.websocket import WebSocketHandler, WebSocketClosedError
 from tornado.ioloop import PeriodicCallback
 
-from .hero import Hero
+from .hero import Hero, Bullet
 from . import garbage
 from .collision import bounding_box_collision_pairs, collide
 
@@ -14,14 +16,17 @@ logger = logging.getLogger(__name__)
 
 class Arena:
 
-    tick_time = 20  # tick time in milliseconds
+    tick_time = 33  # tick time in milliseconds
 
     def __init__(self):
         self.clients = set()
 
-        self.squares = [garbage.Square(i) for i in range(300)]
-        self.triangles = [garbage.Triangle(i) for i in range(300)]
-        self.pentagons = [garbage.Pentagon(i) for i in range(300)]
+        self.squares = [garbage.Square(i) for i in range(250)]
+        self.triangles = [garbage.Triangle(i) for i in range(50)]
+        self.pentagons = [garbage.Pentagon(i) for i in range(10)]
+        self.bullet_queue = collections.deque()
+        self.bullets = [Bullet(i, self.bullet_queue) for i in range(300)]
+        self.bullet_queue.extend(self.bullets)
 
         self.tick_id = 0
         self.tick_timer = PeriodicCallback(self.tick, self.tick_time)
@@ -31,7 +36,9 @@ class Arena:
     def perf_callback(self):
         self.pptid, diff = self.tick_id, self.tick_id - self.pptid
         logger.log(
-            logging.INFO if diff > 48 else logging.WARNING,
+            logging.INFO
+            if diff > 1000 / self.tick_time - 2
+            else logging.WARNING,
             '%d clients, %d ticks/s', len(self.clients), diff
         )
 
@@ -53,13 +60,36 @@ class Arena:
             self.triangles,
             self.pentagons
         ):
-            polygon.tick_angle()
+            if polygon.visible:
+                polygon.tick_angle()
+            else:
+                if random.random() < .01:
+                    polygon.spawn()
 
-        for obj, obk in bounding_box_collision_pairs(
-            self.triangles + self.squares + self.pentagons +
-            [client.hero for client in self.clients]
-        ):
+        for bullet in self.bullets:
+            if bullet.visible:
+                bullet.tick()
+
+        target_objects = [
+            obj for obj in
+            itertools.chain(
+                self.triangles,
+                self.squares,
+                self.pentagons,
+                self.bullets,
+                [client.hero for client in self.clients]
+            )
+            if obj.visible
+        ]
+
+        for obj in target_objects:
+            obj.tick_pos()
+
+        for obj, obk in bounding_box_collision_pairs(target_objects):
             collide(obj, obk)
+
+        for client in self.clients:
+            client.hero.tick_keys(self)
 
         self.send_updates()
 
@@ -70,13 +100,7 @@ class Arena:
             "players": [
                 client.hero.to_player_dict() for client in self.clients
             ],
-            "bullets": [
-                {
-                    "id": 0,
-                    "x": 250,
-                    "y": 260 + (self.tick_id % 50)
-                },
-            ],
+            "bullets": [bullet.to_dict() for bullet in self.bullets],
             "squares": [square.to_dict() for square in self.squares],
             "triangles": [triangle.to_dict() for triangle in self.triangles],
             "pentagons": [pentagon.to_dict() for pentagon in self.pentagons]
@@ -113,9 +137,8 @@ class ArenaHandler(WebSocketHandler):
 
     def on_message(self, message):
         data = json.loads(message)
+        self.hero.last_control = data
         logger.debug('%s %r', self.request.remote_ip, data)
-        self.hero.accept_keys(**data['keys'])
-        self.hero.angle = data['angle']
 
     def send_updates(self, data):
         message = dict(data)

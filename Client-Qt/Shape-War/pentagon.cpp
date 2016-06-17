@@ -3,7 +3,7 @@
 #include <QtMath>
 
 Pentagon::Pentagon() {
-    this->axis = 20;
+    this->axis = 25;
     QVector<QPoint> shapePoint;
     double radian = qDegreesToRadians(360.0 / 5);
     for (int i = 0; i <= 5; ++i) {
@@ -39,6 +39,8 @@ QPainterPath Pentagon::shape() const {
 }
 
 void Pentagon::read(const QJsonObject &json) {
+    this->setVisible(json["visible"].toBool());
+    this->hpBar->setVisible(json["visible"].toBool());
     this->setX(json["x"].toDouble());
     this->setY(json["y"].toDouble());
     this->hpBar->setPos(this->x(), this->y());

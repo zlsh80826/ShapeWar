@@ -2,6 +2,7 @@
 #define BULLET_H
 #include <QGraphicsObject>
 #include <QJsonObject>
+#include <QTimer>
 
 class Bullet : public QGraphicsObject {
     Q_OBJECT
@@ -16,5 +17,13 @@ public:
 
 private:
     int radius;
+    void disappear();
+    QTimer* disappearTimer;
+    void setStage(bool);
+    int stage;
+    enum{ACTIVE, DISAPPEARING, INACTIVE};
+
+private slots:
+    void decreaseOpacity();
 };
 #endif // BULLET_H

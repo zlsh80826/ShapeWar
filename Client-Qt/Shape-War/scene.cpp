@@ -68,18 +68,17 @@ void Scene::initGame() {
     this->self->info->setName("test");
     this->addItem(this->self->info);
     // test monster
-    triangles = new PolygonGroup<Triangle>;
+    triangles = new PolygonGroup<Triangle>(50);
     triangles->addToParent(this);
 
-    rectangles = new PolygonGroup<Rectangle>;
+    rectangles = new PolygonGroup<Rectangle>(250);
     rectangles->addToParent(this);
 
-    pentagons = new PolygonGroup<Pentagon>;
+    pentagons = new PolygonGroup<Pentagon>(10);
     pentagons->addToParent(this);
 
-    testBullet = new Bullet();
-    testBullet->setPos(300, 250);
-    this->addItem(testBullet);
+    bullets = new PolygonGroup<Bullet>;
+    bullets->addToParentNoHPBar(this);
 }
 
 void Scene::gameOver() {
@@ -101,11 +100,13 @@ void Scene::onTextMessageReceived(QString message) {
     this->triangles->read(object["triangles"].toArray());
     this->rectangles->read(object["squares"].toArray());
     this->pentagons->read(object["pentagons"].toArray());
+    this->bullets->read(object["bullets"].toArray());
 
     auto self_id = object["self"].toObject()["id"];
 
     for (Hero *hero : heroes) {
         this->removeItem(hero);
+        this->removeItem(hero->hpBar);
         delete hero;
     }
     heroes.clear();
@@ -116,6 +117,7 @@ void Scene::onTextMessageReceived(QString message) {
             auto hero = new Hero;
             hero->read_player(hero_object);
             this->addItem(hero);
+            this->addItem(hero->hpBar);
             heroes.push_back(hero);
         }
     }
