@@ -32,13 +32,14 @@ void HpBar::setHp(int curHp, int maxHp) {
         this->revealTimer->stop();
         this->setOpacity(255);
     }
-    if( curHp != this->curHp || maxHp != this->maxHp) {
+    if (curHp != this->curHp || maxHp != this->maxHp) {
         this->curHp = curHp;
         this->maxHp = maxHp;
         this->curHpWidth = width * (this->curHp / this->maxHp);
         this->update(this->boundingRect());
     }
-    if ( curHp <= 0 ) emit(dieSignal());
+    if (curHp <= 0)
+        emit(dieSignal());
 }
 
 QRectF HpBar::boundingRect() const {
@@ -49,8 +50,8 @@ QRectF HpBar::boundingRect() const {
 
 void HpBar::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                   QWidget *widget) {
-    (void) option;
-    (void) widget;
+    (void)option;
+    (void)widget;
     QPen pen;
     pen.setWidth(3);
     pen.setColor(QColor(85, 85, 85, 255));

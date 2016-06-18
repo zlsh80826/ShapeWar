@@ -26,8 +26,8 @@ private:
     qreal scoreWidth;
     qreal maxExpWidth;
     qreal maxScoreWidth;
-    QTimer* expTimer;
-    QTimer* scoreTimer;
+    QTimer *expTimer;
+    QTimer *scoreTimer;
 
 private slots:
     void expAni();

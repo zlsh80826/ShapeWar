@@ -69,7 +69,6 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     this->sends = 0;
     connect(sec, SIGNAL(timeout()), this, SLOT(print_freq()));
     sec->start(1000);
-
 }
 
 void View::print_freq() {
@@ -127,12 +126,12 @@ void View::onSelfPosChanged() {
 }
 
 void View::mousePressEvent(QMouseEvent *event) {
-    (void) event;
+    (void)event;
     mouseClicked = true;
 }
 
 void View::mouseReleaseEvent(QMouseEvent *event) {
-    (void) event;
+    (void)event;
     mouseClicked = false;
 }
 
@@ -173,27 +172,30 @@ void View::wheelEvent(QWheelEvent *event) {
     printf(" %d", self->getUpgradePoints());
 }
 
-void View::resizeEvent(QResizeEvent *event)
-{
-    (void) event;
+void View::resizeEvent(QResizeEvent *event) {
+    (void)event;
     int nowViewWidth = this->width();
     int nowViewHeight = this->height();
     if (isExpanded) {
         expandBtn->setText("-");
-        expandBtn->setGeometry( 0, nowViewHeight - (properties.size() + 1) * passiveDistance - 15,
-                                                        buttonLen, buttonLen);
+        expandBtn->setGeometry(
+            0, nowViewHeight - (properties.size() + 1) * passiveDistance - 15,
+            buttonLen, buttonLen);
     } else {
         expandBtn->setText("+");
-        expandBtn->setGeometry(0, nowViewHeight - buttonLen, buttonLen, buttonLen);
+        expandBtn->setGeometry(0, nowViewHeight - buttonLen, buttonLen,
+                               buttonLen);
     }
     for (unsigned int i = 0, size = properties.size(); i < size; i++) {
         QPair<QLabel *, QPushButton *> *property = properties.at(i);
-        property->first->setGeometry( 10, nowViewHeight - (i + 1) * passiveDistance,
-                                                             labelWidth, passiveHeight);
-        property->second->setGeometry( labelWidth + 10, nowViewHeight - (i + 1) * passiveDistance,
-                                                                  buttonLen + 10, passiveHeight);
+        property->first->setGeometry(10,
+                                     nowViewHeight - (i + 1) * passiveDistance,
+                                     labelWidth, passiveHeight);
+        property->second->setGeometry(labelWidth + 10,
+                                      nowViewHeight - (i + 1) * passiveDistance,
+                                      buttonLen + 10, passiveHeight);
     }
-    InfoCenterX = nowViewWidth/2;
+    InfoCenterX = nowViewWidth / 2;
     InfoCenterY = nowViewHeight - InfoHeightOffset;
     this->onSelfPosChanged();
 }
@@ -214,15 +216,17 @@ void View::showUpgrateOptions() {
     isExpanded = !isExpanded;
     if (isExpanded) {
         expandBtn->setText("-");
-        expandBtn->setGeometry( 0, this->height() - (properties.size() + 1) * passiveDistance - 15,
-                                                      buttonLen, buttonLen);
+        expandBtn->setGeometry(
+            0, this->height() - (properties.size() + 1) * passiveDistance - 15,
+            buttonLen, buttonLen);
         for (QPair<QLabel *, QPushButton *> *property : properties) {
             property->first->setVisible(true);
             property->second->setVisible(true);
         }
     } else {
         expandBtn->setText("+");
-        expandBtn->setGeometry(0, this->height() - buttonLen, buttonLen, buttonLen);
+        expandBtn->setGeometry(0, this->height() - buttonLen, buttonLen,
+                               buttonLen);
         for (QPair<QLabel *, QPushButton *> *property : properties) {
             property->first->setVisible(false);
             property->second->setVisible(false);

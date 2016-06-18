@@ -4,8 +4,8 @@
 #include "polygongroup.h"
 #include <QColor>
 #include <QGraphicsView>
-#include <QKeyEvent>
 #include <QHash>
+#include <QKeyEvent>
 #include <QSet>
 #include <QtWebSockets/QWebSocket>
 #include <bullet.h>
@@ -49,7 +49,7 @@ private:
     int height;
     int margin;
     QColor backgroundColor;
-    QHash<int, Hero*> heroes;
+    QHash<int, Hero *> heroes;
     void fillServerInfo(QString &serverUrl, QString &port);
 
     int cleanTimer;

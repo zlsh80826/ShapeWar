@@ -20,7 +20,8 @@ SelfInfo::SelfInfo() {
     this->expTimer = new QTimer(this);
     this->scoreTimer = new QTimer(this);
     QObject::connect(this->expTimer, SIGNAL(timeout()), this, SLOT(expAni()));
-    QObject::connect(this->scoreTimer, SIGNAL(timeout()), this, SLOT(scoreAni()));
+    QObject::connect(this->scoreTimer, SIGNAL(timeout()), this,
+                     SLOT(scoreAni()));
 }
 
 void SelfInfo::setName(QString name) {
@@ -33,8 +34,8 @@ QRectF SelfInfo::boundingRect() const {
 
 void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                      QWidget *widget) {
-    (void) option;
-    (void) widget;
+    (void)option;
+    (void)widget;
     QPen pen;
     pen.setWidth(3);
     pen.setColor(QColor(85, 85, 85, 240));
@@ -55,9 +56,9 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 }
 
 void SelfInfo::setExp(int new_exp) {
-    if(new_exp == this->targetExp)
+    if (new_exp == this->targetExp)
         return;
-    if(this->expTimer->isActive()) {
+    if (this->expTimer->isActive()) {
         this->expTimer->setInterval(5);
         return;
     }
@@ -66,9 +67,9 @@ void SelfInfo::setExp(int new_exp) {
 }
 
 void SelfInfo::setScore(int new_score) {
-    if(new_score == this->targetScore)
+    if (new_score == this->targetScore)
         return;
-    if(this->scoreTimer->isActive()) {
+    if (this->scoreTimer->isActive()) {
         this->scoreTimer->setInterval(5);
         return;
     }
@@ -81,24 +82,24 @@ void SelfInfo::setLv(int new_lv) {
 }
 
 void SelfInfo::expAni() {
-    if(this->targetExp == this->exp) {
+    if (this->targetExp == this->exp) {
         expTimer->stop();
         return;
     }
-    if(this->targetExp > this->exp) {
-        ++ this->exp;
+    if (this->targetExp > this->exp) {
+        ++this->exp;
     }
     this->expWidth = (this->maxExpWidth * this->exp) / (this->lv * 1000);
     this->update(this->boundingRect());
 }
 
 void SelfInfo::scoreAni() {
-    if(this->targetScore == this->score) {
+    if (this->targetScore == this->score) {
         scoreTimer->stop();
         return;
     }
-    if(this->targetScore > this->score) {
-        ++ this->score;
+    if (this->targetScore > this->score) {
+        ++this->score;
     }
     this->scoreWidth = (this->maxScoreWidth * this->score) / this->maxScore;
     this->update(this->boundingRect());

@@ -37,7 +37,6 @@ protected:
     void wheelEvent(QWheelEvent *event);
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
-
 private:
     const int viewWidth = 960;
     const int viewHeight = 768;
@@ -69,7 +68,7 @@ private:
     QWebSocket &ws;
 
     const int InfoHeightOffset = 120;
-    int InfoCenterX = viewWidth/2;
+    int InfoCenterX = viewWidth / 2;
     int InfoCenterY = viewHeight - InfoHeightOffset;
 
     QTimer *sec;
