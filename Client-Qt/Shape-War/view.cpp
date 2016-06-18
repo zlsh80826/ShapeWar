@@ -48,10 +48,10 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
         QPair<QLabel *, QPushButton *> *property = properties.at(i);
         property->first->setGeometry(
             10, viewHeight - (i + 1) * passiveDistance, labelWidth,
-            passiveDistance - (passiveDistance - passiveLen));
+            passiveDistance - (passiveDistance - passiveHeight));
         property->second->setGeometry(labelWidth + 10,
                                       viewHeight - (i + 1) * passiveDistance,
-                                      buttonLen + 10, passiveLen);
+                                      buttonLen + 10, passiveHeight);
         property->first->setVisible(false);
         property->second->setVisible(false);
         // property->first->setStyleSheet("background-color : yellow; color :
@@ -176,17 +176,17 @@ void View::resizeEvent(QResizeEvent *event)
     for (unsigned int i = 0, size = properties.size(); i < size; i++) {
         QPair<QLabel *, QPushButton *> *property = properties.at(i);
         property->first->setGeometry(
-            10, nowViewHeight - (i + 1) * buttonDistance, labelWidth,
-            buttonDistance - (buttonDistance - buttonLen));
+            10, nowViewHeight - (i + 1) * passiveDistance, labelWidth,
+            passiveHeight);
         property->second->setGeometry(labelWidth + 10,
-                                      nowViewHeight - (i + 1) * buttonDistance,
-                                      buttonLen, buttonLen);
+                                      nowViewHeight - (i + 1) * passiveDistance,
+                                      buttonLen + 10, passiveHeight);
     }
-
     InfoCenterX = nowViewWidth/2;
     InfoCenterY = nowViewHeight - InfoHeightOffset;
     self->setInfoPos(this->mapToScene(QPoint(InfoCenterX, InfoCenterY)));
     this->centerOn(self);
+    self->info->update(this->rect());
 }
 
 void View::sendControlToServer() {
