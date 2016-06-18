@@ -46,8 +46,8 @@ def collide(obj, obk):
     rsum = obj.radius + obk.radius
     if dist > rsum:
         return
-    obj.velocity += cmath.rect((rsum - dist) / rsum / 2, phi)
-    obk.velocity += cmath.rect((dist - rsum) / rsum / 2, phi)
+    obj.velocity += cmath.rect((rsum - dist) / rsum, phi)
+    obk.velocity += cmath.rect((dist - rsum) / rsum, phi)
     if get_team(obj) != get_team(obk):
         deduct_hp(obj, obk)
         deduct_hp(obk, obj)

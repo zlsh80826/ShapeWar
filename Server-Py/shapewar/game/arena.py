@@ -62,6 +62,7 @@ class Arena:
         ):
             if polygon.visible:
                 polygon.tick_angle()
+                polygon.apply_friction()
             else:
                 if random.random() < .01:
                     polygon.spawn()
