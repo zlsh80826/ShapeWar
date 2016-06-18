@@ -50,7 +50,7 @@ class Arena:
 
     def iter_all_bullets(self):
         for client in self.clients:
-            yield from client.bullets
+            yield from client.hero.bullets
 
     def tick(self):
         """this function is called every `self.tick_time` milliseconds

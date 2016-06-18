@@ -65,6 +65,7 @@ void Scene::initGame() {
     this->addItem(self);
     this->addItem(self->hpBar);
     this->self->setZValue(2);
+    this->self->bullets->addToParentNoHPBar(this);
 
     // test name
     this->self->info->setName("test");

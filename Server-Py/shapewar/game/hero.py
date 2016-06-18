@@ -72,6 +72,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
             'level': self.level,
             'experience': self.experience,
             'passives': [ability.level for ability in self.abilities],
+            'bullets': [bullet.to_dict() for bullet in self.bullets]
         }
 
     def to_player_dict(self):
@@ -82,7 +83,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
             'maxHp': self.max_hp,
             'currentHp': self.hp,
             'angle': self.angle,
-            'bullets': self.bullets
+            'bullets': [bullet.to_dict() for bullet in self.bullets]
         }
 
     def shoot(self, bullet):
@@ -118,7 +119,7 @@ class Bullet(MovableObject):
         self.timeout -= 1
         if self.timeout == 0 or self.hp < 0:
             self.visible = False
-            self.hero.ready_bullets.append(self)
+            self.owner.ready_bullets.append(self)
 
     def to_dict(self):
         return {
