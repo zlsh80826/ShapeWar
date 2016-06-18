@@ -71,6 +71,7 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     sec->start(1000);
 
 }
+
 void View::print_freq() {
     qDebug() << "send per sec: " << this->sends;
     this->sends = 0;
@@ -129,10 +130,12 @@ void View::mousePressEvent(QMouseEvent *event) {
     (void) event;
     mouseClicked = true;
 }
+
 void View::mouseReleaseEvent(QMouseEvent *event) {
     (void) event;
     mouseClicked = false;
 }
+
 void View::mouseMoveEvent(QMouseEvent *event) {
     QPointF mouseP = this->mapToScene(event->pos());
     self->setRotation(this->calcRargetAngle(mouseP));
@@ -140,6 +143,7 @@ void View::mouseMoveEvent(QMouseEvent *event) {
     // is: %f",selfP.x(), selfP.y(), mouseP.x(), mouseP.y(),
     //                  targetAngle * 180.0 / 3.14 );
 }
+
 qreal View::calcRargetAngle(QPointF &mouseP) {
     QPointF selfP = self->pos();
     qreal tangent = (mouseP.y() - selfP.y()) / (mouseP.x() - selfP.x());

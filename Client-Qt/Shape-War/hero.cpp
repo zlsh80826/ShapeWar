@@ -63,6 +63,7 @@ void Hero::read_player(const QJsonObject &data) {
     this->hpBar->setPos(this->x(), this->y());
     this->bullets->read(data["bullets"].toArray());
 }
+
 void Hero::onDieSignal() {
     this->hpBar->setVisible(false);
     this->disappearTimer = new QTimer(this);

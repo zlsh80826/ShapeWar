@@ -2,18 +2,22 @@
 #include <QDebug>
 #include <QFont>
 #include <QPainter>
+#include <QTimer>
 
 SelfInfo::SelfInfo() {
     this->score = 0;
     this->maxScore = 50000;
     this->lv = 1;
     this->exp = 0;
-    this->expWidth = 200;
+    this->targetExp = 0;
+    this->expWidth = 0;
     this->maxExpWidth = 600;
-    this->scoreWidth = 100;
+    this->scoreWidth = 0;
     this->maxScoreWidth = 500;
     this->setOpacity(0.95);
     this->setZValue(1);
+    this->timer = new QTimer(this);
+    QObject::connect(this->timer, SIGNAL(timeout()), this, SLOT(expAni()));
 }
 
 void SelfInfo::setName(QString name) {
@@ -48,8 +52,15 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 }
 
 void SelfInfo::setExp(int new_exp) {
-    this->exp = new_exp;
-    this->expWidth = this->maxExpWidth * (this->exp / (this->lv * 1000));
+    if(new_exp == this->targetExp)
+        return;
+    if(this->timer->isActive()) {
+        this->timer->setInterval(10);
+        return;
+    }
+    this->targetExp = new_exp;
+    this->timer->start(20);
+    qDebug() << this->exp << " " << this->targetExp;
 }
 
 void SelfInfo::setScore(int new_score) {
@@ -59,4 +70,16 @@ void SelfInfo::setScore(int new_score) {
 
 void SelfInfo::setLv(int new_lv) {
     this->lv = new_lv;
+}
+
+void SelfInfo::expAni() {
+    if(this->targetExp == this->exp) {
+        timer->stop();
+        return;
+    }
+    if(this->targetExp > this->exp) {
+        ++ this->exp;
+    }
+    this->expWidth = (this->maxExpWidth * this->exp) / (this->lv * 1000);
+    this->update(this->boundingRect());
 }

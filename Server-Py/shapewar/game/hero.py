@@ -27,7 +27,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
         self.radius = 30
         self.acc = 0.6  # acceleration
         self.hp = self.max_hp
-        self.experience = 0
+        self.experience = 100
         self.level = 1
 
         self.ready_bullets = []
