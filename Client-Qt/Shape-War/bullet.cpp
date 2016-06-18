@@ -2,8 +2,8 @@
 #include <QPainter>
 #include <QDebug>
 
-Bullet::Bullet() {
-    this->radius = 25;
+Bullet::Bullet(int unused) {
+    this->radius = 20;
     this->disappearTimer = new QTimer(this);
     this->stage = INACTIVE;
     QObject::connect(this->disappearTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
@@ -57,7 +57,8 @@ void Bullet::disappear() {
 }
 
 void Bullet::decreaseOpacity() {
-    if(this->opacity() == 0){
+    if(this->opacity() <= 0.05){
+        this->setOpacity(0);
         this->disappearTimer->stop();
         this->stage = INACTIVE;
     }
