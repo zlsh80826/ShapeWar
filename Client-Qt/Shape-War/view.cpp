@@ -222,16 +222,24 @@ void View::setPropertyStyle() {
             "text-align: right; color: rgb(218, 218, 218, 240);");
         this->properties.at(i)->first->setAlignment(Qt::AlignCenter);
     }
-    QString common = "border-top-right-radius:10px; border-bottom-right-radius: 10px; "
-                     "font: bold 14px; border-width: 2px; border-style: outset; "
-                     "border-color: rgb(61, 61, 61, 240); color: rgb(61, 61, 61, 240);";
-    this->properties.at(0)->second->setStyleSheet( common.append("background-color: rgb(108, 240, 236, 255);") );
-    this->properties.at(1)->second->setStyleSheet(common + "background-color: rgb(152, 240, 108, 255);");
-    this->properties.at(2)->second->setStyleSheet(common + "background-color: rgb(240, 108, 108, 255);");
-    this->properties.at(3)->second->setStyleSheet(common + "background-color: rgb(240, 217, 108, 255);");
-    this->properties.at(4)->second->setStyleSheet(common + "background-color: rgb(108, 150, 240, 255);");
-    this->properties.at(5)->second->setStyleSheet(common + "background-color: rgb(154, 108, 240, 255);");
-    this->properties.at(6)->second->setStyleSheet(common + "background-color: rgb(236, 108, 240, 255);");
-    this->properties.at(7)->second->setStyleSheet(common + "background-color: rgb(238, 182, 143, 255);");
-
+    QString common =
+        "border-top-right-radius:10px; border-bottom-right-radius: 10px; "
+        "font: bold 14px; border-width: 2px; border-style: outset; "
+        "border-color: rgb(61, 61, 61, 240); color: rgb(61, 61, 61, 240);";
+    this->properties.at(0)->second->setStyleSheet(
+        common.append("background-color: rgb(108, 240, 236, 255);"));
+    this->properties.at(1)->second->setStyleSheet(
+        common + "background-color: rgb(152, 240, 108, 255);");
+    this->properties.at(2)->second->setStyleSheet(
+        common + "background-color: rgb(240, 108, 108, 255);");
+    this->properties.at(3)->second->setStyleSheet(
+        common + "background-color: rgb(240, 217, 108, 255);");
+    this->properties.at(4)->second->setStyleSheet(
+        common + "background-color: rgb(108, 150, 240, 255);");
+    this->properties.at(5)->second->setStyleSheet(
+        common + "background-color: rgb(154, 108, 240, 255);");
+    this->properties.at(6)->second->setStyleSheet(
+        common + "background-color: rgb(236, 108, 240, 255);");
+    this->properties.at(7)->second->setStyleSheet(
+        common + "background-color: rgb(238, 182, 143, 255);");
 }
