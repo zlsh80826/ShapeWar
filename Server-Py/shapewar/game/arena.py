@@ -24,9 +24,6 @@ class Arena:
         self.squares = [garbage.Square(i) for i in range(250)]
         self.triangles = [garbage.Triangle(i) for i in range(50)]
         self.pentagons = [garbage.Pentagon(i) for i in range(10)]
-        self.bullet_queue = collections.deque()
-        self.bullets = [Bullet(i, self.bullet_queue) for i in range(300)]
-        self.bullet_queue.extend(self.bullets)
 
         self.tick_id = 0
         self.tick_timer = PeriodicCallback(self.tick, self.tick_time)
@@ -51,6 +48,10 @@ class Arena:
         self.perf_timer.start()
         logger.info('started arena')
 
+    def iter_all_bullets(self):
+        for client in self.clients:
+            yield from client.bullets
+
     def tick(self):
         """this function is called every `self.tick_time` milliseconds
         to process each tick
@@ -67,7 +68,7 @@ class Arena:
                 if random.random() < .01:
                     polygon.spawn()
 
-        for bullet in self.bullets:
+        for bullet in self.iter_all_bullets():
             if bullet.visible:
                 bullet.tick()
 
@@ -77,8 +78,8 @@ class Arena:
                 self.triangles,
                 self.squares,
                 self.pentagons,
-                self.bullets,
-                [client.hero for client in self.clients]
+                [client.hero for client in self.clients],
+                self.iter_all_bullets()
             )
             if obj.visible
         ]
@@ -101,7 +102,6 @@ class Arena:
             "players": [
                 client.hero.to_player_dict() for client in self.clients
             ],
-            "bullets": [bullet.to_dict() for bullet in self.bullets],
             "squares": [square.to_dict() for square in self.squares],
             "triangles": [triangle.to_dict() for triangle in self.triangles],
             "pentagons": [pentagon.to_dict() for pentagon in self.pentagons]

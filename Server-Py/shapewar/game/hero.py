@@ -27,6 +27,10 @@ class Hero(abilities.PropertyMixin, MovableObject):
         self.experience = 0
         self.level = 1
 
+        self.ready_bullets = []
+        self.bullets = [Bullet(i, self.ready_bullets) for i in range(100)]
+        self.ready_bullets.extend(self.bullets)
+
         self.last_control = {
             'keys': {'W': False, 'A': False, 'S': False, 'D': False},
             'angle': 0,
@@ -44,7 +48,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
         if self.cooldown > 0:
             self.cooldown -= 1
         elif self.last_control['mouse']:
-            self.shoot(arena.bullet_queue.pop())
+            self.shoot(self.ready_bullets.pop())
             self.cooldown += self.reload
         self.accept_keys(**self.last_control['keys'])
         if self.hp > 0:
@@ -74,7 +78,8 @@ class Hero(abilities.PropertyMixin, MovableObject):
             'id': id(self),
             'maxHp': self.max_hp,
             'currentHp': self.hp,
-            'angle': self.angle
+            'angle': self.angle,
+            'bullets': self.bullets
         }
 
     def shoot(self, bullet):
@@ -93,9 +98,8 @@ class Hero(abilities.PropertyMixin, MovableObject):
 
 class Bullet(MovableObject):
 
-    def __init__(self, id, bqueue):
+    def __init__(self, id, hero):
         super().__init__()
-        self.bqueue = bqueue
         self.id = id
         self.radius = 20
         self.angle = 0
@@ -111,7 +115,7 @@ class Bullet(MovableObject):
         self.timeout -= 1
         if self.timeout == 0 or self.hp < 0:
             self.visible = False
-            self.bqueue.append(self)
+            self.hero.ready_bullets.append(self)
 
     def to_dict(self):
         return {
