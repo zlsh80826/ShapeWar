@@ -12,6 +12,7 @@ public:
     const QStringList passiveNames = (QStringList() << "Health Regen"
                                                     << "Max Health"
                                                     << "Body Damage"
+                                                    << "Bullet Speed"
                                                     << "Bullet Penetration"
                                                     << "Bullet Damage"
                                                     << "Reload"

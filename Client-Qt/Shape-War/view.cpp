@@ -48,11 +48,11 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     for (unsigned int i = 0, size = properties.size(); i < size; i++) {
         QPair<QLabel *, QPushButton *> *property = properties.at(i);
         property->first->setGeometry(
-            10, viewHeight - (i + 1) * buttonDistance, labelWidth,
-            buttonDistance - (buttonDistance - buttonLen));
+            10, viewHeight - (i + 1) * passiveDistance, labelWidth,
+            passiveDistance - (passiveDistance - passiveLen));
         property->second->setGeometry(labelWidth + 10,
-                                      viewHeight - (i + 1) * buttonDistance,
-                                      buttonLen, buttonLen);
+                                      viewHeight - (i + 1) * passiveDistance,
+                                      buttonLen + 10, passiveLen);
         property->first->setVisible(false);
         property->second->setVisible(false);
         // property->first->setStyleSheet("background-color : yellow; color :
@@ -214,6 +214,24 @@ void View::onPropertyBtnClicked(int clickedBtnId) {
 }
 
 void View::setPropertyStyle() {
-    this->properties.at(0)->first->setStyleSheet(
-        "background-color: rgb(61, 61, 61, 61); border-style: outset");
+    for (int i = 0; i < properties.size(); ++i) {
+        this->properties.at(i)->first->setStyleSheet(
+            "background-color: rgb(61, 61, 61, 240); border-style: outset; "
+            "border-color: rgb(61, 61, 61, 240); border-top-left-radius: "
+            "10px; border-bottom-left-radius: 10px; font: bold 14px; "
+            "text-align: right; color: rgb(218, 218, 218, 240);");
+        this->properties.at(i)->first->setAlignment(Qt::AlignCenter);
+    }
+    QString common = "border-top-right-radius:10px; border-bottom-right-radius: 10px; "
+                     "font: bold 14px; border-width: 2px; border-style: outset; "
+                     "border-color: rgb(61, 61, 61, 240); color: rgb(61, 61, 61, 240);";
+    this->properties.at(0)->second->setStyleSheet( common.append("background-color: rgb(108, 240, 236, 255);") );
+    this->properties.at(1)->second->setStyleSheet(common + "background-color: rgb(152, 240, 108, 255);");
+    this->properties.at(2)->second->setStyleSheet(common + "background-color: rgb(240, 108, 108, 255);");
+    this->properties.at(3)->second->setStyleSheet(common + "background-color: rgb(240, 217, 108, 255);");
+    this->properties.at(4)->second->setStyleSheet(common + "background-color: rgb(108, 150, 240, 255);");
+    this->properties.at(5)->second->setStyleSheet(common + "background-color: rgb(154, 108, 240, 255);");
+    this->properties.at(6)->second->setStyleSheet(common + "background-color: rgb(236, 108, 240, 255);");
+    this->properties.at(7)->second->setStyleSheet(common + "background-color: rgb(238, 182, 143, 255);");
+
 }
