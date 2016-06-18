@@ -20,6 +20,10 @@ private:
     int lv;
     int exp;
     int maxScore;
+    qreal expWidth;
+    qreal scoreWidth;
+    qreal maxExpWidth;
+    qreal maxScoreWidth;
 };
 
 #endif // SELFINFO_H

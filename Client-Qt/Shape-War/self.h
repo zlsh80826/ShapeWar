@@ -17,6 +17,7 @@ public:
                                                     << "Bullet Damage"
                                                     << "Reload"
                                                     << "Movement Speed");
+    void setInfoPos(QPointF);
     int getUpgradePoints() const;
     void setUpgradePoints(int value);
 signals:

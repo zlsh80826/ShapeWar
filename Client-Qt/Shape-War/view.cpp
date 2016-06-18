@@ -1,7 +1,5 @@
 #include "view.h"
 View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
-    viewWidth = 960;
-    viewHeight = 768;
     this->resize(viewWidth, viewHeight);
     this->setWindowTitle("Shape-War");
 
@@ -10,8 +8,8 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     // unexpected wrong
 
     // size control, maybe not necessary
-    setMinimumSize(viewWidth, viewHeight);
-    setMaximumSize(viewWidth, viewHeight);
+    setMinimumSize(500, 400);
+    setMaximumSize(maxViewWidth, maxViewHeight);
 
     // disable the scroll bar
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -31,6 +29,7 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     sendDelayTimer->start(20);
 
     key_a_pressed = key_d_pressed = key_s_pressed = key_w_pressed = false;
+    mouseClicked = false;
 
     expandBtn = new QPushButton("+", this);
     expandBtn->setGeometry(0, viewHeight - buttonLen, buttonLen, buttonLen);
@@ -49,10 +48,10 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
         QPair<QLabel *, QPushButton *> *property = properties.at(i);
         property->first->setGeometry(
             10, viewHeight - (i + 1) * passiveDistance, labelWidth,
-            passiveDistance - (passiveDistance - passiveLen));
+            passiveDistance - (passiveDistance - passiveHeight));
         property->second->setGeometry(labelWidth + 10,
                                       viewHeight - (i + 1) * passiveDistance,
-                                      buttonLen + 10, passiveLen);
+                                      buttonLen + 10, passiveHeight);
         property->first->setVisible(false);
         property->second->setVisible(false);
         // property->first->setStyleSheet("background-color : yellow; color :
@@ -70,6 +69,7 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     this->sends = 0;
     connect(sec, SIGNAL(timeout()), this, SLOT(print_freq()));
     sec->start(1000);
+
 }
 void View::print_freq() {
     qDebug() << "send per sec: " << this->sends;
@@ -123,6 +123,7 @@ void View::onSelfPosChanged() {
     this->centerOn(this->self->pos());
     QPointF mouseP = this->mapToScene(this->mapFromGlobal(QCursor::pos()));
     self->setRotation(this->calcRargetAngle(mouseP));
+    self->setInfoPos(this->mapToScene(QPoint(InfoCenterX, InfoCenterY)));
 }
 
 void View::mousePressEvent(QMouseEvent *event) {
@@ -167,6 +168,27 @@ void View::wheelEvent(QWheelEvent *event) {
     printf(" %d", self->getUpgradePoints());
 }
 
+void View::resizeEvent(QResizeEvent *event)
+{
+    int nowViewWidth = this->width();
+    int nowViewHeight = this->height();
+    expandBtn->setGeometry(0, nowViewHeight - buttonLen, buttonLen, buttonLen);
+    for (unsigned int i = 0, size = properties.size(); i < size; i++) {
+        QPair<QLabel *, QPushButton *> *property = properties.at(i);
+        property->first->setGeometry(
+            10, nowViewHeight - (i + 1) * passiveDistance, labelWidth,
+            passiveHeight);
+        property->second->setGeometry(labelWidth + 10,
+                                      nowViewHeight - (i + 1) * passiveDistance,
+                                      buttonLen + 10, passiveHeight);
+    }
+    InfoCenterX = nowViewWidth/2;
+    InfoCenterY = nowViewHeight - InfoHeightOffset;
+    self->setInfoPos(this->mapToScene(QPoint(InfoCenterX, InfoCenterY)));
+    this->centerOn(self);
+    self->info->update(this->rect());
+}
+
 void View::sendControlToServer() {
     this->sends++;
     QJsonObject data;
@@ -183,7 +205,7 @@ void View::showUpgrateOptions() {
     isExpanded = !isExpanded;
     if (isExpanded) {
         expandBtn->setText("-");
-        expandBtn->setGeometry(0, viewHeight -
+        expandBtn->setGeometry(0, this->height() -
                                       (properties.size() + 1) * buttonDistance,
                                buttonLen, buttonLen);
         for (QPair<QLabel *, QPushButton *> *property : properties) {
@@ -192,7 +214,7 @@ void View::showUpgrateOptions() {
         }
     } else {
         expandBtn->setText("+");
-        expandBtn->setGeometry(0, viewHeight - buttonLen, buttonLen, buttonLen);
+        expandBtn->setGeometry(0, this->height() - buttonLen, buttonLen, buttonLen);
         for (QPair<QLabel *, QPushButton *> *property : properties) {
             property->first->setVisible(false);
             property->second->setVisible(false);
@@ -222,16 +244,24 @@ void View::setPropertyStyle() {
             "text-align: right; color: rgb(218, 218, 218, 240);");
         this->properties.at(i)->first->setAlignment(Qt::AlignCenter);
     }
-    QString common = "border-top-right-radius:10px; border-bottom-right-radius: 10px; "
-                     "font: bold 14px; border-width: 2px; border-style: outset; "
-                     "border-color: rgb(61, 61, 61, 240); color: rgb(61, 61, 61, 240);";
-    this->properties.at(0)->second->setStyleSheet( common.append("background-color: rgb(108, 240, 236, 255);") );
-    this->properties.at(1)->second->setStyleSheet(common + "background-color: rgb(152, 240, 108, 255);");
-    this->properties.at(2)->second->setStyleSheet(common + "background-color: rgb(240, 108, 108, 255);");
-    this->properties.at(3)->second->setStyleSheet(common + "background-color: rgb(240, 217, 108, 255);");
-    this->properties.at(4)->second->setStyleSheet(common + "background-color: rgb(108, 150, 240, 255);");
-    this->properties.at(5)->second->setStyleSheet(common + "background-color: rgb(154, 108, 240, 255);");
-    this->properties.at(6)->second->setStyleSheet(common + "background-color: rgb(236, 108, 240, 255);");
-    this->properties.at(7)->second->setStyleSheet(common + "background-color: rgb(238, 182, 143, 255);");
-
+    QString common =
+        "border-top-right-radius:10px; border-bottom-right-radius: 10px; "
+        "font: bold 14px; border-width: 2px; border-style: outset; "
+        "border-color: rgb(61, 61, 61, 240); color: rgb(61, 61, 61, 240);";
+    this->properties.at(0)->second->setStyleSheet(
+        common.append("background-color: rgb(108, 240, 236, 255);"));
+    this->properties.at(1)->second->setStyleSheet(
+        common + "background-color: rgb(152, 240, 108, 255);");
+    this->properties.at(2)->second->setStyleSheet(
+        common + "background-color: rgb(240, 108, 108, 255);");
+    this->properties.at(3)->second->setStyleSheet(
+        common + "background-color: rgb(240, 217, 108, 255);");
+    this->properties.at(4)->second->setStyleSheet(
+        common + "background-color: rgb(108, 150, 240, 255);");
+    this->properties.at(5)->second->setStyleSheet(
+        common + "background-color: rgb(154, 108, 240, 255);");
+    this->properties.at(6)->second->setStyleSheet(
+        common + "background-color: rgb(236, 108, 240, 255);");
+    this->properties.at(7)->second->setStyleSheet(
+        common + "background-color: rgb(238, 182, 143, 255);");
 }
