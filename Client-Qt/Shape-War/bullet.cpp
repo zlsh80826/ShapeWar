@@ -2,9 +2,7 @@
 #include <QDebug>
 #include <QPainter>
 
-Bullet::Bullet(int unused) {
-    // what the hell is unused doing....
-    (void)unused;
+Bullet::Bullet(int) {
     this->setOpacity(0);
     this->radius = 20;
     this->disappearTimer = new QTimer(this);
