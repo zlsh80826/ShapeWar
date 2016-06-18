@@ -1,4 +1,5 @@
 from collections import defaultdict
+import itertools
 import math
 import cmath
 import logging
@@ -13,11 +14,13 @@ logger = logging.getLogger(__name__)
 class Hero(abilities.PropertyMixin, MovableObject):
 
     visible = True
+    counter = itertools.count()
 
     def __init__(self):
         self.skill_points = 0
         self.levels = defaultdict(int)
         self.abilities = abilities.Abilities(self)
+        self.id = next(self.counter)
 
         super().__init__()
 
@@ -63,7 +66,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
         return {
             'x': self.x,
             'y': self.y,
-            'id': id(self),
+            'id': self.id,
             'maxHp': self.max_hp,
             'currentHp': self.hp,
             'level': self.level,
@@ -75,7 +78,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
         return {
             'x': self.x,
             'y': self.y,
-            'id': id(self),
+            'id': self.id,
             'maxHp': self.max_hp,
             'currentHp': self.hp,
             'angle': self.angle,
