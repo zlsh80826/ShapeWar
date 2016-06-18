@@ -6,6 +6,7 @@
 #include <QGraphicsView>
 #include <QKeyEvent>
 #include <QHash>
+#include <QSet>
 #include <QtWebSockets/QWebSocket>
 #include <bullet.h>
 #include <hero.h>
@@ -50,6 +51,9 @@ private:
     QColor backgroundColor;
     QHash<int, Hero*> heroes;
     void fillServerInfo(QString &serverUrl, QString &port);
+
+    int cleanTimer;
+    QSet<int> cleanHit;
 
     QTimer *sec;
     int recvs;

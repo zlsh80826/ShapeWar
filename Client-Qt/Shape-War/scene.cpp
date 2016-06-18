@@ -33,6 +33,8 @@ Scene::Scene(QWidget *parent) : QGraphicsScene(parent) {
     this->recvs = 0;
     connect(sec, SIGNAL(timeout()), this, SLOT(print_freq()));
     sec->start(1000);
+
+    cleanTimer = 0;
 }
 void Scene::print_freq() {
     qDebug() << "recv per sec: " << this->recvs;
@@ -105,20 +107,41 @@ void Scene::onTextMessageReceived(QString message) {
 
     auto self_id = object["self"].toObject()["id"];
 
+    cleanTimer++;
+    if(cleanTimer >= 400) {
+        cleanTimer = 0;
+        cleanHit.clear();
+    }
     for (const auto& hero_data: object["players"].toArray()) {
         const auto& hero_object = hero_data.toObject();
+        int heroId = hero_object["id"].toInt();
         if (hero_object["id"] != self_id) {
             Hero* hero;
-            if (not this->heroes.contains(hero_object["id"].toInt())) {
+            if (not this->heroes.contains(heroId)) {
                 hero = new Hero;
-                this->heroes[hero_object["id"].toInt()] = hero;
+                this->heroes[heroId] = hero;
                 this->addItem(hero);
                 this->addItem(hero->hpBar);
                 hero->bullets->addToParentNoHPBar(this);
             } else {
-                hero = this->heroes[hero_object["id"].toInt()];
+                hero = this->heroes[heroId];
             }
             hero->read_player(hero_object);
+        }
+        if( cleanTimer == 0 ) {
+            cleanHit.insert(heroId);
+        }
+    }
+    if( cleanTimer == 0) {
+        QHash<int, Hero*>::iterator iter = heroes.begin(), end = heroes.end();
+        QHash<int, Hero*>::iterator prev;
+        while( iter != end ) {
+            prev = iter++;
+            if(  cleanHit.contains(prev.key()) == false ) {
+                this->removeItem(prev.value());
+                delete prev.value();
+                heroes.erase(prev);
+            }
         }
     }
 }
