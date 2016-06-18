@@ -79,9 +79,6 @@ void Scene::initGame() {
 
     pentagons = new PolygonGroup<Polygon>(5, 10);
     pentagons->addToParent(this);
-
-    bullets = new PolygonGroup<Bullet>(0);
-    bullets->addToParentNoHPBar(this);
 }
 
 void Scene::gameOver() {
@@ -103,25 +100,23 @@ void Scene::onTextMessageReceived(QString message) {
     this->triangles->read(object["triangles"].toArray());
     this->rectangles->read(object["squares"].toArray());
     this->pentagons->read(object["pentagons"].toArray());
-    this->bullets->read(object["bullets"].toArray());
 
     auto self_id = object["self"].toObject()["id"];
 
-    for (Hero *hero : heroes) {
-        this->removeItem(hero);
-        this->removeItem(hero->hpBar);
-        delete hero;
-    }
-    heroes.clear();
-
-    for (const auto &hero_data : object["players"].toArray()) {
-        const auto &hero_object = hero_data.toObject();
+    for (const auto& hero_data: object["players"].toArray()) {
+        const auto& hero_object = hero_data.toObject();
         if (hero_object["id"] != self_id) {
-            auto hero = new Hero;
+            Hero* hero;
+            if (not this->heroes.contains(hero_object["id"].toInt())) {
+                hero = new Hero;
+                this->heroes[hero_object["id"].toInt()] = hero;
+                this->addItem(hero);
+                this->addItem(hero->hpBar);
+                hero->bullets->addToParentNoHPBar(this);
+            } else {
+                hero = this->heroes[hero_object["id"].toInt()];
+            }
             hero->read_player(hero_object);
-            this->addItem(hero);
-            this->addItem(hero->hpBar);
-            heroes.push_back(hero);
         }
     }
 }

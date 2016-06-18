@@ -1,7 +1,8 @@
-#include "hero.h"
 #include <QKeyEvent>
 #include <QPainter>
 #include <QtMath>
+
+#include "hero.h"
 
 Hero::Hero() {
     this->width = 60;
@@ -20,6 +21,8 @@ Hero::Hero() {
 
     // test hpBar
     this->hpBar = new HpBar(10000, 60, 40);
+
+    bullets = new PolygonGroup<Bullet>(0);
 }
 
 QRectF Hero::boundingRect() const {
@@ -55,4 +58,5 @@ void Hero::read_player(const QJsonObject &data) {
     this->setY(data["y"].toDouble());
     this->hpBar->setHp(data["currentHp"].toInt(), data["maxHp"].toInt());
     this->hpBar->setPos(this->x(), this->y());
+    this->bullets->read(data["bullets"].toArray());
 }

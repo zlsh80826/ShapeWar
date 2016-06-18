@@ -5,6 +5,8 @@
 #include <QJsonObject>
 #include <QPolygon>
 #include <hpbar.h>
+#include <bullet.h>
+#include <polygongroup.h>
 
 class Hero : public QGraphicsObject {
     Q_OBJECT
@@ -17,6 +19,7 @@ public:
     QPainterPath shape() const;
     void setTargetAngle(qreal targetAngle);
     HpBar *hpBar;
+    PolygonGroup<Bullet> *bullets;
 
 protected:
     qreal width;
