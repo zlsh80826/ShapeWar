@@ -16,7 +16,7 @@ void Self::read(const QJsonObject &json) {
                        instance["maxHp"].toInt());
 
     this->info->setLv(this->level);
-    this->info->setExp(this->experience);
+    // this->info->setExp(this->experience);
 
     QJsonArray passivesArray = instance["passives"].toArray();
     for (int i = 0; i < passivesArray.size(); ++i) {
@@ -24,6 +24,9 @@ void Self::read(const QJsonObject &json) {
     }
 }
 
+void Self::setInfoPos(QPointF pos) {
+    info->setPos(pos);
+}
 int Self::getUpgradePoints() const {
     return upgradePoints;
 }

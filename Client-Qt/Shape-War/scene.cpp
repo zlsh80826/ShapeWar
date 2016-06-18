@@ -64,7 +64,7 @@ void Scene::initGame() {
     self->setPos(100, 200);
     this->addItem(self);
     this->addItem(self->hpBar);
-    this->self->setZValue(1);
+    this->self->setZValue(2);
 
     // test name
     this->self->info->setName("test");

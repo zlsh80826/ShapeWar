@@ -35,9 +35,14 @@ protected:
     void keyReleaseEvent(QKeyEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+
 
 private:
-    int viewWidth, viewHeight;
+    const int viewWidth = 960;
+    const int viewHeight = 768;
+    const int maxViewWidth = 1920;
+    const int maxViewHeight = 1080;
     qreal calcRargetAngle(QPointF &mouseP);
     Self *self;
 
@@ -63,6 +68,10 @@ private:
     QVector<QPair<QLabel *, QPushButton *> *> properties;
     QButtonGroup *propertyBtnPtrGroup;
     QWebSocket &ws;
+
+    const int InfoHeightOffset = 120;
+    int InfoCenterX = viewWidth/2;
+    int InfoCenterY = viewHeight - InfoHeightOffset;
 
     QTimer *sec;
     int sends;
