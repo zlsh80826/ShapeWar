@@ -2,8 +2,6 @@
 #define SCENE_H
 
 #include "polygongroup.h"
-#include "rectangle.h"
-#include "triangle.h"
 #include <QColor>
 #include <QGraphicsView>
 #include <QKeyEvent>
@@ -12,7 +10,7 @@
 #include <bullet.h>
 #include <hero.h>
 #include <math.h>
-#include <pentagon.h>
+#include <polygon.h>
 #include <self.h>
 
 class Scene : public QGraphicsScene {
@@ -21,9 +19,9 @@ public:
     Scene(QWidget *parent = 0);
     Self *self;
 
-    PolygonGroup<Triangle> *triangles;
-    PolygonGroup<Rectangle> *rectangles;
-    PolygonGroup<Pentagon> *pentagons;
+    PolygonGroup<Polygon> *triangles;
+    PolygonGroup<Polygon> *rectangles;
+    PolygonGroup<Polygon> *pentagons;
     PolygonGroup<Bullet> *bullets;
 
     // connection
