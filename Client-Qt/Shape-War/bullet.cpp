@@ -3,6 +3,7 @@
 #include <QPainter>
 
 Bullet::Bullet(int unused) {
+    this->setOpacity(0);
     this->radius = 20;
     this->disappearTimer = new QTimer(this);
     this->stage = INACTIVE;
