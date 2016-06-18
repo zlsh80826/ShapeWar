@@ -48,6 +48,7 @@ cdef class Square(Garbage):
 
     def __init__(self, id):
         self.maxHp = 100
+        self.hp = 100
         super(Square, self).__init__(id)
         self.radius = 20
         self.max_speed = 5
@@ -58,6 +59,7 @@ cdef class Triangle(Garbage):
 
     def __init__(self, id):
         self.maxHp = 300
+        self.hp = 300
         super(Triangle, self).__init__(id)
         self.radius = 20
         self.max_speed = 5
@@ -68,6 +70,7 @@ cdef class Pentagon(Garbage):
 
     def __init__(self, id):
         self.maxHp = 1000
+        self.hp = 1000
         super(Pentagon, self).__init__(id)
         self.radius = 25
         self.max_speed = 5

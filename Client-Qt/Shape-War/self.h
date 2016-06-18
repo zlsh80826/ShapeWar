@@ -9,19 +9,20 @@ public:
     Self();
     void read(const QJsonObject &json);
     SelfInfo *info;
+    const QStringList passiveNames = (QStringList() << "Health Regen"
+                                                    << "Max Health"
+                                                    << "Body Damage"
+                                                    << "Bullet Speed"
+                                                    << "Bullet Penetration"
+                                                    << "Bullet Damage"
+                                                    << "Reload"
+                                                    << "Movement Speed");
     void setInfoPos(QPointF);
-    const QStringList passiveNames = ( QStringList()
-                                        << "Health Regen"
-                                        << "Max Health"
-                                        << "Body Damage"
-                                        << "Bullet Penetration"
-                                        << "Bullet Damage"
-                                        << "Reload"
-                                        << "Movement Speed" );
     int getUpgradePoints() const;
     void setUpgradePoints(int value);
 signals:
     void upgradePointsChanged();
+
 private:
     int experience;
     int level;

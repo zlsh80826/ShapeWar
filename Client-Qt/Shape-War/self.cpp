@@ -31,7 +31,7 @@ int Self::getUpgradePoints() const {
     return upgradePoints;
 }
 void Self::setUpgradePoints(int value) {
-    if(upgradePoints != value) {
+    if (upgradePoints != value) {
         upgradePoints = value;
         emit upgradePointsChanged();
     }

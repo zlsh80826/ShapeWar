@@ -3,21 +3,17 @@
 
 #include "hero.h"
 #include "scene.h"
+#include <QButtonGroup>
 #include <QDebug>
 #include <QGraphicsView>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QKeyEvent>
-#include <QTimer>
-#include <QWebSocket>
-#include <pentagon.h>
-#include <rectangle.h>
-#include <triangle.h>
-
 #include <QLabel>
 #include <QPair>
 #include <QPushButton>
-#include <QButtonGroup>
+#include <QTimer>
+#include <QWebSocket>
 
 class View : public QGraphicsView {
     Q_OBJECT
@@ -64,6 +60,8 @@ private:
     // for upgrade option
     const int buttonLen = 30;
     const int buttonDistance = 33;
+    const int passiveHeight = 21;
+    const int passiveDistance = 24;
     const int labelWidth = 150;
     QPushButton *expandBtn;
     bool isExpanded;
@@ -77,6 +75,8 @@ private:
 
     QTimer *sec;
     int sends;
+
+    void setPropertyStyle();
 private slots:
     void print_freq();
 };
