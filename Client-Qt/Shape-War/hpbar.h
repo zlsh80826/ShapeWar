@@ -16,6 +16,8 @@ public:
 
 private slots:
     void decreaseOpacity();
+signals:
+    void dieSignal();
 
 private:
     qreal curHp;

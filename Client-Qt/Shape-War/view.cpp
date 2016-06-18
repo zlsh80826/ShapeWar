@@ -126,9 +126,11 @@ void View::onSelfPosChanged() {
 }
 
 void View::mousePressEvent(QMouseEvent *event) {
+    (void) event;
     mouseClicked = true;
 }
 void View::mouseReleaseEvent(QMouseEvent *event) {
+    (void) event;
     mouseClicked = false;
 }
 void View::mouseMoveEvent(QMouseEvent *event) {
@@ -169,6 +171,7 @@ void View::wheelEvent(QWheelEvent *event) {
 
 void View::resizeEvent(QResizeEvent *event)
 {
+    (void) event;
     int nowViewWidth = this->width();
     int nowViewHeight = this->height();
     if (isExpanded) {

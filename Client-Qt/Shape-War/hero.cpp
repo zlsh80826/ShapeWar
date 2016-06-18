@@ -21,6 +21,7 @@ Hero::Hero() {
 
     // test hpBar
     this->hpBar = new HpBar(10000, 60, 40);
+    connect(hpBar, SIGNAL(dieSignal()), this, SLOT(onDieSignal()));
 
     bullets = new PolygonGroup<Bullet>(0);
 }
@@ -34,6 +35,8 @@ QRectF Hero::boundingRect() const {
 
 void Hero::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                  QWidget *widget) {
+    (void) option;
+    (void) widget;
     QPen pen;
     pen.setWidth(3);
     pen.setColor(QColor(85, 85, 85, 255));
@@ -59,4 +62,20 @@ void Hero::read_player(const QJsonObject &data) {
     this->hpBar->setHp(data["currentHp"].toInt(), data["maxHp"].toInt());
     this->hpBar->setPos(this->x(), this->y());
     this->bullets->read(data["bullets"].toArray());
+}
+void Hero::onDieSignal() {
+    this->hpBar->setVisible(false);
+    this->disappearTimer = new QTimer(this);
+    connect(disappearTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
+    disappearTimer->start(20);
+}
+
+void Hero::decreaseOpacity()
+{
+    if (this->opacity() <= 0.03) {
+        this->setOpacity(0);
+        this->disappearTimer->stop();
+        return;
+    }
+    this->setOpacity(this->opacity() - 0.03);
 }

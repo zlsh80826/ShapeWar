@@ -3,6 +3,8 @@
 #include <QPainter>
 
 Bullet::Bullet(int unused) {
+    // what the hell is unused doing....
+    (void) unused;
     this->setOpacity(0);
     this->radius = 20;
     this->disappearTimer = new QTimer(this);
@@ -19,6 +21,8 @@ QRectF Bullet::boundingRect() const {
 
 void Bullet::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                    QWidget *widget) {
+    (void) option;
+    (void) widget;
     QPen pen;
     pen.setWidth(4);
     pen.setColor(QColor(85, 85, 85, 255));

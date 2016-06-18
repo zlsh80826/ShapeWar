@@ -39,6 +39,7 @@ void Scene::print_freq() {
     this->recvs = 0;
 }
 void Scene::drawBackground(QPainter *painter, const QRectF &rect) {
+    (void) rect;
     // need to change position to global
     painter->setBrush(backgroundColor);
     painter->setPen(backgroundColor);

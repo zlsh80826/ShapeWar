@@ -7,6 +7,7 @@
 #include <hpbar.h>
 #include <bullet.h>
 #include <polygongroup.h>
+#include <QTimer>
 
 class Hero : public QGraphicsObject {
     Q_OBJECT
@@ -27,6 +28,11 @@ protected:
 
 public:
     void read_player(const QJsonObject &);
+private slots:
+    void onDieSignal();
+    void decreaseOpacity();
+private:
+    QTimer *disappearTimer;
 };
 
 #endif // HERO_H
