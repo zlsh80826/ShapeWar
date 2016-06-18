@@ -6,6 +6,7 @@
 
 SelfInfo::SelfInfo() {
     this->score = 0;
+    this->targetScore = 0;
     this->maxScore = 50000;
     this->lv = 1;
     this->exp = 0;
@@ -16,8 +17,10 @@ SelfInfo::SelfInfo() {
     this->maxScoreWidth = 500;
     this->setOpacity(0.95);
     this->setZValue(1);
-    this->timer = new QTimer(this);
-    QObject::connect(this->timer, SIGNAL(timeout()), this, SLOT(expAni()));
+    this->expTimer = new QTimer(this);
+    this->scoreTimer = new QTimer(this);
+    QObject::connect(this->expTimer, SIGNAL(timeout()), this, SLOT(expAni()));
+    QObject::connect(this->scoreTimer, SIGNAL(timeout()), this, SLOT(scoreAni()));
 }
 
 void SelfInfo::setName(QString name) {
@@ -54,18 +57,23 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 void SelfInfo::setExp(int new_exp) {
     if(new_exp == this->targetExp)
         return;
-    if(this->timer->isActive()) {
-        this->timer->setInterval(10);
+    if(this->expTimer->isActive()) {
+        this->expTimer->setInterval(5);
         return;
     }
     this->targetExp = new_exp;
-    this->timer->start(20);
-    qDebug() << this->exp << " " << this->targetExp;
+    this->expTimer->start(20);
 }
 
 void SelfInfo::setScore(int new_score) {
-    this->score = new_score;
-    this->scoreWidth = this->maxScoreWidth * (this->score / this->maxScore);
+    if(new_score == this->targetScore)
+        return;
+    if(this->scoreTimer->isActive()) {
+        this->scoreTimer->setInterval(5);
+        return;
+    }
+    this->targetScore = new_score;
+    this->scoreTimer->start(20);
 }
 
 void SelfInfo::setLv(int new_lv) {
@@ -74,12 +82,24 @@ void SelfInfo::setLv(int new_lv) {
 
 void SelfInfo::expAni() {
     if(this->targetExp == this->exp) {
-        timer->stop();
+        expTimer->stop();
         return;
     }
     if(this->targetExp > this->exp) {
         ++ this->exp;
     }
     this->expWidth = (this->maxExpWidth * this->exp) / (this->lv * 1000);
+    this->update(this->boundingRect());
+}
+
+void SelfInfo::scoreAni() {
+    if(this->targetScore == this->score) {
+        scoreTimer->stop();
+        return;
+    }
+    if(this->targetScore > this->score) {
+        ++ this->score;
+    }
+    this->scoreWidth = (this->maxScoreWidth * this->score) / this->maxScore;
     this->update(this->boundingRect());
 }
