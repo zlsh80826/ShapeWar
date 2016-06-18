@@ -5,7 +5,7 @@
 #include <QColor>
 #include <QGraphicsView>
 #include <QKeyEvent>
-#include <QVector>
+#include <QHash>
 #include <QtWebSockets/QWebSocket>
 #include <bullet.h>
 #include <hero.h>
@@ -22,7 +22,6 @@ public:
     PolygonGroup<Polygon> *triangles;
     PolygonGroup<Polygon> *rectangles;
     PolygonGroup<Polygon> *pentagons;
-    PolygonGroup<Bullet> *bullets;
 
     // connection
     QWebSocket m_webSocket;
@@ -49,7 +48,7 @@ private:
     int height;
     int margin;
     QColor backgroundColor;
-    QVector<Hero *> heroes;
+    QHash<int, Hero*> heroes;
     void fillServerInfo(QString &serverUrl, QString &port);
 
     QTimer *sec;

@@ -14,6 +14,7 @@ void Self::read(const QJsonObject &json) {
     this->hpBar->setPos(this->x(), this->y());
     this->hpBar->setHp(instance["currentHp"].toInt(),
                        instance["maxHp"].toInt());
+    this->bullets->read(instance["bullets"].toArray());
 
     this->info->setLv(this->level);
     // this->info->setExp(this->experience);

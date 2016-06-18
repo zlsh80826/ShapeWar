@@ -1,4 +1,5 @@
 from collections import defaultdict
+import itertools
 import math
 import cmath
 import logging
@@ -13,11 +14,13 @@ logger = logging.getLogger(__name__)
 class Hero(abilities.PropertyMixin, MovableObject):
 
     visible = True
+    counter = itertools.count()
 
     def __init__(self):
         self.skill_points = 0
         self.levels = defaultdict(int)
         self.abilities = abilities.Abilities(self)
+        self.id = next(self.counter)
 
         super().__init__()
 
@@ -26,6 +29,10 @@ class Hero(abilities.PropertyMixin, MovableObject):
         self.hp = self.max_hp
         self.experience = 0
         self.level = 1
+
+        self.ready_bullets = []
+        self.bullets = [Bullet(i, self.ready_bullets) for i in range(100)]
+        self.ready_bullets.extend(self.bullets)
 
         self.last_control = {
             'keys': {'W': False, 'A': False, 'S': False, 'D': False},
@@ -44,7 +51,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
         if self.cooldown > 0:
             self.cooldown -= 1
         elif self.last_control['mouse']:
-            self.shoot(arena.bullet_queue.pop())
+            self.shoot(self.ready_bullets.pop())
             self.cooldown += self.reload
         self.accept_keys(**self.last_control['keys'])
         if self.hp > 0:
@@ -59,22 +66,24 @@ class Hero(abilities.PropertyMixin, MovableObject):
         return {
             'x': self.x,
             'y': self.y,
-            'id': id(self),
+            'id': self.id,
             'maxHp': self.max_hp,
             'currentHp': self.hp,
             'level': self.level,
             'experience': self.experience,
             'passives': [ability.level for ability in self.abilities],
+            'bullets': [bullet.to_dict() for bullet in self.bullets]
         }
 
     def to_player_dict(self):
         return {
             'x': self.x,
             'y': self.y,
-            'id': id(self),
+            'id': self.id,
             'maxHp': self.max_hp,
             'currentHp': self.hp,
-            'angle': self.angle
+            'angle': self.angle,
+            'bullets': [bullet.to_dict() for bullet in self.bullets]
         }
 
     def shoot(self, bullet):
@@ -93,9 +102,8 @@ class Hero(abilities.PropertyMixin, MovableObject):
 
 class Bullet(MovableObject):
 
-    def __init__(self, id, bqueue):
+    def __init__(self, id, hero):
         super().__init__()
-        self.bqueue = bqueue
         self.id = id
         self.radius = 20
         self.angle = 0
@@ -111,7 +119,7 @@ class Bullet(MovableObject):
         self.timeout -= 1
         if self.timeout == 0 or self.hp < 0:
             self.visible = False
-            self.bqueue.append(self)
+            self.owner.ready_bullets.append(self)
 
     def to_dict(self):
         return {
