@@ -79,7 +79,6 @@ void View::print_freq() {
 void View::keyPressEvent(QKeyEvent *event) {
     // ment is just for testing
     // whether to move to judged by server instead of here
-    const qreal moveAmount = 3.0;
 
     switch (event->key()) {
     case Qt::Key_W:
@@ -172,21 +171,24 @@ void View::resizeEvent(QResizeEvent *event)
 {
     int nowViewWidth = this->width();
     int nowViewHeight = this->height();
-    expandBtn->setGeometry(0, nowViewHeight - buttonLen, buttonLen, buttonLen);
+    if (isExpanded) {
+        expandBtn->setText("-");
+        expandBtn->setGeometry( 0, nowViewHeight - (properties.size() + 1) * passiveDistance - 15,
+                                                        buttonLen, buttonLen);
+    } else {
+        expandBtn->setText("+");
+        expandBtn->setGeometry(0, nowViewHeight - buttonLen, buttonLen, buttonLen);
+    }
     for (unsigned int i = 0, size = properties.size(); i < size; i++) {
         QPair<QLabel *, QPushButton *> *property = properties.at(i);
-        property->first->setGeometry(
-            10, nowViewHeight - (i + 1) * passiveDistance, labelWidth,
-            passiveHeight);
-        property->second->setGeometry(labelWidth + 10,
-                                      nowViewHeight - (i + 1) * passiveDistance,
-                                      buttonLen + 10, passiveHeight);
+        property->first->setGeometry( 10, nowViewHeight - (i + 1) * passiveDistance,
+                                                             labelWidth, passiveHeight);
+        property->second->setGeometry( labelWidth + 10, nowViewHeight - (i + 1) * passiveDistance,
+                                                                  buttonLen + 10, passiveHeight);
     }
     InfoCenterX = nowViewWidth/2;
     InfoCenterY = nowViewHeight - InfoHeightOffset;
-    self->setInfoPos(this->mapToScene(QPoint(InfoCenterX, InfoCenterY)));
-    this->centerOn(self);
-    self->info->update(this->rect());
+    this->onSelfPosChanged();
 }
 
 void View::sendControlToServer() {
@@ -205,9 +207,8 @@ void View::showUpgrateOptions() {
     isExpanded = !isExpanded;
     if (isExpanded) {
         expandBtn->setText("-");
-        expandBtn->setGeometry(0, this->height() -
-                                      (properties.size() + 1) * buttonDistance,
-                               buttonLen, buttonLen);
+        expandBtn->setGeometry( 0, this->height() - (properties.size() + 1) * passiveDistance - 15,
+                                                      buttonLen, buttonLen);
         for (QPair<QLabel *, QPushButton *> *property : properties) {
             property->first->setVisible(true);
             property->second->setVisible(true);

@@ -59,7 +59,6 @@ private:
 
     // for upgrade option
     const int buttonLen = 30;
-    const int buttonDistance = 33;
     const int passiveHeight = 21;
     const int passiveDistance = 24;
     const int labelWidth = 150;

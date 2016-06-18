@@ -32,9 +32,12 @@ void HpBar::setHp(int curHp, int maxHp) {
         this->revealTimer->stop();
         this->setOpacity(255);
     }
-    this->curHp = curHp;
-    this->maxHp = maxHp;
-    this->curHpWidth = width * (this->curHp / this->maxHp);
+    if( curHp != this->curHp || maxHp != this->maxHp) {
+        this->curHp = curHp;
+        this->maxHp = maxHp;
+        this->curHpWidth = width * (this->curHp / this->maxHp);
+        this->update(this->boundingRect());
+    }
 }
 
 QRectF HpBar::boundingRect() const {
