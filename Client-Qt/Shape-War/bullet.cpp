@@ -1,12 +1,13 @@
 #include "bullet.h"
-#include <QPainter>
 #include <QDebug>
+#include <QPainter>
 
 Bullet::Bullet(int unused) {
     this->radius = 20;
     this->disappearTimer = new QTimer(this);
     this->stage = INACTIVE;
-    QObject::connect(this->disappearTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
+    QObject::connect(this->disappearTimer, SIGNAL(timeout()), this,
+                     SLOT(decreaseOpacity()));
 }
 
 QRectF Bullet::boundingRect() const {
@@ -34,7 +35,7 @@ QPainterPath Bullet::shape() const {
 
 void Bullet::read(const QJsonObject &json) {
     bool next_active = json["visible"].toBool();
-    if( (this->stage != ACTIVE) && (next_active==false) )
+    if ((this->stage != ACTIVE) && (next_active == false))
         return;
     this->setStage(next_active);
     this->setX(json["x"].toDouble());
@@ -43,7 +44,7 @@ void Bullet::read(const QJsonObject &json) {
 }
 
 void Bullet::setStage(bool control) {
-    if(control == false) {
+    if (control == false) {
         this->stage = DISAPPEARING;
         this->disappear();
     } else {
@@ -57,11 +58,11 @@ void Bullet::disappear() {
 }
 
 void Bullet::decreaseOpacity() {
-    if(this->opacity() <= 0.05){
+    if (this->opacity() <= 0.05) {
         this->setOpacity(0);
         this->disappearTimer->stop();
         this->stage = INACTIVE;
     }
-    this->setOpacity(this->opacity()-0.08);
+    this->setOpacity(this->opacity() - 0.08);
     this->radius += 1;
 }

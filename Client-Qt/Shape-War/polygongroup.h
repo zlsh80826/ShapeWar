@@ -23,7 +23,7 @@ public:
         }
     }
 
-    void addToParentNoHPBar(QGraphicsScene * parent) {
+    void addToParentNoHPBar(QGraphicsScene *parent) {
         for (int i = 0; i < count; ++i) {
             parent->addItem(polygons[i]);
         }

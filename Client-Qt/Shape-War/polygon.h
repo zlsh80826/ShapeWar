@@ -1,10 +1,10 @@
 #ifndef POLYGON_H
 #define POLYGON_H
+#include <QColor>
 #include <QGraphicsObject>
 #include <QJsonObject>
 #include <QPolygonF>
 #include <QTimer>
-#include <QColor>
 #include <hpbar.h>
 
 class Polygon : public QGraphicsObject {
@@ -17,6 +17,7 @@ public:
     QPainterPath shape() const;
     void read(const QJsonObject &json);
     HpBar *hpBar;
+
 protected:
     int axis;
     QPolygon polygonShape;
@@ -25,9 +26,9 @@ private:
     qreal angle;
     int stage;
     int edgeCount;
-    enum{ACTIVE, DISAPPEARING, INACTIVE};
-    QTimer* disappearTimer;
-    QTimer* reviveTimer;
+    enum { ACTIVE, DISAPPEARING, INACTIVE };
+    QTimer *disappearTimer;
+    QTimer *reviveTimer;
     void setStage(bool);
     void disappear();
     void constructPolygon();

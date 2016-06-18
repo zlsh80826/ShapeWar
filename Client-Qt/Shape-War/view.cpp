@@ -22,10 +22,8 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     this->self = scene->self;
     this->centerOn(this->self->pos());
 
-    connect(self, SIGNAL(xChanged()), this,
-            SLOT(onSelfPosChanged()));
-    connect(self, SIGNAL(yChanged()), this,
-            SLOT(onSelfPosChanged()));
+    connect(self, SIGNAL(xChanged()), this, SLOT(onSelfPosChanged()));
+    connect(self, SIGNAL(yChanged()), this, SLOT(onSelfPosChanged()));
 
     sendDelayTimer = new QTimer(this);
     connect(sendDelayTimer, SIGNAL(timeout()), this,
@@ -40,10 +38,12 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     isExpanded = false;
     connect(expandBtn, SIGNAL(clicked()), this, SLOT(showUpgrateOptions()));
 
-    for(int i=0, size = self->passiveNames.size() ; i<size ; i++) {
+    for (int i = 0, size = self->passiveNames.size(); i < size; i++) {
         properties.push_back(new QPair<QLabel *, QPushButton *>(
-            new QLabel( self->passiveNames.at(i), this), new QPushButton("+", this)));
+            new QLabel(self->passiveNames.at(i), this),
+            new QPushButton("+", this)));
     }
+
     propertyBtnPtrGroup = new QButtonGroup(this);
     for (unsigned int i = 0, size = properties.size(); i < size; i++) {
         QPair<QLabel *, QPushButton *> *property = properties.at(i);
@@ -55,12 +55,16 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
                                       buttonLen, buttonLen);
         property->first->setVisible(false);
         property->second->setVisible(false);
-        property->first->setStyleSheet("QLabel { background-color : green; color : white; }");
+        // property->first->setStyleSheet("background-color : yellow; color :
+        // white");
 
         propertyBtnPtrGroup->addButton(property->second, i);
     }
-    connect( self, SIGNAL(upgradePointsChanged()), this, SLOT(onUpgradePointChanged()));
-    connect( propertyBtnPtrGroup, SIGNAL(buttonClicked(int)), this, SLOT(onPropertyBtnClicked(int)) );
+    this->setPropertyStyle();
+    connect(self, SIGNAL(upgradePointsChanged()), this,
+            SLOT(onUpgradePointChanged()));
+    connect(propertyBtnPtrGroup, SIGNAL(buttonClicked(int)), this,
+            SLOT(onPropertyBtnClicked(int)));
 
     sec = new QTimer(0);
     this->sends = 0;
@@ -153,11 +157,11 @@ void View::wheelEvent(QWheelEvent *event) {
 
     // below are just testing other things
     printf("From %d to", self->getUpgradePoints());
-    if(event->orientation() == Qt::Vertical) {
-        if(event->delta() > 0) {
-            self->setUpgradePoints( self->getUpgradePoints() + 1 );
+    if (event->orientation() == Qt::Vertical) {
+        if (event->delta() > 0) {
+            self->setUpgradePoints(self->getUpgradePoints() + 1);
         } else {
-            self->setUpgradePoints( self->getUpgradePoints() - 1 );
+            self->setUpgradePoints(self->getUpgradePoints() - 1);
         }
     }
     printf(" %d", self->getUpgradePoints());
@@ -198,7 +202,7 @@ void View::showUpgrateOptions() {
 
 void View::onUpgradePointChanged() {
     bool enanbled = (self->getUpgradePoints() > 0) ? true : false;
-    for(QPair<QLabel *, QPushButton *>* property : properties) {
+    for (QPair<QLabel *, QPushButton *> *property : properties) {
         property->first->setEnabled(enanbled);
         property->second->setEnabled(enanbled);
     }
@@ -207,4 +211,9 @@ void View::onUpgradePointChanged() {
 void View::onPropertyBtnClicked(int clickedBtnId) {
     qDebug() << "Button clicked: " << this->self->passiveNames.at(clickedBtnId);
     // TODO: handle the message want to  pass to server
+}
+
+void View::setPropertyStyle() {
+    this->properties.at(0)->first->setStyleSheet(
+        "background-color: rgb(61, 61, 61, 61); border-style: outset");
 }

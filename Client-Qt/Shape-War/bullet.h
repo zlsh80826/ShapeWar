@@ -18,10 +18,10 @@ public:
 private:
     int radius;
     void disappear();
-    QTimer* disappearTimer;
+    QTimer *disappearTimer;
     void setStage(bool);
     int stage;
-    enum{ACTIVE, DISAPPEARING, INACTIVE};
+    enum { ACTIVE, DISAPPEARING, INACTIVE };
 
 private slots:
     void decreaseOpacity();

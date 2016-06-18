@@ -3,17 +3,17 @@
 
 #include "hero.h"
 #include "scene.h"
+#include <QButtonGroup>
 #include <QDebug>
 #include <QGraphicsView>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QKeyEvent>
-#include <QTimer>
-#include <QWebSocket>
 #include <QLabel>
 #include <QPair>
 #include <QPushButton>
-#include <QButtonGroup>
+#include <QTimer>
+#include <QWebSocket>
 
 class View : public QGraphicsView {
     Q_OBJECT
@@ -64,6 +64,8 @@ private:
 
     QTimer *sec;
     int sends;
+
+    void setPropertyStyle();
 private slots:
     void print_freq();
 };

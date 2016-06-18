@@ -1,8 +1,8 @@
 #include "scene.h"
 #include "hero.h"
 #include "logindialog.h"
-#include "polygongroup.h"
 #include "polygon.h"
+#include "polygongroup.h"
 #include "self.h"
 #include "selfinfo.h"
 #include <QJsonDocument>
@@ -65,6 +65,7 @@ void Scene::initGame() {
     this->addItem(self);
     this->addItem(self->hpBar);
     this->self->setZValue(1);
+
     // test name
     this->self->info->setName("test");
     this->addItem(this->self->info);
