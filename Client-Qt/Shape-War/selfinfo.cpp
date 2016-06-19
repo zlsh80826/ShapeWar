@@ -59,10 +59,6 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 void SelfInfo::setExp(int new_exp) {
     if (new_exp == this->targetExp)
         return;
-    if (this->expTimer->isActive()) {
-        this->expTimer->setInterval(5);
-        return;
-    }
     this->targetExp = new_exp;
     this->expTimer->start(20);
 }
@@ -83,16 +79,20 @@ void SelfInfo::setLv(int new_lv) {
 }
 
 void SelfInfo::expAni() {
-    if (this->targetExp == this->exp ) {
-        ++this->exp ;
+    if ( this->targetExp == this->exp ) {
         expTimer->stop();
-        return;
+    } else if ( this->targetExp > this->exp ) {
+        if( this->targetExp > this->exp + 10)
+            exp += (targetExp-this->exp) / 10;
+        else
+            ++this->exp;
+    } else if ( this->targetExp < this->exp  ) {
+        if( this->targetExp < this->exp - 10 )
+            exp -= (targetExp-this->exp) / 10;
+        else
+            --this->exp;
     }
-    if (this->targetExp > this->exp + 10) {
-        exp += (targetExp-this->exp) / 10;
-    } else {
-        ++this->exp;
-    }
+
     this->expWidth = (this->maxExpWidth * this->exp) / (this->lv * 300);
     this->update(this->boundingRect());
 }
