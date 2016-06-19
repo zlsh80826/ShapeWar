@@ -58,8 +58,10 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 }
 
 void SelfInfo::setExp(int new_exp) {
+    printf("new_exp: %d, lv:%d", new_exp, lv);
     if (new_exp == this->targetExp)
         return;
+    printf("new_exp: %d", new_exp);
     this->targetExp = new_exp;
     this->expTimer->start(20);
 }
@@ -94,7 +96,7 @@ void SelfInfo::expAni() {
             --this->exp;
     }
 
-    this->expWidth = (this->maxExpWidth * this->exp) / (this->lv * 300);
+    this->expWidth = (this->maxExpWidth * this->exp) / (10 * pow(1.2, this->lv-1) );
     this->update(this->boundingRect());
 }
 
