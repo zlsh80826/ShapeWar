@@ -10,10 +10,12 @@
 #include <QJsonObject>
 #include <QKeyEvent>
 #include <QLabel>
+#include <QLineEdit>
 #include <QPair>
 #include <QPushButton>
 #include <QTimer>
 #include <QWebSocket>
+#include <chatbar.h>
 
 class View : public QGraphicsView {
     Q_OBJECT
@@ -66,6 +68,7 @@ private:
     QVector<QPair<QLabel *, QPushButton *> *> properties;
     QButtonGroup *propertyBtnPtrGroup;
     QWebSocket &ws;
+    ChatBar *chatBar;
 
     const int InfoHeightOffset = 120;
     int InfoCenterX = viewWidth / 2;
@@ -75,6 +78,7 @@ private:
     int sends;
 
     void setPropertyStyle();
+    void startChat();
 private slots:
     void print_freq();
 };

@@ -46,12 +46,13 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     propertyBtnPtrGroup = new QButtonGroup(this);
     for (unsigned int i = 0, size = properties.size(); i < size; i++) {
         QPair<QLabel *, QPushButton *> *property = properties.at(i);
-        property->first->setGeometry(
+        // it seems it's not necessary because resize event
+        /*property->first->setGeometry(
             10, viewHeight - (i + 1) * passiveDistance, labelWidth,
             passiveDistance - (passiveDistance - passiveHeight));
         property->second->setGeometry(labelWidth + 10,
                                       viewHeight - (i + 1) * passiveDistance,
-                                      buttonLen + 10, passiveHeight);
+                                      buttonLen + 10, passiveHeight);*/
         property->first->setVisible(false);
         property->second->setVisible(false);
         property->first->setEnabled(false);
@@ -69,6 +70,8 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     this->sends = 0;
     connect(sec, SIGNAL(timeout()), this, SLOT(print_freq()));
     sec->start(1000);
+
+    this->chatBar = new ChatBar(this);
 }
 
 void View::print_freq() {
@@ -114,6 +117,8 @@ void View::keyReleaseEvent(QKeyEvent *event) {
     case Qt::Key_D:
         this->key_d_pressed = false;
         break;
+    case Qt::Key_Enter:
+        this->startChat();
     }
     // qDebug() << "Released key: " << event->key();
 }
@@ -198,6 +203,7 @@ void View::resizeEvent(QResizeEvent *event) {
     InfoCenterX = nowViewWidth / 2;
     InfoCenterY = nowViewHeight - InfoHeightOffset;
     this->onSelfPosChanged();
+    this->chatBar->setGeometry(0, 0, nowViewWidth, 30);
 }
 
 void View::sendControlToServer() {
@@ -330,5 +336,15 @@ void View::setPropertyStyle() {
     } else {
         this->properties.at(7)->second->setStyleSheet(
             common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
+}
+
+void View::startChat() {
+    if(this->chatBar->hasFocus()) {
+        this->chatBar->clearFocus();
+        this->chatBar->setVisible(false);
+    } else {
+        this->chatBar->setVisible(true);
+        this->chatBar->setFocus();
     }
 }
