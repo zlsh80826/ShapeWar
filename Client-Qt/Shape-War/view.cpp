@@ -251,10 +251,13 @@ void View::showUpgrateOptions() {
 
 void View::onUpgradePointChanged() {
     printf("now UP: %d", self->getUpgradePoints());
-    bool enanbled = (self->getUpgradePoints() > 0) ? true : false;
+    bool enabled = (self->getUpgradePoints() > 0) ? true : false;
     for (QPair<QLabel *, QPushButton *> *property : properties) {
-        property->first->setEnabled(enanbled);
-        property->second->setEnabled(enanbled);
+        property->first->setEnabled(enabled);
+        property->second->setEnabled(enabled);
+    }
+    if( enabled == true && isExpanded == false ) {
+        this->showUpgrateOptions();
     }
     this->setPropertyStyle();
 }
