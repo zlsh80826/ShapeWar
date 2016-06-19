@@ -43,11 +43,6 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setRenderHint(QPainter::Antialiasing);
     pen.setColor(QColor(61, 61, 61, 255));
     painter->setPen(pen);
-    painter->setBrush(QBrush(QColor(240, 240, 240, 255), Qt::SolidPattern));
-    QPainterPath path;
-    path.addText(-12 * name.size(), 40, QFont("monospace", 30, QFont::Bold),
-                 name);
-    painter->drawPath(path);
     painter->setBrush(QBrush(QColor(61, 61, 61, 255), Qt::SolidPattern));
     painter->drawRect(QRect(-maxScoreWidth / 2, 50, maxScoreWidth, 20));
     painter->setBrush(QBrush(QColor(108, 240, 162, 255), Qt::SolidPattern));
@@ -56,6 +51,17 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->drawRect(QRect(-maxExpWidth / 2, 80, maxExpWidth, 20));
     painter->setBrush(QBrush(QColor(240, 217, 108, 255), Qt::SolidPattern));
     painter->drawRect(QRect(-maxExpWidth / 2, 80, this->expWidth, 20));
+    painter->setBrush(QBrush(QColor(240, 240, 240, 255), Qt::SolidPattern));
+    QPainterPath namePath;
+    namePath.addText(-12 * name.size(), 40, QFont("monospace", 30, QFont::Bold),
+                 name);
+    painter->drawPath(namePath);
+    pen.setWidth(1);
+    painter->setPen(pen);
+    QPainterPath infoPath;
+    infoPath.addText(-8 * lv_str.size(), 97, QFont("monospace", 12, QFont::Expanded),
+                 lv_str);
+    painter->drawPath(infoPath);
 }
 
 void SelfInfo::setExp(int exp, int max_exp) {
@@ -64,37 +70,30 @@ void SelfInfo::setExp(int exp, int max_exp) {
     printf("new_exp: %d, new_max_exp: %d, lv:%d", exp, max_exp, lv);
     this->targetExp = exp;
     this->max_exp = max_exp;
-    this->expTimer->start(20);
+    this->expTimer->start(25);
 }
 
 void SelfInfo::setScore(int new_score) {
     if (new_score == this->targetScore)
         return;
-    if (this->scoreTimer->isActive()) {
-        this->scoreTimer->setInterval(5);
-        return;
-    }
     this->targetScore = new_score;
-    this->scoreTimer->start(20);
+    this->scoreTimer->start(25);
 }
 
 void SelfInfo::setLv(int new_lv) {
+    if(this->lv == new_lv)
+        return;
     this->lv = new_lv;
+    this->lv_str = "Lv: " + QString::number(new_lv);
 }
 
 void SelfInfo::expAni() {
     if ( targetExp == exp ) {
         expTimer->stop();
     } else if ( targetExp > exp ) {
-        if ( targetExp > exp + 10 )
-            exp += ( targetExp - exp ) / 10;
-        else
-            ++exp;
+        exp += (( targetExp - exp ) / 50 + 1);
     } else if ( targetExp < exp ) {
-        if ( targetExp < exp - 10 )
-            exp -= ( exp - targetExp ) / 10;
-        else
-            --exp;
+        exp -= ( ( exp - targetExp ) / 50 + 1);
     }
 
     this->expWidth = (this->maxExpWidth * this->exp) / this->max_exp;
@@ -105,9 +104,10 @@ void SelfInfo::scoreAni() {
     if (this->targetScore == this->score) {
         scoreTimer->stop();
         return;
-    }
-    if (this->targetScore > this->score) {
-        ++this->score;
+    } else if (this->targetScore > this->score) {
+        score += ((targetScore - score) / 50 + 1);
+    } else if (this->targetScore < this->score) {
+        score -= ((score - targetScore) / 50 + 1);
     }
     this->scoreWidth = (this->maxScoreWidth * this->score) / this->maxScore;
     this->update(this->boundingRect());
