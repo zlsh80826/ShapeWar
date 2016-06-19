@@ -102,14 +102,22 @@ class Hero(abilities.PropertyMixin, MovableObject):
         bullet.timeout = 50 * 2
         bullet.owner = self
 
+    @property
+    def max_exp(self):
+        return int(10 * (1.2 ** (self.level - 1)))
+
     def add_exp(self, ammount):
         self.experience += ammount
         while self.experience >= self.max_exp:
             self.experience -= self.max_exp
             self.level += 1
             self.skill_points += 1
-            self.max_exp = (int) (10 * (1.2 ** (self.level - 1)))
-            print('level: ', self.level, ', exp: ', self.experience, 'max_exp: ', self.max_exp)
+            logger.info(
+                'level: %d, exp: %r, max_exp: %d',
+                self.level,
+                self.experience,
+                self.max_exp
+            )
 
 
 class Bullet(MovableObject):
