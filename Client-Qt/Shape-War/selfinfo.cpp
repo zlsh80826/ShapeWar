@@ -64,18 +64,14 @@ void SelfInfo::setExp(int exp, int max_exp) {
     printf("new_exp: %d, new_max_exp: %d, lv:%d", exp, max_exp, lv);
     this->targetExp = exp;
     this->max_exp = max_exp;
-    this->expTimer->start(20);
+    this->expTimer->start(25);
 }
 
 void SelfInfo::setScore(int new_score) {
     if (new_score == this->targetScore)
         return;
-    if (this->scoreTimer->isActive()) {
-        this->scoreTimer->setInterval(5);
-        return;
-    }
     this->targetScore = new_score;
-    this->scoreTimer->start(20);
+    this->scoreTimer->start(25);
 }
 
 void SelfInfo::setLv(int new_lv) {
@@ -86,15 +82,9 @@ void SelfInfo::expAni() {
     if ( targetExp == exp ) {
         expTimer->stop();
     } else if ( targetExp > exp ) {
-        if ( targetExp > exp + 10 )
-            exp += ( targetExp - exp ) / 10;
-        else
-            ++exp;
+        exp += (( targetExp - exp ) / 50 + 1);
     } else if ( targetExp < exp ) {
-        if ( targetExp < exp - 10 )
-            exp -= ( exp - targetExp ) / 10;
-        else
-            --exp;
+        exp -= ( ( exp - targetExp ) / 50 + 1);
     }
 
     this->expWidth = (this->maxExpWidth * this->exp) / this->max_exp;
@@ -105,9 +95,10 @@ void SelfInfo::scoreAni() {
     if (this->targetScore == this->score) {
         scoreTimer->stop();
         return;
-    }
-    if (this->targetScore > this->score) {
-        ++this->score;
+    } else if (this->targetScore > this->score) {
+        score += ((targetScore - score) / 50 + 1);
+    } else if (this->targetScore < this->score) {
+        score -= ((score - targetScore) / 50 + 1);
     }
     this->scoreWidth = (this->maxScoreWidth * this->score) / this->maxScore;
     this->update(this->boundingRect());
