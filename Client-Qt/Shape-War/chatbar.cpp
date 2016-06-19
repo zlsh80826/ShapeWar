@@ -1,22 +1,29 @@
 #include "chatbar.h"
 #include <QDebug>
 
-ChatBar::ChatBar(QString partUrl, QWidget * parent) : QLineEdit(parent){
+ChatBar::ChatBar(QString partUrl, QWidget * parent) : QLineEdit(parent) {
     this->chat_url = new QUrl( partUrl + "/chat/roomid" );
-
-    connect(&chat_webSocket, &QWebSocket::connected, this, &ChatBar::onConnected);
+    this->setStyleSheet("background-color: rgb(255, 0, 0, 1)");
+    QObject::connect(&chat_webSocket, &QWebSocket::connected, this, &ChatBar::onConnected);
+    this->posY = this->minPosY;
+    this->setGeometry(0, this->posY, parentWidth, chatBarHeight);
+    this->upTimer = new QTimer(this);
+    this->downTimer = new QTimer(this);
+    QObject::connect(this->upTimer, SIGNAL(timeout()), this, SLOT(ChatBar::up()));
+    QObject::connect(this->downTimer, SIGNAL(timeout()), this, SLOT(ChatBar::down()));
     //chat_webSocket.open(QUrl(*chat_url));
 }
 
-void ChatBar::startChat()
-{
+void ChatBar::startChat() {
     if(this->hasFocus()) {
         this->clearFocus();
-        this->setVisible(false);
+        this->upTimer->start(20);
+        qDebug() << "!focus";
         this->sendTextToServer();
     } else {
-        this->setVisible(true);
         this->setFocus();
+        this->downTimer->start(20);
+        qDebug() << "focus";
     }
 }
 
@@ -44,9 +51,34 @@ void ChatBar::onTextMessageReceived(QString message)
 }
 
 void ChatBar::focusInEvent(QFocusEvent *) {
-    this->setVisible(true);
+
 }
 
 void ChatBar::focusOutEvent(QFocusEvent *) {
-    this->setVisible(false);
+
+}
+
+void ChatBar::setParentWidth(int width) {
+    this->parentWidth = width;
+    this->setGeometry(0, this->posY, parentWidth, chatBarHeight);
+}
+
+void ChatBar::up() {
+    qDebug() << "up";
+    if( this->posY == this->minPosY ) {
+        this->upTimer->stop();
+        return;
+    }
+    --this->posY;
+    this->setGeometry(0, this->posY, parentWidth, chatBarHeight);
+}
+
+void ChatBar::down() {
+    qDebug() << "down";
+    if( this->posY == this->maxPosY ) {
+        this->downTimer->stop();
+        return;
+    }
+    ++this->posY;
+    this->setGeometry(0, this->posY, parentWidth, chatBarHeight);
 }
