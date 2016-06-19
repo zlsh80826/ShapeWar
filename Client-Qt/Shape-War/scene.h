@@ -7,6 +7,7 @@
 #include <QHash>
 #include <QKeyEvent>
 #include <QSet>
+#include <QByteArray>
 #include <QtWebSockets/QWebSocket>
 #include <bullet.h>
 #include <hero.h>
@@ -41,6 +42,9 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void onConnected();
+    void onBinaryMessageReceived(QByteArray data);
+
+private:
     void onTextMessageReceived(QString message);
 
 protected:
