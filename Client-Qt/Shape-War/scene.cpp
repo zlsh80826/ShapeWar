@@ -101,7 +101,7 @@ void Scene::onTextMessageReceived(QString message) {
 
     if (object.contains("self")) {
         self_id = object["self"].toObject()["id"].toInt(-1);
-        this->self->read(object);
+        this->self->read_info(object);
     } else if (self_id != -1) {
         this->recvs++;
         this->triangles->read(object["triangles"].toArray());
@@ -130,7 +130,7 @@ void Scene::onTextMessageReceived(QString message) {
                 }
                 hero->read_player(hero_object);
             } else {
-                self->readXY(hero_object);
+                self->read_global(hero_object);
             }
             if (cleanTimer == 0) {
                 cleanHit.insert(heroId);

@@ -7,8 +7,8 @@ class Self : public Hero {
     Q_OBJECT
 public:
     Self();
-    void read(const QJsonObject &json);
-    void readXY(const QJsonObject &json);
+    void read_info(const QJsonObject &json);
+    void read_global(const QJsonObject &json);
     SelfInfo *info;
     const QStringList passiveNames = (QStringList() << "Health Regen"
                                                     << "Max Health"
