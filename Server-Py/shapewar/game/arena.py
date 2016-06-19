@@ -1,3 +1,4 @@
+import zlib
 import json
 import logging
 import itertools
@@ -86,7 +87,7 @@ class Arena:
     def send_updates(self):
         self.tick_id += 1
         self.broadcast_updates()
-        self.broadcast_message(json.dumps({
+        self.broadcast_message(zlib.compress(json.dumps({
             "tick": self.tick_id,
             "players": [
                 client.hero.to_player_dict() for client in self.clients
@@ -94,7 +95,7 @@ class Arena:
             "squares": [square.to_dict() for square in self.squares],
             "triangles": [triangle.to_dict() for triangle in self.triangles],
             "pentagons": [pentagon.to_dict() for pentagon in self.pentagons]
-        }))
+        }).encode()))
 
     def broadcast_updates(self):
         removal = set()
@@ -132,7 +133,9 @@ class ArenaHandler(WebSocketHandler):
         logger.debug('%s %r', self.request.remote_ip, data)
 
     def send_updates(self):
-        self.write_message({'self': self.hero.to_self_dict()})
+        self.write_message(
+            zlib.compress(
+                json.dumps({'self': self.hero.to_self_dict()}).encode()))
 
     def check_origin(self, origin):
         return True
