@@ -268,7 +268,7 @@ void View::setPropertyStyle() {
         "font: bold 14px; border-width: 2px; border-style: outset; "
         "border-color: rgb(61, 61, 61, 240); color: rgb(61, 61, 61, 240);";
 
-    if( this->properties.at(0)->second->isEnabled() ) {
+    if (this->properties.at(0)->second->isEnabled()) {
         this->properties.at(0)->second->setStyleSheet(
             common.append("background-color: rgb(108, 240, 236, 255);"));
     } else {
@@ -276,7 +276,7 @@ void View::setPropertyStyle() {
             common.append("background-color: rgb(156, 156, 156, 255);"));
     }
 
-    if( this->properties.at(1)->second->isEnabled() ) {
+    if (this->properties.at(1)->second->isEnabled()) {
         this->properties.at(1)->second->setStyleSheet(
             common + "background-color: rgb(152, 240, 108, 255);");
     } else {
@@ -284,7 +284,7 @@ void View::setPropertyStyle() {
             common.append("background-color: rgb(156, 156, 156, 255);"));
     }
 
-    if( this->properties.at(2)->second->isEnabled() ) {
+    if (this->properties.at(2)->second->isEnabled()) {
         this->properties.at(2)->second->setStyleSheet(
             common + "background-color: rgb(240, 108, 108, 255);");
     } else {
@@ -292,7 +292,7 @@ void View::setPropertyStyle() {
             common.append("background-color: rgb(156, 156, 156, 255);"));
     }
 
-    if( this->properties.at(3)->second->isEnabled() ) {
+    if (this->properties.at(3)->second->isEnabled()) {
         this->properties.at(3)->second->setStyleSheet(
             common + "background-color: rgb(240, 217, 108, 255);");
     } else {
@@ -300,7 +300,7 @@ void View::setPropertyStyle() {
             common.append("background-color: rgb(156, 156, 156, 255);"));
     }
 
-    if( this->properties.at(4)->second->isEnabled() ) {
+    if (this->properties.at(4)->second->isEnabled()) {
         this->properties.at(4)->second->setStyleSheet(
             common + "background-color: rgb(108, 150, 240, 255);");
     } else {
@@ -308,7 +308,7 @@ void View::setPropertyStyle() {
             common.append("background-color: rgb(156, 156, 156, 255);"));
     }
 
-    if( this->properties.at(5)->second->isEnabled() ) {
+    if (this->properties.at(5)->second->isEnabled()) {
         this->properties.at(5)->second->setStyleSheet(
             common + "background-color: rgb(154, 108, 240, 255);");
     } else {
@@ -316,7 +316,7 @@ void View::setPropertyStyle() {
             common.append("background-color: rgb(156, 156, 156, 255);"));
     }
 
-    if( this->properties.at(6)->second->isEnabled() ) {
+    if (this->properties.at(6)->second->isEnabled()) {
         this->properties.at(6)->second->setStyleSheet(
             common + "background-color: rgb(236, 108, 240, 255);");
     } else {
@@ -324,7 +324,7 @@ void View::setPropertyStyle() {
             common.append("background-color: rgb(156, 156, 156, 255);"));
     }
 
-    if( this->properties.at(7)->second->isEnabled() ) {
+    if (this->properties.at(7)->second->isEnabled()) {
         this->properties.at(7)->second->setStyleSheet(
             common + "background-color: rgb(238, 182, 143, 255);");
     } else {
