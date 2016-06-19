@@ -83,18 +83,18 @@ void SelfInfo::setLv(int new_lv) {
 }
 
 void SelfInfo::expAni() {
-    if (this->targetExp == this->exp) {
+    if ( targetExp == exp ) {
         expTimer->stop();
-    } else if (this->targetExp > this->exp) {
-        if (this->targetExp > this->exp + 10)
-            exp += (targetExp - this->exp) / 10;
+    } else if ( targetExp > exp ) {
+        if ( targetExp > exp + 10 )
+            exp += ( targetExp - exp ) / 10;
         else
-            ++this->exp;
-    } else if (this->targetExp < this->exp) {
-        if (this->targetExp < this->exp - 10)
-            exp -= (targetExp - this->exp) / 10;
+            ++exp;
+    } else if ( targetExp < exp ) {
+        if ( targetExp < exp - 10 )
+            exp -= ( exp - targetExp ) / 10;
         else
-            --this->exp;
+            --exp;
     }
 
     this->expWidth = (this->maxExpWidth * this->exp) / this->max_exp;

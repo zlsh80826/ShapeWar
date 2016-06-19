@@ -3,6 +3,8 @@
 
 ChatBar::ChatBar(QString partUrl, QWidget * parent) : QLineEdit(parent){
     this->chat_url = new QUrl( partUrl + "/chat/roomid" );
+    this->clearFocus();
+    this->setVisible(false);
 
     connect(&chat_webSocket, &QWebSocket::connected, this, &ChatBar::onConnected);
     //chat_webSocket.open(QUrl(*chat_url));
