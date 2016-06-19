@@ -22,6 +22,7 @@ void Self::read(const QJsonObject &json) {
     this->info->setLv(instance["level"].toInt());
     this->info->setExp(instance["experience"].toInt(), instance["max_exp"].toInt());
 
+
     QJsonArray passivesArray = instance["passives"].toArray();
     for (int i = 0; i < passivesArray.size(); ++i) {
         int value = passivesArray[i].toInt();
