@@ -31,7 +31,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
         self.level = 1
 
         self.ready_bullets = []
-        self.bullets = [Bullet(i, self.ready_bullets) for i in range(100)]
+        self.bullets = [Bullet(i, self.ready_bullets) for i in range(200)]
         self.ready_bullets.extend(self.bullets)
 
         self.last_control = {
