@@ -140,6 +140,7 @@ class ArenaHandler(WebSocketHandler):
     def on_message(self, message):
         data = json.loads(message)
         self.hero.last_control = data
+        self.hero.handle_upgrade()
         logger.debug('%s %r', self.request.remote_ip, data)
 
     def send_updates(self):

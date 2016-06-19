@@ -30,6 +30,7 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
 
     key_a_pressed = key_d_pressed = key_s_pressed = key_w_pressed = false;
     mouseClicked = false;
+    upgradeChoose = -1;
 
     expandBtn = new QPushButton("+", this);
     expandBtn->setGeometry(0, viewHeight - buttonLen, buttonLen, buttonLen);
@@ -170,7 +171,7 @@ void View::wheelEvent(QWheelEvent *event) {
     // do nothing
 
     // below are just testing other things
-    printf("From %d to", self->getUpgradePoints());
+    /*printf("From %d to", self->getUpgradePoints());
     if (event->orientation() == Qt::Vertical) {
         if (event->delta() > 0) {
             self->setUpgradePoints(self->getUpgradePoints() + 1);
@@ -178,7 +179,7 @@ void View::wheelEvent(QWheelEvent *event) {
             self->setUpgradePoints(self->getUpgradePoints() - 1);
         }
     }
-    printf(" %d", self->getUpgradePoints());
+    printf(" %d", self->getUpgradePoints());*/
 }
 
 void View::resizeEvent(QResizeEvent *event) {
@@ -219,7 +220,11 @@ void View::sendControlToServer() {
                                 {"D", key_d_pressed}});
     data["mouse"] = mouseClicked;
     data["angle"] = self->rotation();
+    data["upChoose"] = upgradeChoose;
     ws.sendTextMessage(QJsonDocument(data).toJson(QJsonDocument::Compact));
+
+    // reset upgrate choose to -1
+    upgradeChoose = -1;
 }
 
 void View::showUpgrateOptions() {
@@ -245,6 +250,7 @@ void View::showUpgrateOptions() {
 }
 
 void View::onUpgradePointChanged() {
+    printf("now UP: %d", self->getUpgradePoints());
     bool enanbled = (self->getUpgradePoints() > 0) ? true : false;
     for (QPair<QLabel *, QPushButton *> *property : properties) {
         property->first->setEnabled(enanbled);
@@ -256,11 +262,7 @@ void View::onUpgradePointChanged() {
 void View::onPropertyBtnClicked(int clickedBtnId) {
     qDebug() << "Button clicked: " << this->self->passiveNames.at(clickedBtnId);
     // TODO: handle the message want to  pass to server
-    bool enanbled = (self->getUpgradePoints() > 0) ? true : false;
-    for (QPair<QLabel *, QPushButton *> *property : properties) {
-        property->first->setEnabled(enanbled);
-        property->second->setEnabled(enanbled);
-    }
+    upgradeChoose = clickedBtnId;
     this->setPropertyStyle();
 }
 

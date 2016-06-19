@@ -54,6 +54,7 @@ private:
 
     bool mouseClicked;
     qreal targetAngle;
+    int upgradeChoose;
 
     QTimer *sendDelayTimer;
     const int sendDelay = 500;

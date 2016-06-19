@@ -38,9 +38,12 @@ class Hero(abilities.PropertyMixin, MovableObject):
         self.last_control = {
             'keys': {'W': False, 'A': False, 'S': False, 'D': False},
             'angle': 0,
-            'mouse': False
+            'mouse': False,
+            'upChoose': -1
         }
         self.cooldown = 0
+
+        self.choose = -1
 
     @property
     def angle(self):
@@ -57,6 +60,14 @@ class Hero(abilities.PropertyMixin, MovableObject):
         self.accept_keys(**self.last_control['keys'])
         if self.hp > 0:
             self.hp = min(self.max_hp, self.hp_regen + self.hp)
+        if self.choose >= 0:
+            self.abilities[self.choose].upgrade()
+            print(self.choose)
+            self.choose = -1
+
+    def handle_upgrade(self):
+        if( self.last_control['upChoose'] > 0):
+            self.choose = self.last_control['upChoose']
 
     def accept_keys(self, W, A, S, D):
         self.apply_friction()
