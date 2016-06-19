@@ -118,7 +118,11 @@ void View::keyReleaseEvent(QKeyEvent *event) {
         this->key_d_pressed = false;
         break;
     case Qt::Key_Enter:
-        this->startChat();
+        this->chatBar->startChat();
+        break;
+    case Qt::Key_Return:
+        this->chatBar->startChat();
+        break;
     }
     // qDebug() << "Released key: " << event->key();
 }
@@ -336,15 +340,5 @@ void View::setPropertyStyle() {
     } else {
         this->properties.at(7)->second->setStyleSheet(
             common.append("background-color: rgb(156, 156, 156, 255);"));
-    }
-}
-
-void View::startChat() {
-    if(this->chatBar->hasFocus()) {
-        this->chatBar->clearFocus();
-        this->chatBar->setVisible(false);
-    } else {
-        this->chatBar->setVisible(true);
-        this->chatBar->setFocus();
     }
 }
