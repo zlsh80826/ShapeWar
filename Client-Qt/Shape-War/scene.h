@@ -29,6 +29,7 @@ public:
     QUrl *dummy_url;
 
     QString getPartUrl() const;
+    QString getUsername() const;
 
 public slots:
     void startGame();
@@ -57,6 +58,7 @@ private:
     QString partUrl;
     int cleanTimer;
     QSet<int> cleanHit;
+    QString username;
 
     QTimer *sec;
     int recvs;

@@ -14,6 +14,7 @@ public:
     void startChat();
     void sendTextToServer();
     void setParentWidth(int width);
+    void setName(QString);
 
 protected:
     void focusOutEvent(QFocusEvent *event);
@@ -24,6 +25,7 @@ private:
     QWebSocket chat_webSocket;
     QTimer *upTimer;
     QTimer *downTimer;
+    QString name;
     int parentWidth;
     int posY;
     const int chatBarHeight = 30;

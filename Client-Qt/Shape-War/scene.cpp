@@ -71,7 +71,7 @@ void Scene::initGame() {
     this->self->bullets->addToParentNoHPBar(this);
 
     // test name
-    this->self->info->setName("testgffdsg456dsg45f");
+    this->self->info->setName(username);
     this->addItem(this->self->info);
 
     // test monster
@@ -158,6 +158,7 @@ void Scene::slotAcceptUserLogin(QString &serverIP, QString &port,
     partUrl += ":";
     partUrl += port;
     dummy_url = new QUrl(partUrl + "/arena/dummy");
+    this->username = username;
     // test
     qDebug() << "Get serverIP: " << serverIP << ", port: " << port
              << ", username: " << username << ", password: " << password
@@ -165,6 +166,11 @@ void Scene::slotAcceptUserLogin(QString &serverIP, QString &port,
 
     // TODO: send the username and password to server
 }
+
 QString Scene::getPartUrl() const {
     return partUrl;
+}
+
+QString Scene::getUsername() const {
+    return username;
 }

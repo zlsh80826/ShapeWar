@@ -38,6 +38,7 @@ void ChatBar::startChat() {
 
 void ChatBar::sendTextToServer() {
     // TODO: send text in chat bar to server
+    QString text = this->text();
 
     // reset text in chat bar
     this->setText("");
@@ -83,4 +84,8 @@ void ChatBar::down() {
     }
     ++this->posY;
     this->setGeometry(0, this->posY, parentWidth, chatBarHeight);
+}
+
+void ChatBar::setName(QString name) {
+    this->name = name;
 }

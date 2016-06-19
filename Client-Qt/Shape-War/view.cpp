@@ -47,13 +47,7 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     propertyBtnPtrGroup = new QButtonGroup(this);
     for (unsigned int i = 0, size = properties.size(); i < size; i++) {
         QPair<QLabel *, QPushButton *> *property = properties.at(i);
-        // it seems it's not necessary because resize event
-        /*property->first->setGeometry(
-            10, viewHeight - (i + 1) * passiveDistance, labelWidth,
-            passiveDistance - (passiveDistance - passiveHeight));
-        property->second->setGeometry(labelWidth + 10,
-                                      viewHeight - (i + 1) * passiveDistance,
-                                      buttonLen + 10, passiveHeight);*/
+
         property->first->setVisible(false);
         property->second->setVisible(false);
         property->first->setEnabled(false);
@@ -73,6 +67,7 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     sec->start(1000);
 
     this->chatBar = new ChatBar(scene->getPartUrl(), this);
+    this->chatBar->setName(scene->getUsername());
 }
 
 void View::print_freq() {
