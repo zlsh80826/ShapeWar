@@ -72,7 +72,8 @@ class Hero(abilities.PropertyMixin, MovableObject):
             'level': self.level,
             'experience': self.experience,
             'passives': [ability.level for ability in self.abilities],
-            'bullets': [bullet.to_dict() for bullet in self.bullets]
+            'bullets': [bullet.to_dict() for bullet in self.bullets],
+            'upgradePoints': 4
         }
 
     def to_player_dict(self):

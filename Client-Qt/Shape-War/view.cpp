@@ -46,14 +46,17 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     propertyBtnPtrGroup = new QButtonGroup(this);
     for (unsigned int i = 0, size = properties.size(); i < size; i++) {
         QPair<QLabel *, QPushButton *> *property = properties.at(i);
-        property->first->setGeometry(
+        // it seems it's not necessary because resize event
+        /*property->first->setGeometry(
             10, viewHeight - (i + 1) * passiveDistance, labelWidth,
             passiveDistance - (passiveDistance - passiveHeight));
         property->second->setGeometry(labelWidth + 10,
                                       viewHeight - (i + 1) * passiveDistance,
-                                      buttonLen + 10, passiveHeight);
+                                      buttonLen + 10, passiveHeight);*/
         property->first->setVisible(false);
         property->second->setVisible(false);
+        property->first->setEnabled(false);
+        property->second->setEnabled(false);
 
         propertyBtnPtrGroup->addButton(property->second, i);
     }
@@ -67,6 +70,8 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     this->sends = 0;
     connect(sec, SIGNAL(timeout()), this, SLOT(print_freq()));
     sec->start(1000);
+
+    this->chatBar = new ChatBar(this);
 }
 
 void View::print_freq() {
@@ -112,6 +117,8 @@ void View::keyReleaseEvent(QKeyEvent *event) {
     case Qt::Key_D:
         this->key_d_pressed = false;
         break;
+    case Qt::Key_Enter:
+        this->startChat();
     }
     // qDebug() << "Released key: " << event->key();
 }
@@ -196,6 +203,7 @@ void View::resizeEvent(QResizeEvent *event) {
     InfoCenterX = nowViewWidth / 2;
     InfoCenterY = nowViewHeight - InfoHeightOffset;
     this->onSelfPosChanged();
+    this->chatBar->setGeometry(0, 0, nowViewWidth, 30);
 }
 
 void View::sendControlToServer() {
@@ -238,11 +246,18 @@ void View::onUpgradePointChanged() {
         property->first->setEnabled(enanbled);
         property->second->setEnabled(enanbled);
     }
+    this->setPropertyStyle();
 }
 
 void View::onPropertyBtnClicked(int clickedBtnId) {
     qDebug() << "Button clicked: " << this->self->passiveNames.at(clickedBtnId);
     // TODO: handle the message want to  pass to server
+    bool enanbled = (self->getUpgradePoints() > 0) ? true : false;
+    for (QPair<QLabel *, QPushButton *> *property : properties) {
+        property->first->setEnabled(enanbled);
+        property->second->setEnabled(enanbled);
+    }
+    this->setPropertyStyle();
 }
 
 void View::setPropertyStyle() {
@@ -258,20 +273,78 @@ void View::setPropertyStyle() {
         "border-top-right-radius:10px; border-bottom-right-radius: 10px; "
         "font: bold 14px; border-width: 2px; border-style: outset; "
         "border-color: rgb(61, 61, 61, 240); color: rgb(61, 61, 61, 240);";
-    this->properties.at(0)->second->setStyleSheet(
-        common.append("background-color: rgb(108, 240, 236, 255);"));
-    this->properties.at(1)->second->setStyleSheet(
-        common + "background-color: rgb(152, 240, 108, 255);");
-    this->properties.at(2)->second->setStyleSheet(
-        common + "background-color: rgb(240, 108, 108, 255);");
-    this->properties.at(3)->second->setStyleSheet(
-        common + "background-color: rgb(240, 217, 108, 255);");
-    this->properties.at(4)->second->setStyleSheet(
-        common + "background-color: rgb(108, 150, 240, 255);");
-    this->properties.at(5)->second->setStyleSheet(
-        common + "background-color: rgb(154, 108, 240, 255);");
-    this->properties.at(6)->second->setStyleSheet(
-        common + "background-color: rgb(236, 108, 240, 255);");
-    this->properties.at(7)->second->setStyleSheet(
-        common + "background-color: rgb(238, 182, 143, 255);");
+
+    if (this->properties.at(0)->second->isEnabled()) {
+        this->properties.at(0)->second->setStyleSheet(
+            common.append("background-color: rgb(108, 240, 236, 255);"));
+    } else {
+        this->properties.at(0)->second->setStyleSheet(
+            common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
+
+    if (this->properties.at(1)->second->isEnabled()) {
+        this->properties.at(1)->second->setStyleSheet(
+            common + "background-color: rgb(152, 240, 108, 255);");
+    } else {
+        this->properties.at(1)->second->setStyleSheet(
+            common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
+
+    if (this->properties.at(2)->second->isEnabled()) {
+        this->properties.at(2)->second->setStyleSheet(
+            common + "background-color: rgb(240, 108, 108, 255);");
+    } else {
+        this->properties.at(2)->second->setStyleSheet(
+            common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
+
+    if (this->properties.at(3)->second->isEnabled()) {
+        this->properties.at(3)->second->setStyleSheet(
+            common + "background-color: rgb(240, 217, 108, 255);");
+    } else {
+        this->properties.at(3)->second->setStyleSheet(
+            common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
+
+    if (this->properties.at(4)->second->isEnabled()) {
+        this->properties.at(4)->second->setStyleSheet(
+            common + "background-color: rgb(108, 150, 240, 255);");
+    } else {
+        this->properties.at(4)->second->setStyleSheet(
+            common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
+
+    if (this->properties.at(5)->second->isEnabled()) {
+        this->properties.at(5)->second->setStyleSheet(
+            common + "background-color: rgb(154, 108, 240, 255);");
+    } else {
+        this->properties.at(5)->second->setStyleSheet(
+            common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
+
+    if (this->properties.at(6)->second->isEnabled()) {
+        this->properties.at(6)->second->setStyleSheet(
+            common + "background-color: rgb(236, 108, 240, 255);");
+    } else {
+        this->properties.at(6)->second->setStyleSheet(
+            common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
+
+    if (this->properties.at(7)->second->isEnabled()) {
+        this->properties.at(7)->second->setStyleSheet(
+            common + "background-color: rgb(238, 182, 143, 255);");
+    } else {
+        this->properties.at(7)->second->setStyleSheet(
+            common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
+}
+
+void View::startChat() {
+    if(this->chatBar->hasFocus()) {
+        this->chatBar->clearFocus();
+        this->chatBar->setVisible(false);
+    } else {
+        this->chatBar->setVisible(true);
+        this->chatBar->setFocus();
+    }
 }

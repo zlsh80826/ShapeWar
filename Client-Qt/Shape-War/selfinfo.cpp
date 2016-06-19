@@ -39,13 +39,14 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
     QPen pen;
     pen.setWidth(3);
-    pen.setColor(QColor(85, 85, 85, 240));
     painter->setRenderHint(QPainter::Antialiasing);
-    painter->setPen(pen);
-    painter->setFont(QFont("sansaerif", 40, QFont::Bold));
-    painter->drawText(-50, 30, name);
     pen.setColor(QColor(61, 61, 61, 255));
     painter->setPen(pen);
+    painter->setBrush(QBrush(QColor(240, 240, 240, 255), Qt::SolidPattern));
+    QPainterPath path;
+    path.addText(-12 * name.size(), 40, QFont("monospace", 30, QFont::Bold),
+                 name);
+    painter->drawPath(path);
     painter->setBrush(QBrush(QColor(61, 61, 61, 255), Qt::SolidPattern));
     painter->drawRect(QRect(-maxScoreWidth / 2, 50, maxScoreWidth, 20));
     painter->setBrush(QBrush(QColor(108, 240, 162, 255), Qt::SolidPattern));
@@ -79,16 +80,16 @@ void SelfInfo::setLv(int new_lv) {
 }
 
 void SelfInfo::expAni() {
-    if ( this->targetExp == this->exp ) {
+    if (this->targetExp == this->exp) {
         expTimer->stop();
-    } else if ( this->targetExp > this->exp ) {
-        if( this->targetExp > this->exp + 10)
-            exp += (targetExp-this->exp) / 10;
+    } else if (this->targetExp > this->exp) {
+        if (this->targetExp > this->exp + 10)
+            exp += (targetExp - this->exp) / 10;
         else
             ++this->exp;
-    } else if ( this->targetExp < this->exp  ) {
-        if( this->targetExp < this->exp - 10 )
-            exp -= (targetExp-this->exp) / 10;
+    } else if (this->targetExp < this->exp) {
+        if (this->targetExp < this->exp - 10)
+            exp -= (targetExp - this->exp) / 10;
         else
             --this->exp;
     }
