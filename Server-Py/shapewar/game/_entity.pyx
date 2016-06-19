@@ -34,7 +34,12 @@ cdef class Vector2d:
         return Vector2d(self.x - other.x, self.y - other.y)
 
     def __repr__(self):
-        return 'Vector2d(%g, %g)' % (self.x, self.y)
+        return 'Vector2d(%r, %r)' % (self.x, self.y)
+
+    def __richcmp__(self, other, int op):
+        if not isinstance(other, Vector2d) or op != 2:
+            return NotImplemented
+        return self.x == other.x and self.y == other.y
 
 
 cdef class Entity:
@@ -46,14 +51,17 @@ cdef class Entity:
         Vector2d velocity
         double friction
         double max_speed
+        bint visible
     cdef readonly:
-        double x_min
+        int id
+        int x_min
         int x_max
         int y_min
         int y_max
 
     def __cinit__(
         self,
+        int id,
         double x,
         double y,
         double radius,
@@ -64,9 +72,11 @@ cdef class Entity:
         int y_max = 5000,
         Vector2d velocity = None,
         double friction = 0,
-        double max_speed = INFINITY
+        double max_speed = INFINITY,
+        bint visible = False,
         **kwargs
     ):
+        self.id = id
         self.pos = Vector2d(x, y)
         self.radius = radius
         self.angle = angle
@@ -84,6 +94,7 @@ cdef class Entity:
             self.velocity = velocity
 
         self.max_speed = max_speed
+        self.visible = visible
 
     cdef void bound_and_bounce(self):
         if self.pos.x < self.x_min:
@@ -100,7 +111,7 @@ cdef class Entity:
             self.velocity.y *= -1
 
     cdef void apply_friction(self):
-        double reduced_speed = self.velocity.r - self.friction
+        cdef double reduced_speed = self.velocity.r - self.friction
         if reduced_speed < 0:
             self.velocity.x = self.velocity.y = 0
         else:
@@ -112,3 +123,15 @@ cdef class Entity:
         self.pos += self.velocity
         self.bound_and_bounce()
         self.apply_friction()
+
+    cpdef dict to_dict(self):
+        return {
+            'id': self.id,
+            'x': self.x,
+            'y': self.y,
+            'radius': self.radius,
+            'maxHp': self.max_hp,
+            'currentHp': self.current_hp,
+            'angle': self.angle,
+            'visible': self.visible
+        }
