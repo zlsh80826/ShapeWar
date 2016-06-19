@@ -70,4 +70,4 @@ def deduct_hp(obj, by):
         if isinstance(by, hero.Bullet):
             by.owner.experience += 10
         if isinstance(by, hero.Hero):
-            by.experience += 10
+            by.experience += 50

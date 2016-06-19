@@ -54,8 +54,6 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
                                       buttonLen + 10, passiveHeight);
         property->first->setVisible(false);
         property->second->setVisible(false);
-        // property->first->setStyleSheet("background-color : yellow; color :
-        // white");
 
         propertyBtnPtrGroup->addButton(property->second, i);
     }

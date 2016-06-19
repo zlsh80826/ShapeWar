@@ -36,6 +36,7 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                      QWidget *widget) {
     (void)option;
     (void)widget;
+
     QPen pen;
     pen.setWidth(3);
     pen.setColor(QColor(85, 85, 85, 240));
@@ -82,14 +83,17 @@ void SelfInfo::setLv(int new_lv) {
 }
 
 void SelfInfo::expAni() {
-    if (this->targetExp == this->exp) {
+    if (this->targetExp == this->exp ) {
+        ++this->exp ;
         expTimer->stop();
         return;
     }
-    if (this->targetExp > this->exp) {
+    if (this->targetExp > this->exp + 10) {
+        exp += (targetExp-this->exp) / 10;
+    } else {
         ++this->exp;
     }
-    this->expWidth = (this->maxExpWidth * this->exp) / (this->lv * 1000);
+    this->expWidth = (this->maxExpWidth * this->exp) / (this->lv * 300);
     this->update(this->boundingRect());
 }
 
