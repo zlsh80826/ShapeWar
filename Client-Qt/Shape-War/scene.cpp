@@ -135,7 +135,8 @@ void Scene::onTextMessageReceived(QString message) {
             }
         }
         if (cleanTimer == 0) {
-            QHash<int, Hero *>::iterator iter = heroes.begin(), end = heroes.end();
+            QHash<int, Hero *>::iterator iter = heroes.begin(),
+                                         end = heroes.end();
             QHash<int, Hero *>::iterator prev;
             while (iter != end) {
                 prev = iter++;
@@ -164,8 +165,6 @@ void Scene::slotAcceptUserLogin(QString &serverIP, QString &port,
 
     // TODO: send the username and password to server
 }
-QString Scene::getPartUrl() const
-{
+QString Scene::getPartUrl() const {
     return partUrl;
 }
-
