@@ -31,7 +31,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
         self.level = 1
 
         self.ready_bullets = []
-        self.bullets = [Bullet(i, self.ready_bullets) for i in range(200)]
+        self.bullets = [Bullet(i, self) for i in range(200)]
         self.ready_bullets.extend(self.bullets)
 
         self.last_control = {
@@ -48,7 +48,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
     def angle(self):
         return self.last_control['angle']
 
-    def tick_keys(self, arena):
+    def action(self):
         if not self.visible:
             return
         if self.cooldown > 0:
@@ -109,8 +109,8 @@ class Hero(abilities.PropertyMixin, MovableObject):
         bullet.velocity = cmath.rect(
             self.bullet_speed, math.radians(self.angle))
         bullet.visible = True
+        bullet.recycle_timer = 100
         bullet.timeout = 50 * 2
-        bullet.owner = self
 
     @property
     def max_exp(self):
@@ -129,8 +129,25 @@ class Hero(abilities.PropertyMixin, MovableObject):
                 self.max_exp
             )
 
+    @property
+    def team(self):
+        return self
+
+    def tick(self):
+        if self.visible:
+            self.tick_pos()
+
+    @property
+    def rewarding_experience(self):
+        return self.experience // 2
+
+    def killed(self, other):
+        self.add_exp(other.rewarding_experience)
+
 
 class Bullet(MovableObject):
+
+    rewarding_experience = 0
 
     def __init__(self, id, hero):
         super().__init__()
@@ -141,16 +158,26 @@ class Bullet(MovableObject):
         self.maxHp = 1
         self.hp = 1
         self.timeout = 0
-        self.owner = None
+        self.owner = hero
         self.friction = 0
         self.max_speed = 10000
+        self.recycle_timer = 0
         self.x_min = self.y_min = float('-inf')
         self.x_max = self.y_max = float('inf')
 
+    @property
+    def team(self):
+        return self.owner
+
     def tick(self):
-        self.timeout -= 1
-        if self.timeout == 0 or self.hp < 0:
-            self.visible = False
+        if self.visible:
+            self.tick_pos()
+            self.timeout -= 1
+            if self.timeout == 0 or self.hp < 0:
+                self.visible = False
+        elif self.recycle_timer:
+            self.recycle_timer -= 1
+        else:
             self.owner.ready_bullets.append(self)
 
     def to_dict(self):
@@ -163,3 +190,6 @@ class Bullet(MovableObject):
             'radius': self.radius,
             'visible': self.visible
         }
+
+    def killed(self, other):
+        self.owner.killed(other)
