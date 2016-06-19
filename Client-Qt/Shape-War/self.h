@@ -24,8 +24,6 @@ signals:
     void upgradePointsChanged();
 
 private:
-    int experience;
-    int level;
     int passives[8];
     int upgradePoints;
 };

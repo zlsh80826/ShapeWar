@@ -9,8 +9,6 @@ void Self::read(const QJsonObject &json) {
     QJsonObject instance = json["self"].toObject();
     this->setX(instance["x"].toDouble());
     this->setY(instance["y"].toDouble());
-    this->experience = instance["experience"].toInt();
-    this->level = instance["level"].toInt();
     this->setUpgradePoints(instance["upgradePoints"].toInt());
 
     this->hpBar->setPos(this->x(), this->y());
@@ -18,7 +16,7 @@ void Self::read(const QJsonObject &json) {
                        instance["maxHp"].toInt());
     this->bullets->read(instance["bullets"].toArray());
 
-    this->info->setLv(this->level);
+    this->info->setLv(instance["level"].toInt());
     this->info->setExp(instance["experience"].toInt(), instance["max_exp"].toInt());
 
     QJsonArray passivesArray = instance["passives"].toArray();
