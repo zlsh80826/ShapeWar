@@ -72,6 +72,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
             'currentHp': self.hp,
             'level': self.level,
             'experience': self.experience,
+            'max_exp': self.max_exp,
             'passives': [ability.level for ability in self.abilities],
             'bullets': [bullet.to_dict() for bullet in self.bullets],
             'upgradePoints': self.skill_points
@@ -107,7 +108,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
             self.experience -= self.max_exp
             self.level += 1
             self.skill_points += 1
-            self.max_exp = 10 * (1.2 ** (self.level - 1))
+            self.max_exp = (int) (10 * (1.2 ** (self.level - 1)))
             print('level: ', self.level, ', exp: ', self.experience, 'max_exp: ', self.max_exp)
 
 
