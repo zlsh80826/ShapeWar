@@ -13,9 +13,9 @@ SelfInfo::SelfInfo() {
     this->max_exp = 10;
     this->targetExp = 0;
     this->expWidth = 0;
-    this->maxExpWidth = 600;
+    this->maxExpWidth = 500;
     this->scoreWidth = 0;
-    this->maxScoreWidth = 500;
+    this->maxScoreWidth = 400;
     this->setOpacity(0.95);
     this->setZValue(1);
     this->expTimer = new QTimer(this);
