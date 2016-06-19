@@ -71,7 +71,7 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     connect(sec, SIGNAL(timeout()), this, SLOT(print_freq()));
     sec->start(1000);
 
-    this->chatBar = new ChatBar(this);
+    this->chatBar = new ChatBar(scene->getPartUrl(), this);
 }
 
 void View::print_freq() {

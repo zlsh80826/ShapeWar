@@ -89,10 +89,9 @@ void Scene::gameOver() {
 }
 
 void Scene::onConnected() {
-    qDebug() << "WebSocket connected";
+    qDebug() << "WebSocket of arena connected";
     connect(&m_webSocket, &QWebSocket::textMessageReceived, this,
             &Scene::onTextMessageReceived);
-    // m_webSocket.sendTextMessage(QStringLiteral("Hello, world!"));
 }
 
 void Scene::onTextMessageReceived(QString message) {
@@ -153,21 +152,20 @@ void Scene::onTextMessageReceived(QString message) {
 void Scene::slotAcceptUserLogin(QString &serverIP, QString &port,
                                 QString &username, QString &password,
                                 bool isAnonymous) {
+    partUrl = QString("ws://");
+    partUrl += serverIP;
+    partUrl += ":";
+    partUrl += port;
+    dummy_url = new QUrl(partUrl + "/arena/dummy");
     // test
-    fillServerInfo(serverIP, port);
     qDebug() << "Get serverIP: " << serverIP << ", port: " << port
              << ", username: " << username << ", password: " << password
              << ", anonymous: " << isAnonymous;
 
     // TODO: send the username and password to server
 }
-
-void Scene::fillServerInfo(QString &serverIP, QString &port) {
-    QString partUrl = "ws://";
-    partUrl += serverIP;
-    partUrl += ":";
-    partUrl += port;
-    qDebug() << partUrl;
-
-    dummy_url = new QUrl(partUrl + "/arena/dummy");
+QString Scene::getPartUrl() const
+{
+    return partUrl;
 }
+

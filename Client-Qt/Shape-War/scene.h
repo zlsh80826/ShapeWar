@@ -28,6 +28,8 @@ public:
     QWebSocket m_webSocket;
     QUrl *dummy_url;
 
+    QString getPartUrl() const;
+
 public slots:
     void startGame();
     void gameOver();
@@ -51,8 +53,8 @@ private:
     int margin;
     QColor backgroundColor;
     QHash<int, Hero *> heroes;
-    void fillServerInfo(QString &serverUrl, QString &port);
-
+    void fillServerInfo();
+    QString partUrl;
     int cleanTimer;
     QSet<int> cleanHit;
 
