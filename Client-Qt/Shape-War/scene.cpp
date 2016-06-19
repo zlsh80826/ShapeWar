@@ -41,7 +41,7 @@ void Scene::print_freq() {
     this->recvs = 0;
 }
 void Scene::drawBackground(QPainter *painter, const QRectF &rect) {
-    (void) rect;
+    (void)rect;
     // need to change position to global
     painter->setBrush(backgroundColor);
     painter->setPen(backgroundColor);
@@ -108,15 +108,15 @@ void Scene::onTextMessageReceived(QString message) {
     auto self_id = object["self"].toObject()["id"];
 
     cleanTimer++;
-    if(cleanTimer >= 400) {
+    if (cleanTimer >= 400) {
         cleanTimer = 0;
         cleanHit.clear();
     }
-    for (const auto& hero_data: object["players"].toArray()) {
-        const auto& hero_object = hero_data.toObject();
+    for (const auto &hero_data : object["players"].toArray()) {
+        const auto &hero_object = hero_data.toObject();
         int heroId = hero_object["id"].toInt();
         if (hero_object["id"] != self_id) {
-            Hero* hero;
+            Hero *hero;
             if (not this->heroes.contains(heroId)) {
                 hero = new Hero;
                 this->heroes[heroId] = hero;
@@ -128,16 +128,16 @@ void Scene::onTextMessageReceived(QString message) {
             }
             hero->read_player(hero_object);
         }
-        if( cleanTimer == 0 ) {
+        if (cleanTimer == 0) {
             cleanHit.insert(heroId);
         }
     }
-    if( cleanTimer == 0) {
-        QHash<int, Hero*>::iterator iter = heroes.begin(), end = heroes.end();
-        QHash<int, Hero*>::iterator prev;
-        while( iter != end ) {
+    if (cleanTimer == 0) {
+        QHash<int, Hero *>::iterator iter = heroes.begin(), end = heroes.end();
+        QHash<int, Hero *>::iterator prev;
+        while (iter != end) {
             prev = iter++;
-            if(  cleanHit.contains(prev.key()) == false ) {
+            if (cleanHit.contains(prev.key()) == false) {
                 this->removeItem(prev.value());
                 delete prev.value();
                 heroes.erase(prev);

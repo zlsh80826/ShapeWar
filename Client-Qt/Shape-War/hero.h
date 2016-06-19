@@ -4,10 +4,10 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QPolygon>
-#include <hpbar.h>
-#include <bullet.h>
-#include <polygongroup.h>
 #include <QTimer>
+#include <bullet.h>
+#include <hpbar.h>
+#include <polygongroup.h>
 
 class Hero : public QGraphicsObject {
     Q_OBJECT
@@ -31,6 +31,7 @@ public:
 private slots:
     void onDieSignal();
     void decreaseOpacity();
+
 private:
     QTimer *disappearTimer;
 };

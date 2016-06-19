@@ -2,18 +2,26 @@
 #include <QDebug>
 #include <QFont>
 #include <QPainter>
+#include <QTimer>
 
 SelfInfo::SelfInfo() {
     this->score = 0;
+    this->targetScore = 0;
     this->maxScore = 50000;
     this->lv = 1;
     this->exp = 0;
-    this->expWidth = 200;
+    this->targetExp = 0;
+    this->expWidth = 0;
     this->maxExpWidth = 600;
-    this->scoreWidth = 100;
+    this->scoreWidth = 0;
     this->maxScoreWidth = 500;
     this->setOpacity(0.95);
     this->setZValue(1);
+    this->expTimer = new QTimer(this);
+    this->scoreTimer = new QTimer(this);
+    QObject::connect(this->expTimer, SIGNAL(timeout()), this, SLOT(expAni()));
+    QObject::connect(this->scoreTimer, SIGNAL(timeout()), this,
+                     SLOT(scoreAni()));
 }
 
 void SelfInfo::setName(QString name) {
@@ -26,8 +34,9 @@ QRectF SelfInfo::boundingRect() const {
 
 void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                      QWidget *widget) {
-    (void) option;
-    (void) widget;
+    (void)option;
+    (void)widget;
+
     QPen pen;
     pen.setWidth(3);
     pen.setColor(QColor(85, 85, 85, 240));
@@ -48,15 +57,54 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 }
 
 void SelfInfo::setExp(int new_exp) {
-    this->exp = new_exp;
-    this->expWidth = this->maxExpWidth * (this->exp / (this->lv * 1000));
+    if (new_exp == this->targetExp)
+        return;
+    this->targetExp = new_exp;
+    this->expTimer->start(20);
 }
 
 void SelfInfo::setScore(int new_score) {
-    this->score = new_score;
-    this->scoreWidth = this->maxScoreWidth * (this->score / this->maxScore);
+    if (new_score == this->targetScore)
+        return;
+    if (this->scoreTimer->isActive()) {
+        this->scoreTimer->setInterval(5);
+        return;
+    }
+    this->targetScore = new_score;
+    this->scoreTimer->start(20);
 }
 
 void SelfInfo::setLv(int new_lv) {
     this->lv = new_lv;
+}
+
+void SelfInfo::expAni() {
+    if ( this->targetExp == this->exp ) {
+        expTimer->stop();
+    } else if ( this->targetExp > this->exp ) {
+        if( this->targetExp > this->exp + 10)
+            exp += (targetExp-this->exp) / 10;
+        else
+            ++this->exp;
+    } else if ( this->targetExp < this->exp  ) {
+        if( this->targetExp < this->exp - 10 )
+            exp -= (targetExp-this->exp) / 10;
+        else
+            --this->exp;
+    }
+
+    this->expWidth = (this->maxExpWidth * this->exp) / (this->lv * 300);
+    this->update(this->boundingRect());
+}
+
+void SelfInfo::scoreAni() {
+    if (this->targetScore == this->score) {
+        scoreTimer->stop();
+        return;
+    }
+    if (this->targetScore > this->score) {
+        ++this->score;
+    }
+    this->scoreWidth = (this->maxScoreWidth * this->score) / this->maxScore;
+    this->update(this->boundingRect());
 }

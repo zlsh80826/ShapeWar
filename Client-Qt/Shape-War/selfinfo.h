@@ -19,11 +19,19 @@ private:
     int score;
     int lv;
     int exp;
+    int targetExp;
+    int targetScore;
     int maxScore;
     qreal expWidth;
     qreal scoreWidth;
     qreal maxExpWidth;
     qreal maxScoreWidth;
+    QTimer *expTimer;
+    QTimer *scoreTimer;
+
+private slots:
+    void expAni();
+    void scoreAni();
 };
 
 #endif // SELFINFO_H
