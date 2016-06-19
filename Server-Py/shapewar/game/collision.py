@@ -38,8 +38,8 @@ def bounding_box_collision_pairs(objects):
 
 def check_circle_collision(obj, obk):
     return (
-        abs(obj.y - obk.y) < obj.radius + obk.radius and
-        (obj.x - obk.x) ** 2 + (obj.y - obk.y) ** 2 < obj.radius + obk.radius
+        (obj.x - obk.x) ** 2 + (obj.y - obk.y) ** 2 <
+        (obj.radius + obk.radius) ** 2
     )
 
 
