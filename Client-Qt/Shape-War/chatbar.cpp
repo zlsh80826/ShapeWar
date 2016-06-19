@@ -1,6 +1,7 @@
 #include "chatbar.h"
 #include <QDebug>
 
+
 ChatBar::ChatBar(QString partUrl, QWidget *parent) : QLineEdit(parent) {
     this->chat_url = new QUrl(partUrl + "/chat/roomid");
     this->setStyleSheet("background-color: rgb(255, 0, 0, 1)");
