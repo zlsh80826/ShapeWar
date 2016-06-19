@@ -10,6 +10,7 @@ SelfInfo::SelfInfo() {
     this->maxScore = 50000;
     this->lv = 1;
     this->exp = 0;
+    this->max_exp = 10;
     this->targetExp = 0;
     this->expWidth = 0;
     this->maxExpWidth = 600;
@@ -57,10 +58,12 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->drawRect(QRect(-maxExpWidth / 2, 80, this->expWidth, 20));
 }
 
-void SelfInfo::setExp(int new_exp) {
-    if (new_exp == this->targetExp)
+void SelfInfo::setExp(int exp, int max_exp) {
+    if (exp == this->targetExp && max_exp == this->max_exp)
         return;
-    this->targetExp = new_exp;
+    printf("new_exp: %d, new_max_exp: %d, lv:%d", exp, max_exp, lv);
+    this->targetExp = exp;
+    this->max_exp = max_exp;
     this->expTimer->start(20);
 }
 
@@ -94,7 +97,7 @@ void SelfInfo::expAni() {
             --this->exp;
     }
 
-    this->expWidth = (this->maxExpWidth * this->exp) / (this->lv * 300);
+    this->expWidth = (this->maxExpWidth * this->exp) / this->max_exp;
     this->update(this->boundingRect());
 }
 

@@ -27,7 +27,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
         self.radius = 30
         self.acc = 0.6  # acceleration
         self.hp = self.max_hp
-        self.experience = 100
+        self.experience = 5
         self.level = 1
 
         self.ready_bullets = []
@@ -71,9 +71,10 @@ class Hero(abilities.PropertyMixin, MovableObject):
             'currentHp': self.hp,
             'level': self.level,
             'experience': self.experience,
+            'max_exp': self.max_exp,
             'passives': [ability.level for ability in self.abilities],
             'bullets': [bullet.to_dict() for bullet in self.bullets],
-            'upgradePoints': 4
+            'upgradePoints': self.skill_points
         }
 
     def to_player_dict(self):
@@ -99,6 +100,23 @@ class Hero(abilities.PropertyMixin, MovableObject):
         bullet.visible = True
         bullet.timeout = 50 * 2
         bullet.owner = self
+
+    @property
+    def max_exp(self):
+        return int(10 * (1.2 ** (self.level - 1)))
+
+    def add_exp(self, ammount):
+        self.experience += ammount
+        while self.experience >= self.max_exp:
+            self.experience -= self.max_exp
+            self.level += 1
+            self.skill_points += 1
+            logger.info(
+                'level: %d, exp: %r, max_exp: %d',
+                self.level,
+                self.experience,
+                self.max_exp
+            )
 
 
 class Bullet(MovableObject):
