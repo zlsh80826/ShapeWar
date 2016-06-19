@@ -42,7 +42,8 @@ void ChatBar::sendTextToServer() {
     QJsonObject data;
     data["name"] = this->name;
     data["message"] = text;
-    chat_webSocket.sendTextMessage(QJsonDocument(data).toJson(QJsonDocument::Compact));
+    chat_webSocket.sendTextMessage(
+        QJsonDocument(data).toJson(QJsonDocument::Compact));
 
     this->setText("");
 }
