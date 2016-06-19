@@ -20,8 +20,11 @@ public:
     void setInfoPos(QPointF);
     int getUpgradePoints() const;
     void setUpgradePoints(int value);
+    int getPassiveLevel(int i);
+    const int passiveMax = 8;
 signals:
     void upgradePointsChanged();
+    void passiveChanged(int id, int changeToValue);
 
 private:
     int passives[8];
