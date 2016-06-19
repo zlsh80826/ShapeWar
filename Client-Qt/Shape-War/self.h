@@ -8,6 +8,7 @@ class Self : public Hero {
 public:
     Self();
     void read(const QJsonObject &json);
+    void readXY(const QJsonObject &json);
     SelfInfo *info;
     const QStringList passiveNames = (QStringList() << "Health Regen"
                                                     << "Max Health"

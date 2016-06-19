@@ -129,6 +129,8 @@ void Scene::onTextMessageReceived(QString message) {
                     hero = this->heroes[heroId];
                 }
                 hero->read_player(hero_object);
+            } else {
+                self->readXY(hero_object);
             }
             if (cleanTimer == 0) {
                 cleanHit.insert(heroId);
