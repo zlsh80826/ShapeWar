@@ -3,14 +3,15 @@
 Self::Self() : Hero() {
     this->info = new SelfInfo();
     this->upgradePoints = 0;
+    for(int i=0 ; i<8 ; i++) {
+        passives[i] = 0;
+    }
 }
 
 void Self::read(const QJsonObject &json) {
     QJsonObject instance = json["self"].toObject();
     this->setX(instance["x"].toDouble());
     this->setY(instance["y"].toDouble());
-    this->experience = instance["experience"].toInt();
-    this->level = instance["level"].toInt();
     this->setUpgradePoints(instance["upgradePoints"].toInt());
 
     this->hpBar->setPos(this->x(), this->y());
@@ -18,12 +19,16 @@ void Self::read(const QJsonObject &json) {
                        instance["maxHp"].toInt());
     this->bullets->read(instance["bullets"].toArray());
 
-    this->info->setLv(this->level);
+    this->info->setLv(instance["level"].toInt());
     this->info->setExp(instance["experience"].toInt(), instance["max_exp"].toInt());
 
     QJsonArray passivesArray = instance["passives"].toArray();
     for (int i = 0; i < passivesArray.size(); ++i) {
-        this->passives[i] = passivesArray[i].toInt();
+        int value = passivesArray[i].toInt();
+        if(passives[i] != value) {
+            passives[i] = value;
+            emit(passiveChanged(i, value));
+        }
     }
 }
 
@@ -33,6 +38,11 @@ void Self::setInfoPos(QPointF pos) {
 
 int Self::getUpgradePoints() const {
     return upgradePoints;
+}
+
+int Self::getPassiveLevel(int i)
+{
+    return passives[i];
 }
 
 void Self::setUpgradePoints(int value) {

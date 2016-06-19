@@ -16,6 +16,7 @@
 #include <QTimer>
 #include <QWebSocket>
 #include <chatbar.h>
+#include <sstream>
 
 class View : public QGraphicsView {
     Q_OBJECT
@@ -29,6 +30,7 @@ public slots:
     void showUpgrateOptions();
     void onUpgradePointChanged();
     void onPropertyBtnClicked(int);
+    void onPassivesChanged(int, int);
 
 protected:
     void mousePressEvent(QMouseEvent *event);

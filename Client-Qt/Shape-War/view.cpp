@@ -73,6 +73,8 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     sec->start(1000);
 
     this->chatBar = new ChatBar(scene->getPartUrl(), this);
+
+    connect(self, SIGNAL(passiveChanged(int,int)), this, SLOT(onPassivesChanged(int,int)));
 }
 
 void View::print_freq() {
@@ -166,7 +168,7 @@ qreal View::calcRargetAngle(QPointF &mouseP) {
     return targetAngle;
 }
 
-void View::wheelEvent(QWheelEvent *event) {
+void View::wheelEvent(QWheelEvent *) {
     // eat this event to prevent it is passed to parent widget
     // do nothing
 
@@ -251,10 +253,15 @@ void View::showUpgrateOptions() {
 
 void View::onUpgradePointChanged() {
     printf("now UP: %d", self->getUpgradePoints());
-    bool enanbled = (self->getUpgradePoints() > 0) ? true : false;
-    for (QPair<QLabel *, QPushButton *> *property : properties) {
-        property->first->setEnabled(enanbled);
-        property->second->setEnabled(enanbled);
+    bool enabled = (self->getUpgradePoints() > 0) ? true : false;
+    for (int i=0, size = properties.size() ; i<size ; i++) {
+        if(self->getPassiveLevel(i) >= self->passiveMax) continue;
+        QPair<QLabel *, QPushButton *> *property = properties.at(i);
+        property->first->setEnabled(enabled);
+        property->second->setEnabled(enabled);
+    }
+    if( enabled == true && isExpanded == false ) {
+        this->showUpgrateOptions();
     }
     this->setPropertyStyle();
 }
@@ -264,6 +271,17 @@ void View::onPropertyBtnClicked(int clickedBtnId) {
     // TODO: handle the message want to  pass to server
     upgradeChoose = clickedBtnId;
     this->setPropertyStyle();
+}
+
+void View::onPassivesChanged(int i, int value)
+{
+    printf("%d", value);
+    properties.at(i)->first->setText(self->passiveNames.at(i) + " " + QString::number(self->getPassiveLevel(i)));
+    if( value >= self->passiveMax ) {
+        properties.at(i)->first->setEnabled(false);
+        properties.at(i)->second->setEnabled(false);
+        this->setPropertyStyle();
+    }
 }
 
 void View::setPropertyStyle() {

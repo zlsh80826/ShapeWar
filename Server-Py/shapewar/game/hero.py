@@ -65,7 +65,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
             self.choose = -1
 
     def handle_upgrade(self):
-        if self.last_control['upChoose'] > 0:
+        if self.last_control['upChoose'] >= 0:
             self.choose = self.last_control['upChoose']
 
     def accept_keys(self, W, A, S, D):
