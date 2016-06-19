@@ -29,7 +29,6 @@ class Hero(abilities.PropertyMixin, MovableObject):
         self.hp = self.max_hp
         self.experience = 5
         self.level = 1
-        self.max_exp = 10
 
         self.ready_bullets = []
         self.bullets = [Bullet(i, self.ready_bullets) for i in range(200)]
