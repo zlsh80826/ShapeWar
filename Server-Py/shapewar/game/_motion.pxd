@@ -1,8 +1,10 @@
 cdef class MovableObject:
 
     cdef public double friction
-    cdef public int x_bound
-    cdef public int y_bound
+    cdef public double x_min
+    cdef public double x_max
+    cdef public double y_min
+    cdef public double y_max
     cdef public complex velocity
     cdef public complex pos
     cdef public double radius
@@ -11,6 +13,6 @@ cdef class MovableObject:
 
     cpdef void apply_friction(self)
 
-    cpdef void tick_pos(self)
+    cpdef void bound_and_bounce(self)
 
-    cpdef void limit_pos(self)
+    cpdef void tick_pos(self)
