@@ -45,6 +45,7 @@ protected:
 
 private:
     void initGame();
+    int self_id = -1;
     int width;
     int height;
     int margin;
