@@ -4,6 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from .database import DBHandlerMixin, User
 from .game.arena import ArenaHandler
+from .chat import ChatHandler
 
 
 logger = logging.getLogger(__name__)
@@ -92,4 +93,5 @@ all_handlers = [
     ('/api/login', APILogin),
     ('/api/register', APIRegister),
     ('/arena/dummy', ArenaHandler),
+    ('/chat', ChatHandler)
 ]
