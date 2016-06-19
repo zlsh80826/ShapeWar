@@ -43,11 +43,6 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setRenderHint(QPainter::Antialiasing);
     pen.setColor(QColor(61, 61, 61, 255));
     painter->setPen(pen);
-    painter->setBrush(QBrush(QColor(240, 240, 240, 255), Qt::SolidPattern));
-    QPainterPath path;
-    path.addText(-12 * name.size(), 40, QFont("monospace", 30, QFont::Bold),
-                 name);
-    painter->drawPath(path);
     painter->setBrush(QBrush(QColor(61, 61, 61, 255), Qt::SolidPattern));
     painter->drawRect(QRect(-maxScoreWidth / 2, 50, maxScoreWidth, 20));
     painter->setBrush(QBrush(QColor(108, 240, 162, 255), Qt::SolidPattern));
@@ -56,6 +51,17 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->drawRect(QRect(-maxExpWidth / 2, 80, maxExpWidth, 20));
     painter->setBrush(QBrush(QColor(240, 217, 108, 255), Qt::SolidPattern));
     painter->drawRect(QRect(-maxExpWidth / 2, 80, this->expWidth, 20));
+    painter->setBrush(QBrush(QColor(240, 240, 240, 255), Qt::SolidPattern));
+    QPainterPath namePath;
+    namePath.addText(-12 * name.size(), 40, QFont("monospace", 30, QFont::Bold),
+                 name);
+    painter->drawPath(namePath);
+    pen.setWidth(1);
+    painter->setPen(pen);
+    QPainterPath infoPath;
+    infoPath.addText(-8 * lv_str.size(), 97, QFont("monospace", 12, QFont::Expanded),
+                 lv_str);
+    painter->drawPath(infoPath);
 }
 
 void SelfInfo::setExp(int exp, int max_exp) {
@@ -75,7 +81,10 @@ void SelfInfo::setScore(int new_score) {
 }
 
 void SelfInfo::setLv(int new_lv) {
+    if(this->lv == new_lv)
+        return;
     this->lv = new_lv;
+    this->lv_str = "Lv: " + QString::number(new_lv);
 }
 
 void SelfInfo::expAni() {

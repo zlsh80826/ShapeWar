@@ -29,6 +29,7 @@ private:
     qreal maxScoreWidth;
     QTimer *expTimer;
     QTimer *scoreTimer;
+    QString lv_str = "Lv: 1";
 
 private slots:
     void expAni();
