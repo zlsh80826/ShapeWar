@@ -65,7 +65,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
             self.choose = -1
 
     def handle_upgrade(self):
-        if( self.last_control['upChoose'] > 0):
+        if self.last_control['upChoose'] > 0:
             self.choose = self.last_control['upChoose']
 
     def accept_keys(self, W, A, S, D):
@@ -107,7 +107,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
             math.radians(self.angle)
         )
         bullet.velocity = cmath.rect(
-            self.bullet_speed, math.radians(self.angle)) + self.velocity
+            self.bullet_speed, math.radians(self.angle))
         bullet.visible = True
         bullet.timeout = 50 * 2
         bullet.owner = self
