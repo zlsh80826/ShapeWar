@@ -12,13 +12,14 @@ public:
     void setName(QString);
     void setLv(int);
     void setScore(int);
-    void setExp(int);
+    void setExp(int, int);
 
 private:
     QString name;
     int score;
     int lv;
     int exp;
+    int max_exp;
     int targetExp;
     int targetScore;
     int maxScore;
