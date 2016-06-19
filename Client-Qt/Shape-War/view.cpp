@@ -54,6 +54,8 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
                                       buttonLen + 10, passiveHeight);
         property->first->setVisible(false);
         property->second->setVisible(false);
+        property->first->setEnabled(false);
+        property->second->setEnabled(false);
 
         propertyBtnPtrGroup->addButton(property->second, i);
     }
@@ -238,11 +240,18 @@ void View::onUpgradePointChanged() {
         property->first->setEnabled(enanbled);
         property->second->setEnabled(enanbled);
     }
+    this->setPropertyStyle();
 }
 
 void View::onPropertyBtnClicked(int clickedBtnId) {
     qDebug() << "Button clicked: " << this->self->passiveNames.at(clickedBtnId);
     // TODO: handle the message want to  pass to server
+    bool enanbled = (self->getUpgradePoints() > 0) ? true : false;
+    for (QPair<QLabel *, QPushButton *> *property : properties) {
+        property->first->setEnabled(enanbled);
+        property->second->setEnabled(enanbled);
+    }
+    this->setPropertyStyle();
 }
 
 void View::setPropertyStyle() {
@@ -258,20 +267,68 @@ void View::setPropertyStyle() {
         "border-top-right-radius:10px; border-bottom-right-radius: 10px; "
         "font: bold 14px; border-width: 2px; border-style: outset; "
         "border-color: rgb(61, 61, 61, 240); color: rgb(61, 61, 61, 240);";
-    this->properties.at(0)->second->setStyleSheet(
-        common.append("background-color: rgb(108, 240, 236, 255);"));
-    this->properties.at(1)->second->setStyleSheet(
-        common + "background-color: rgb(152, 240, 108, 255);");
-    this->properties.at(2)->second->setStyleSheet(
-        common + "background-color: rgb(240, 108, 108, 255);");
-    this->properties.at(3)->second->setStyleSheet(
-        common + "background-color: rgb(240, 217, 108, 255);");
-    this->properties.at(4)->second->setStyleSheet(
-        common + "background-color: rgb(108, 150, 240, 255);");
-    this->properties.at(5)->second->setStyleSheet(
-        common + "background-color: rgb(154, 108, 240, 255);");
-    this->properties.at(6)->second->setStyleSheet(
-        common + "background-color: rgb(236, 108, 240, 255);");
-    this->properties.at(7)->second->setStyleSheet(
-        common + "background-color: rgb(238, 182, 143, 255);");
+
+    if( this->properties.at(0)->second->isEnabled() ) {
+        this->properties.at(0)->second->setStyleSheet(
+            common.append("background-color: rgb(108, 240, 236, 255);"));
+    } else {
+        this->properties.at(0)->second->setStyleSheet(
+            common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
+
+    if( this->properties.at(1)->second->isEnabled() ) {
+        this->properties.at(1)->second->setStyleSheet(
+            common + "background-color: rgb(152, 240, 108, 255);");
+    } else {
+        this->properties.at(1)->second->setStyleSheet(
+            common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
+
+    if( this->properties.at(2)->second->isEnabled() ) {
+        this->properties.at(2)->second->setStyleSheet(
+            common + "background-color: rgb(240, 108, 108, 255);");
+    } else {
+        this->properties.at(2)->second->setStyleSheet(
+            common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
+
+    if( this->properties.at(3)->second->isEnabled() ) {
+        this->properties.at(3)->second->setStyleSheet(
+            common + "background-color: rgb(240, 217, 108, 255);");
+    } else {
+        this->properties.at(3)->second->setStyleSheet(
+            common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
+
+    if( this->properties.at(4)->second->isEnabled() ) {
+        this->properties.at(4)->second->setStyleSheet(
+            common + "background-color: rgb(108, 150, 240, 255);");
+    } else {
+        this->properties.at(4)->second->setStyleSheet(
+            common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
+
+    if( this->properties.at(5)->second->isEnabled() ) {
+        this->properties.at(5)->second->setStyleSheet(
+            common + "background-color: rgb(154, 108, 240, 255);");
+    } else {
+        this->properties.at(5)->second->setStyleSheet(
+            common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
+
+    if( this->properties.at(6)->second->isEnabled() ) {
+        this->properties.at(6)->second->setStyleSheet(
+            common + "background-color: rgb(236, 108, 240, 255);");
+    } else {
+        this->properties.at(6)->second->setStyleSheet(
+            common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
+
+    if( this->properties.at(7)->second->isEnabled() ) {
+        this->properties.at(7)->second->setStyleSheet(
+            common + "background-color: rgb(238, 182, 143, 255);");
+    } else {
+        this->properties.at(7)->second->setStyleSheet(
+            common.append("background-color: rgb(156, 156, 156, 255);"));
+    }
 }

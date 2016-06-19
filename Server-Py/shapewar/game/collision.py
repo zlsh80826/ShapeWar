@@ -32,13 +32,15 @@ def range_overlaps(objects, key):
 
 
 def bounding_box_collision_pairs(objects):
-    x_overlaps = set(range_overlaps(objects, x_key))
-    return (op for op in range_overlaps(objects, y_key) if op in x_overlaps)
+    return (range_overlaps(objects, x_key))
+    # return (op for op in range_overlaps(objects, y_key) if op in x_overlaps)
 
 
 def check_circle_collision(obj, obk):
-    return \
+    return (
+        abs(obj.y - obk.y) < obj.radius + obk.radius and
         (obj.x - obk.x) ** 2 + (obj.y - obk.y) ** 2 < obj.radius + obk.radius
+    )
 
 
 def collide(obj, obk):

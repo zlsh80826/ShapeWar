@@ -12,7 +12,7 @@ async def main():
     conn = await websocket_connect(options.url)
     msg = await conn.read_message()
     json.dump(json.loads(msg), sys.stdout, indent=2)
-    print()
+    input()
 
 
 if __name__ == '__main__':

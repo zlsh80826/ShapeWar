@@ -71,7 +71,7 @@ void Scene::initGame() {
     this->self->bullets->addToParentNoHPBar(this);
 
     // test name
-    this->self->info->setName("test");
+    this->self->info->setName("testgffdsg456dsg45f");
     this->addItem(this->self->info);
 
     // test monster
