@@ -103,7 +103,6 @@ void Scene::onTextMessageReceived(QString message) {
     if (object.contains("self")) {
         self_id = object["self"].toObject()["id"].toInt(-1);
         this->self->read(object);
-        qDebug() << object;
     } else if (self_id != -1) {
         this->recvs++;
         this->triangles->read(object["triangles"].toArray());
