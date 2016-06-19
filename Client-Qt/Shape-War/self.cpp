@@ -29,7 +29,6 @@ void Self::read_global(const QJsonObject &data)
     this->setX(data["x"].toDouble());
     this->setY(data["y"].toDouble());
     this->hpBar->setPos(this->x(), this->y());
-    printf("%f %f", this->x(), this->y());
     this->bullets->read(data["bullets"].toArray());
     this->hpBar->setHp(data["currentHp"].toInt(),
                        data["maxHp"].toInt());

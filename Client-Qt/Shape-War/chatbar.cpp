@@ -3,20 +3,21 @@
 
 
 ChatBar::ChatBar(QString partUrl, QWidget *parent) : QLineEdit(parent) {
-    this->chat_url = new QUrl(partUrl + "/chat/roomid");
+    this->chat_url = new QUrl(partUrl + "/chat");
     this->setStyleSheet("background-color: rgb(255, 0, 0, 1)");
-    QObject::connect(&chat_webSocket, &QWebSocket::connected, this,
-                     &ChatBar::onConnected);
+
     this->posY = this->minPosY;
     this->setGeometry(0, this->posY, this->parentWidget()->width(), chatBarHeight);
     this->upTimer = new QTimer(this);
     this->downTimer = new QTimer(this);
     QObject::connect(this->upTimer, SIGNAL(timeout()), this, SLOT(up()));
     QObject::connect(this->downTimer, SIGNAL(timeout()), this, SLOT(down()));
-    // chat_webSocket.open(QUrl(*chat_url));
     this->setStyleSheet("background-color: rgba(10, 10, 10, 70); border-style: "
                         "outset; border-width: 0px; font: bold 18px; color: "
                         "rgb(255, 255, 204);");
+    QObject::connect(&chat_webSocket, &QWebSocket::connected, this,
+                                    &ChatBar::onConnected);
+    chat_webSocket.open(QUrl(*chat_url));
 }
 
 void ChatBar::startChat() {
@@ -60,6 +61,9 @@ void ChatBar::onTextMessageReceived(QString message) {
     const auto &object = doc.object();
 
     // TODO: display chat message from server
+    QString sender = object["name"].toString();
+    QString content = object["message"].toString();
+    qDebug() << sender << ": " << content;
 }
 
 void ChatBar::focusInEvent(QFocusEvent *) {
