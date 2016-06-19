@@ -144,6 +144,8 @@ class Bullet(MovableObject):
         self.owner = None
         self.friction = 0
         self.max_speed = 10000
+        self.x_min = self.y_min = float('-inf')
+        self.x_max = self.y_max = float('inf')
 
     def tick(self):
         self.timeout -= 1
