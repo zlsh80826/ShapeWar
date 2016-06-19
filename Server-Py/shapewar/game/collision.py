@@ -70,6 +70,6 @@ def deduct_hp(obj, by):
         obj.hp = 0
         obj.visible = False
         if isinstance(by, hero.Bullet):
-            by.owner.experience += 10
+            by.owner.add_exp(10)
         if isinstance(by, hero.Hero):
-            by.experience += 50
+            by.add_exp(50)

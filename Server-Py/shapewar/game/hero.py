@@ -100,6 +100,12 @@ class Hero(abilities.PropertyMixin, MovableObject):
         bullet.timeout = 50 * 2
         bullet.owner = self
 
+    def add_exp(self, ammount):
+        if self.experience + ammount < 100:
+            self.experience += ammount
+        else:
+            self.experience += ammount
+
 
 class Bullet(MovableObject):
 
