@@ -80,10 +80,14 @@ private:
     QTimer *sec;
     int sends;
 
+    QLabel *rebornLabel;
+    QPushButton *rebornBtn;
+
     void setPropertyStyle();
     void startChat();
 private slots:
     void print_freq();
+    void onSelfDie();
 };
 
 #endif // VIEW_H

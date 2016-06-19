@@ -70,11 +70,26 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     this->chatBar->setName(scene->getUsername());
 
     connect(self, SIGNAL(passiveChanged(int,int)), this, SLOT(onPassivesChanged(int,int)));
+
+    this->rebornLabel = new QLabel("Going to reborn?", this);
+    this->rebornLabel->setGeometry(this->width()/2 - 70, this->height()*2/3, 140, 20);
+    this->rebornLabel->setVisible(false);
+    this->rebornBtn = new QPushButton(this);
+    this->rebornBtn->setGeometry(this->width()/2 + 70, this->height()*2/3, 40, 20);
+    this->rebornBtn->setVisible(false);
+    rebornBtn->setText("OK");
+    connect(self->hpBar, SIGNAL(dieSignal()), this, SLOT(onSelfDie()));
 }
 
 void View::print_freq() {
     qDebug() << "send per sec: " << this->sends;
     this->sends = 0;
+}
+
+void View::onSelfDie()
+{
+    this->rebornBtn->setVisible(true);
+    this->rebornLabel->setVisible(true);
 }
 
 void View::keyPressEvent(QKeyEvent *event) {
