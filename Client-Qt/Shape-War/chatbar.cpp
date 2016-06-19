@@ -37,10 +37,13 @@ void ChatBar::startChat() {
 }
 
 void ChatBar::sendTextToServer() {
-    // TODO: send text in chat bar to server
-    QString text = this->text();
 
-    // reset text in chat bar
+    QString text = this->text();
+    QJsonObject data;
+    data["name"] = this->name;
+    data["message"] = text;
+    chat_webSocket.sendTextMessage(QJsonDocument(data).toJson(QJsonDocument::Compact));
+
     this->setText("");
 }
 
