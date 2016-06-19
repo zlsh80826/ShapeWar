@@ -1,14 +1,10 @@
 import json
 import logging
 import itertools
-import collections
-import random
 from tornado.websocket import WebSocketHandler, WebSocketClosedError
 from tornado.ioloop import PeriodicCallback
 
-from .hero import Hero, Bullet
-from . import garbage
-from .collision import bounding_box_collision_pairs, collide
+from .entity import collision_pairs, Square, Triangle, Pentagon, Hero, Vector2d
 
 
 logger = logging.getLogger(__name__)
@@ -21,9 +17,9 @@ class Arena:
     def __init__(self):
         self.clients = set()
 
-        self.squares = [garbage.Square(i) for i in range(250)]
-        self.triangles = [garbage.Triangle(i) for i in range(50)]
-        self.pentagons = [garbage.Pentagon(i) for i in range(10)]
+        self.squares = [Square(i) for i in range(250)]
+        self.triangles = [Triangle(i) for i in range(50)]
+        self.pentagons = [Pentagon(i) for i in range(10)]
 
         self.tick_id = 0
         self.tick_timer = PeriodicCallback(self.tick, self.tick_time)
@@ -56,21 +52,18 @@ class Arena:
         """this function is called every `self.tick_time` milliseconds
         to process each tick
         """
-        for polygon in itertools.chain(
+
+        for entity in itertools.chain(
             self.squares,
             self.triangles,
-            self.pentagons
+            self.pentagons,
+            (client.hero for client in self.clients),
+            self.iter_all_bullets()
         ):
-            if polygon.visible:
-                polygon.tick_angle()
-                polygon.apply_friction()
-            else:
-                if random.random() < .01:
-                    polygon.spawn()
+            entity.tick()
 
-        for bullet in self.iter_all_bullets():
-            if bullet.visible:
-                bullet.tick()
+        for client in self.clients:
+            client.hero.action()
 
         target_objects = [
             obj for obj in
@@ -81,17 +74,17 @@ class Arena:
                 [client.hero for client in self.clients],
                 self.iter_all_bullets()
             )
-            if obj.visible
+            if obj.alive
         ]
 
-        for obj in target_objects:
-            obj.tick_pos()
-
-        for obj, obk in bounding_box_collision_pairs(target_objects):
-            collide(obj, obk)
-
-        for client in self.clients:
-            client.hero.tick_keys(self)
+        for obj, obk in collision_pairs(target_objects):
+            d = (obj.pos - obk.pos)
+            sumr = obj.radius + obk.radius
+            obj.velocity += Vector2d.from_polar((sumr - d.r) / sumr, d.phi)
+            obk.velocity += Vector2d.from_polar((d.r - sumr) / sumr, d.phi)
+            if obj.team != obk.team:
+                obj.hit_by(obk)
+                obk.hit_by(obj)
 
         self.send_updates()
 
@@ -100,7 +93,7 @@ class Arena:
         self.broadcast_updates({
             "tick": self.tick_id,
             "players": [
-                client.hero.to_player_dict() for client in self.clients
+                client.hero.to_dict() for client in self.clients
             ],
             "squares": [square.to_dict() for square in self.squares],
             "triangles": [triangle.to_dict() for triangle in self.triangles],
@@ -138,7 +131,9 @@ class ArenaHandler(WebSocketHandler):
 
     def on_message(self, message):
         data = json.loads(message)
-        self.hero.last_control = data
+        self.hero.last_keys = data['keys']
+        self.hero.mouse_down = data['mouse']
+        self.hero.angle = data['angle']
         logger.debug('%s %r', self.request.remote_ip, data)
 
     def send_updates(self, data):

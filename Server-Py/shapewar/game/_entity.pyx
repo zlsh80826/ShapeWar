@@ -1,4 +1,4 @@
-from libc.math cimport hypot, atan2, INFINITY
+from libc.math cimport hypot, atan2, INFINITY, sin, cos
 
 
 cdef class Vector2d:
@@ -16,16 +16,20 @@ cdef class Vector2d:
             return hypot(self.x, self.y)
 
         def __set__(self, double value):
-            cdef double distance = hypot(self.x, self.y)
-            if not distance:
+            cdef double radius_sum = hypot(self.x, self.y)
+            if not radius_sum:
                 return
-            cdef double mult = value / distance
+            cdef double mult = value / radius_sum
             self.x *= mult
             self.y *= mult
 
     property phi:
         def __get__(self):
             return atan2(self.y, self.x)
+
+    @classmethod
+    def from_polar(cls, r, phi):
+        return cls(r * cos(phi), r * sin(phi))
 
     def __add__(self, Vector2d other not None):
         return Vector2d(self.x + other.x, self.y + other.y)
@@ -45,35 +49,35 @@ cdef class Vector2d:
 cdef class Entity:
 
     cdef public:
+        int id
         Vector2d pos
         double radius
         double angle
         Vector2d velocity
         double friction
         double max_speed
-        bint visible
+        bint alive
     cdef readonly:
-        int id
-        int x_min
-        int x_max
-        int y_min
-        int y_max
+        double x_min
+        double x_max
+        double y_min
+        double y_max
 
     def __cinit__(
         self,
         int id,
-        double x,
-        double y,
-        double radius,
+        double radius = 0,
+        double x = 0,
+        double y = 0,
         double angle = 0,
-        int x_min = 0,
-        int x_max = 4000,
-        int y_min = 0,
-        int y_max = 5000,
+        double x_min = 0,
+        double x_max = 5000,
+        double y_min = 0,
+        double y_max = 4000,
         Vector2d velocity = None,
         double friction = 0,
         double max_speed = INFINITY,
-        bint visible = False,
+        bint alive = False,
         **kwargs
     ):
         self.id = id
@@ -94,7 +98,7 @@ cdef class Entity:
             self.velocity = velocity
 
         self.max_speed = max_speed
-        self.visible = visible
+        self.alive = alive
 
     cdef void bound_and_bounce(self):
         if self.pos.x < self.x_min:
@@ -127,31 +131,32 @@ cdef class Entity:
     cpdef dict to_dict(self):
         return {
             'id': self.id,
-            'x': self.x,
-            'y': self.y,
+            'x': self.pos.x,
+            'y': self.pos.y,
             'radius': self.radius,
             'maxHp': self.max_hp,
             'currentHp': self.current_hp,
             'angle': self.angle,
-            'visible': self.visible
+            'visible': self.alive
         }
 
 
-cpdef tuple x_key(Entity obj):
-    return (obj.x - obj.radius, obj.x + obj.radius)
+cdef tuple x_key(Entity obj):
+    return (obj.pos.x - obj.radius, obj.pos.x + obj.radius)
 
 
 def collision_pairs(objects):
     cdef list targets = sorted(objects, key=x_key, reverse=True)
-    cdef Entity left, right
+    cdef Entity left
+    cdef Entity right
+    cdef Vector2d pos
+    cdef double radius_sum
     while targets:
         left = targets.pop()
         for right in reversed(targets):
-            cdef double distance = left.radius + right.radius
-            if right.x - left.x < distance:
-                if abs(left.y - right.y) < distance:
-                    if (
-                        (left.x - right.x) ** 2 + (left.y + right.y) ** 2
-                        < distance ** 2
-                    ):
+            radius_sum = left.radius + right.radius
+            rml = right.pos - left.pos
+            if rml.x < radius_sum:
+                if abs(rml.y) < radius_sum:
+                    if rml.x ** 2 + rml.y ** 2 < radius_sum ** 2:
                         yield (left, right)
