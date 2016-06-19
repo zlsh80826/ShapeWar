@@ -27,7 +27,7 @@ private:
     int parentWidth;
     int posY;
     const int chatBarHeight = 30;
-    const int maxPosY = 30;
+    const int maxPosY = 0;
     const int minPosY = -40;
 
 private slots:

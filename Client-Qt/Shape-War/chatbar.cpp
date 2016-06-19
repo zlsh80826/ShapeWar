@@ -9,20 +9,26 @@ ChatBar::ChatBar(QString partUrl, QWidget * parent) : QLineEdit(parent) {
     this->setGeometry(0, this->posY, parentWidth, chatBarHeight);
     this->upTimer = new QTimer(this);
     this->downTimer = new QTimer(this);
-    QObject::connect(this->upTimer, SIGNAL(timeout()), this, SLOT(ChatBar::up()));
-    QObject::connect(this->downTimer, SIGNAL(timeout()), this, SLOT(ChatBar::down()));
+    QObject::connect(this->upTimer, SIGNAL(timeout()), this, SLOT(up()));
+    QObject::connect(this->downTimer, SIGNAL(timeout()), this, SLOT(down()));
     //chat_webSocket.open(QUrl(*chat_url));
+    this->setStyleSheet("background-color: rgba(10, 10, 10, 70); border-style: outset; border-width: 0px; font: bold 18px; color: rgb(255, 255, 204);");
 }
 
 void ChatBar::startChat() {
     if(this->hasFocus()) {
         this->clearFocus();
-        this->upTimer->start(20);
-        qDebug() << "!focus";
+        if(this->downTimer->isActive()) {
+            this->downTimer->stop();
+        }
+        this->upTimer->start(10);
         this->sendTextToServer();
     } else {
         this->setFocus();
-        this->downTimer->start(20);
+        if(this->upTimer->isActive()) {
+            this->upTimer->stop();
+        }
+        this->downTimer->start(10);
         qDebug() << "focus";
     }
 }
@@ -64,7 +70,6 @@ void ChatBar::setParentWidth(int width) {
 }
 
 void ChatBar::up() {
-    qDebug() << "up";
     if( this->posY == this->minPosY ) {
         this->upTimer->stop();
         return;
@@ -74,7 +79,6 @@ void ChatBar::up() {
 }
 
 void ChatBar::down() {
-    qDebug() << "down";
     if( this->posY == this->maxPosY ) {
         this->downTimer->stop();
         return;
