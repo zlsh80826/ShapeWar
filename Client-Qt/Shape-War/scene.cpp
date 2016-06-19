@@ -96,51 +96,56 @@ void Scene::onConnected() {
 }
 
 void Scene::onTextMessageReceived(QString message) {
-    this->recvs++;
     // qDebug().noquote() << "Message received:" << message;
     QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
     const auto &object = doc.object();
-    this->self->read(object);
-    this->triangles->read(object["triangles"].toArray());
-    this->rectangles->read(object["squares"].toArray());
-    this->pentagons->read(object["pentagons"].toArray());
 
-    auto self_id = object["self"].toObject()["id"];
+    if (object.contains("self")) {
+        self_id = object["self"].toObject()["id"].toInt(-1);
+        this->self->read(object);
+        qDebug() << object;
+    } else if (self_id != -1) {
+        this->recvs++;
+        this->triangles->read(object["triangles"].toArray());
+        this->rectangles->read(object["squares"].toArray());
+        this->pentagons->read(object["pentagons"].toArray());
 
-    cleanTimer++;
-    if (cleanTimer >= 400) {
-        cleanTimer = 0;
-        cleanHit.clear();
-    }
-    for (const auto &hero_data : object["players"].toArray()) {
-        const auto &hero_object = hero_data.toObject();
-        int heroId = hero_object["id"].toInt();
-        if (hero_object["id"] != self_id) {
-            Hero *hero;
-            if (not this->heroes.contains(heroId)) {
-                hero = new Hero;
-                this->heroes[heroId] = hero;
-                this->addItem(hero);
-                this->addItem(hero->hpBar);
-                hero->bullets->addToParentNoHPBar(this);
-            } else {
-                hero = this->heroes[heroId];
+        cleanTimer++;
+        if (cleanTimer >= 400) {
+            cleanTimer = 0;
+            cleanHit.clear();
+        }
+
+        for (const auto &hero_data : object["players"].toArray()) {
+            const auto &hero_object = hero_data.toObject();
+            int heroId = hero_object["id"].toInt();
+            if (hero_object["id"].toInt() != self_id) {
+                Hero *hero;
+                if (not this->heroes.contains(heroId)) {
+                    hero = new Hero;
+                    this->heroes[heroId] = hero;
+                    this->addItem(hero);
+                    this->addItem(hero->hpBar);
+                    hero->bullets->addToParentNoHPBar(this);
+                } else {
+                    hero = this->heroes[heroId];
+                }
+                hero->read_player(hero_object);
             }
-            hero->read_player(hero_object);
+            if (cleanTimer == 0) {
+                cleanHit.insert(heroId);
+            }
         }
         if (cleanTimer == 0) {
-            cleanHit.insert(heroId);
-        }
-    }
-    if (cleanTimer == 0) {
-        QHash<int, Hero *>::iterator iter = heroes.begin(), end = heroes.end();
-        QHash<int, Hero *>::iterator prev;
-        while (iter != end) {
-            prev = iter++;
-            if (cleanHit.contains(prev.key()) == false) {
-                this->removeItem(prev.value());
-                delete prev.value();
-                heroes.erase(prev);
+            QHash<int, Hero *>::iterator iter = heroes.begin(), end = heroes.end();
+            QHash<int, Hero *>::iterator prev;
+            while (iter != end) {
+                prev = iter++;
+                if (cleanHit.contains(prev.key()) == false) {
+                    this->removeItem(prev.value());
+                    delete prev.value();
+                    heroes.erase(prev);
+                }
             }
         }
     }
