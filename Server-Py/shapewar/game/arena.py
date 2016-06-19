@@ -1,14 +1,12 @@
 import json
 import logging
 import itertools
-import collections
-import random
 from tornado.websocket import WebSocketHandler, WebSocketClosedError
 from tornado.ioloop import PeriodicCallback
 
-from .hero import Hero, Bullet
+from .hero import Hero
 from . import garbage
-from .collision import bounding_box_collision_pairs, collide
+from .collision import collision_pairs, collide
 
 
 logger = logging.getLogger(__name__)
@@ -56,21 +54,14 @@ class Arena:
         """this function is called every `self.tick_time` milliseconds
         to process each tick
         """
-        for polygon in itertools.chain(
+        for obj in itertools.chain(
             self.squares,
             self.triangles,
-            self.pentagons
+            self.pentagons,
+            [client.hero for client in self.clients],
+            self.iter_all_bullets()
         ):
-            if polygon.visible:
-                polygon.tick_angle()
-                polygon.apply_friction()
-            else:
-                if random.random() < .01:
-                    polygon.spawn()
-
-        for bullet in self.iter_all_bullets():
-            if bullet.visible:
-                bullet.tick()
+            obj.tick()
 
         target_objects = [
             obj for obj in
@@ -84,14 +75,11 @@ class Arena:
             if obj.visible
         ]
 
-        for obj in target_objects:
-            obj.tick_pos()
-
-        for obj, obk in bounding_box_collision_pairs(target_objects):
+        for obj, obk in collision_pairs(target_objects):
             collide(obj, obk)
 
         for client in self.clients:
-            client.hero.tick_keys(self)
+            client.hero.action()
 
         self.send_updates()
 

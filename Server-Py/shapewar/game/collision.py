@@ -31,9 +31,12 @@ def range_overlaps(objects, key):
                 break
 
 
-def bounding_box_collision_pairs(objects):
-    return (range_overlaps(objects, x_key))
-    # return (op for op in range_overlaps(objects, y_key) if op in x_overlaps)
+def collision_pairs(objects):
+    x_overlaps = set(range_overlaps(objects, x_key))
+    return (
+        op for op in range_overlaps(objects, y_key)
+        if op in x_overlaps and check_circle_collision(*op)
+    )
 
 
 def check_circle_collision(obj, obk):
@@ -50,26 +53,6 @@ def collide(obj, obk):
         return
     obj.velocity += cmath.rect((rsum - dist) / rsum, phi)
     obk.velocity += cmath.rect((dist - rsum) / rsum, phi)
-    if get_team(obj) != get_team(obk):
-        deduct_hp(obj, obk)
-        deduct_hp(obk, obj)
-
-
-def get_team(obj):
-    if isinstance(obj, garbage.Garbage):
-        return garbage.Garbage
-    if isinstance(obj, hero.Bullet):
-        return obj.owner
-    if isinstance(obj, hero.Hero):
-        return obj
-
-
-def deduct_hp(obj, by):
-    obj.hp -= by.body_damage
-    if obj.hp <= 0:
-        obj.hp = 0
-        obj.visible = False
-        if isinstance(by, hero.Bullet):
-            by.owner.add_exp(10)
-        if isinstance(by, hero.Hero):
-            by.add_exp(50)
+    if obj.team != obk.team:
+        obj.hit_by(obk)
+        obk.hit_by(obj)

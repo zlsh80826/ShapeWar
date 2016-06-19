@@ -16,3 +16,5 @@ cdef class MovableObject:
     cpdef void bound_and_bounce(self)
 
     cpdef void tick_pos(self)
+
+    cpdef void hit_by(self, by)
