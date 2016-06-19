@@ -95,7 +95,6 @@ void Scene::onConnected() {
 }
 
 void Scene::onBinaryMessageReceived(QByteArray data) {
-    qDebug() << "received binary data";
     onTextMessageReceived(QString::fromUtf8(qUncompress(data)));
 }
 

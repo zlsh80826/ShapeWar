@@ -120,7 +120,7 @@ class Arena:
         removal = set()
         for client in self.clients:
             try:
-                client.write_message(message)
+                client.write_message(message, binary=True)
             except WebSocketClosedError:
                 removal.add(client)
         self.clients -= removal
@@ -144,7 +144,10 @@ class ArenaHandler(WebSocketHandler):
 
     def send_updates(self):
         self.write_message(
-            qUnompress_compatible_compression(self.hero.to_self_dict())
+            qUnompress_compatible_compression(
+                {'self': self.hero.to_self_dict()}
+            ),
+            binary=True
         )
 
     def check_origin(self, origin):
