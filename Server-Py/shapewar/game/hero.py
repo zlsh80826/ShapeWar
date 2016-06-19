@@ -102,7 +102,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
     def shoot(self, bullet):
         bullet.hp = self.bullet_hp
         bullet.body_damage = self.bullet_damage
-        bullet.pos = self.pos + cmath.rect(
+        bullet.pos = self.pos + self.velocity + cmath.rect(
             self.radius,
             math.radians(self.angle)
         )
