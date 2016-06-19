@@ -7,6 +7,7 @@
 #include <QJsonObject>
 
 class ChatBar : public QLineEdit {
+    Q_OBJECT
 public:
     ChatBar(QString partUrl, QWidget * parent = 0);
     void startChat();
