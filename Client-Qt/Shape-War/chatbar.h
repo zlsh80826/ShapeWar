@@ -13,7 +13,7 @@ public:
     ChatBar(QString partUrl, QWidget *parent = 0);
     void startChat();
     void sendTextToServer();
-    void setParentWidth(int width);
+    void setParentWidth();
     void setName(QString);
 
 protected:
@@ -26,7 +26,6 @@ private:
     QTimer *upTimer;
     QTimer *downTimer;
     QString name;
-    int parentWidth;
     int posY;
     const int chatBarHeight = 30;
     const int maxPosY = 0;

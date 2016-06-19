@@ -205,7 +205,7 @@ void View::resizeEvent(QResizeEvent *event) {
     InfoCenterX = nowViewWidth / 2;
     InfoCenterY = nowViewHeight - InfoHeightOffset;
     this->onSelfPosChanged();
-    this->chatBar->setParentWidth(nowViewWidth);
+    this->chatBar->setParentWidth();
 }
 
 void View::sendControlToServer() {

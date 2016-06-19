@@ -8,7 +8,7 @@ ChatBar::ChatBar(QString partUrl, QWidget *parent) : QLineEdit(parent) {
     QObject::connect(&chat_webSocket, &QWebSocket::connected, this,
                      &ChatBar::onConnected);
     this->posY = this->minPosY;
-    this->setGeometry(0, this->posY, parentWidth, chatBarHeight);
+    this->setGeometry(0, this->posY, this->parentWidget()->width(), chatBarHeight);
     this->upTimer = new QTimer(this);
     this->downTimer = new QTimer(this);
     QObject::connect(this->upTimer, SIGNAL(timeout()), this, SLOT(up()));
@@ -68,9 +68,8 @@ void ChatBar::focusInEvent(QFocusEvent *) {
 void ChatBar::focusOutEvent(QFocusEvent *) {
 }
 
-void ChatBar::setParentWidth(int width) {
-    this->parentWidth = width;
-    this->setGeometry(0, this->posY, parentWidth, chatBarHeight);
+void ChatBar::setParentWidth() {
+    this->setGeometry(0, this->posY, this->parentWidget()->width(), chatBarHeight);
 }
 
 void ChatBar::up() {
@@ -79,7 +78,7 @@ void ChatBar::up() {
         return;
     }
     --this->posY;
-    this->setGeometry(0, this->posY, parentWidth, chatBarHeight);
+    this->setGeometry(0, this->posY, this->parentWidget()->width(), chatBarHeight);
 }
 
 void ChatBar::down() {
@@ -88,7 +87,7 @@ void ChatBar::down() {
         return;
     }
     ++this->posY;
-    this->setGeometry(0, this->posY, parentWidth, chatBarHeight);
+    this->setGeometry(0, this->posY, this->parentWidget()->width(), chatBarHeight);
 }
 
 void ChatBar::setName(QString name) {
