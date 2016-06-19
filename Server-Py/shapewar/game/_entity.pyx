@@ -135,3 +135,23 @@ cdef class Entity:
             'angle': self.angle,
             'visible': self.visible
         }
+
+
+cpdef tuple x_key(Entity obj):
+    return (obj.x - obj.radius, obj.x + obj.radius)
+
+
+def collision_pairs(objects):
+    cdef list targets = sorted(objects, key=x_key, reverse=True)
+    cdef Entity left, right
+    while targets:
+        left = targets.pop()
+        for right in reversed(targets):
+            cdef double distance = left.radius + right.radius
+            if right.x - left.x < distance:
+                if abs(left.y - right.y) < distance:
+                    if (
+                        (left.x - right.x) ** 2 + (left.y + right.y) ** 2
+                        < distance ** 2
+                    ):
+                        yield (left, right)
