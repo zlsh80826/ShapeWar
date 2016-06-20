@@ -35,7 +35,7 @@ public:
 public slots:
     void startGame();
     void gameOver();
-    void slotAcceptUserLogin(QString &, QString &, QString &, QString &, bool);
+    void slotAcceptUserLogin(QString &, QString &, QString &); //, QString &, bool);
 
 Q_SIGNALS:
     void closed();
