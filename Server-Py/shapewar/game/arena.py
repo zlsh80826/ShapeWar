@@ -1,6 +1,8 @@
+import zlib
 import json
 import logging
 import itertools
+import struct
 from tornado.websocket import WebSocketHandler, WebSocketClosedError
 from tornado.ioloop import PeriodicCallback
 
@@ -10,6 +12,15 @@ from .collision import collision_pairs, collide
 
 
 logger = logging.getLogger(__name__)
+
+
+def qUnompress_compatible_compression(data):
+    string = json.dumps(data)
+    binary = string.encode('utf-8')
+    compressed = zlib.compress(binary)
+    bytecount = len(compressed)
+    header = struct.pack('>I', bytecount)  # big-endian unsigned int
+    return header + compressed
 
 
 class Arena:
@@ -86,7 +97,7 @@ class Arena:
     def send_updates(self):
         self.tick_id += 1
         self.broadcast_updates()
-        self.broadcast_message(json.dumps({
+        self.broadcast_message(qUnompress_compatible_compression({
             "tick": self.tick_id,
             "players": [
                 client.hero.to_player_dict() for client in self.clients
@@ -109,7 +120,7 @@ class Arena:
         removal = set()
         for client in self.clients:
             try:
-                client.write_message(message)
+                client.write_message(message, binary=True)
             except WebSocketClosedError:
                 removal.add(client)
         self.clients -= removal
@@ -132,7 +143,12 @@ class ArenaHandler(WebSocketHandler):
         logger.debug('%s %r', self.request.remote_ip, data)
 
     def send_updates(self):
-        self.write_message({'self': self.hero.to_self_dict()})
+        self.write_message(
+            qUnompress_compatible_compression(
+                {'self': self.hero.to_self_dict()}
+            ),
+            binary=True
+        )
 
     def check_origin(self, origin):
         return True

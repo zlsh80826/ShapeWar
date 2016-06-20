@@ -90,8 +90,12 @@ void Scene::gameOver() {
 
 void Scene::onConnected() {
     qDebug() << "WebSocket of arena connected";
-    connect(&m_webSocket, &QWebSocket::textMessageReceived, this,
-            &Scene::onTextMessageReceived);
+    connect(&m_webSocket, &QWebSocket::binaryMessageReceived, this,
+            &Scene::onBinaryMessageReceived);
+}
+
+void Scene::onBinaryMessageReceived(QByteArray data) {
+    onTextMessageReceived(QString::fromUtf8(qUncompress(data)));
 }
 
 void Scene::onTextMessageReceived(QString message) {
