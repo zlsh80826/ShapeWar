@@ -77,7 +77,6 @@ class Hero(abilities.PropertyMixin, MovableObject):
             self.goReborn = True
 
     def accept_keys(self, W, A, S, D):
-        self.apply_friction()
         if W or A or S or D:
             self.velocity += cmath.rect(self.acc, math.atan2(S - W, D - A))
 

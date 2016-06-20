@@ -60,6 +60,7 @@ cdef class MovableObject:
         self.velocity = cmath.rect(r, phi)
         self.pos += self.velocity
         self.bound_and_bounce()
+        self.apply_friction()
 
     cpdef void hit_by(self, by):
         if self.visible:

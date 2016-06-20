@@ -20,9 +20,8 @@ cdef class Garbage(MovableObject):
 
     def __init__(self, id):
         super().__init__()
-        self.spawn()
         self.id = id
-        self.friction /= 5
+        self.friction = 0.04
         self.visible = False
         self.team = None
 
