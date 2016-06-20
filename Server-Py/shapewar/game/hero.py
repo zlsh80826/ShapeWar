@@ -159,15 +159,19 @@ class Hero(abilities.PropertyMixin, MovableObject):
     def reborn(self):
         self.visible = True
         self.goReborn = False
+        self.hp = self.max_hp
 
         self.level = 1
-        self.hp = self.max_hp
-        self.experience = self.score / 2
+        self.skill_points = 0
+        self.levels = defaultdict(int)
+
+        self.score = int (self.score / 2)
+        self.experience = self.score
         while self.experience >= self.max_exp:
             self.experience -= self.max_exp
             self.level += 1
             self.skill_points += 1
-        self.score = 0
+            
         super().spawn()
 
 

@@ -96,11 +96,11 @@ void View::onSelfDie()
     for(QObject* child : this->children()) {
         QWidget *childWidget = dynamic_cast<QWidget*>(child);
         if(childWidget == NULL) continue;
-        //childWidget->setStyleSheet();
+
     }
 }
 
-void View::onRebornClicked(bool isClicked)
+void View::onRebornClicked(bool)
 {
     this->rebornBtn->setVisible(false);
     this->rebornLabel->setVisible(false);
@@ -302,8 +302,12 @@ void View::onPropertyBtnClicked(int clickedBtnId) {
 
 void View::onPassivesChanged(int i, int value)
 {
-    printf("%d", value);
-    properties.at(i)->first->setText(self->passiveNames.at(i) + " " + QString::number(self->getPassiveLevel(i)));
+    if(value == 0) {
+        properties.at(i)->first->setText(self->passiveNames.at(i));
+    }
+    else {
+        properties.at(i)->first->setText(self->passiveNames.at(i) + " " + QString::number(value));
+    }
     if( value >= self->passiveMax ) {
         properties.at(i)->first->setEnabled(false);
         properties.at(i)->second->setEnabled(false);
