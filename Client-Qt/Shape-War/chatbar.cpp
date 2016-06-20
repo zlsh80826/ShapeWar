@@ -20,9 +20,9 @@ ChatBar::ChatBar(QString partUrl, QWidget *parent) : QLineEdit(parent) {
     chat_webSocket.open(QUrl(*chat_url));
     this->boardcast = new QTextEdit(this->parentWidget());
     this->boardcast->setGeometry(0, 100, this->parentWidget()->width(), boardcastHeight);
-    this->boardcast->setFocusPolicy(Qt::NoFocus);
+    //this->boardcast->setFocusPolicy(Qt::NoFocus);
     this->boardcast->setAlignment(Qt::AlignCenter);
-    this->boardcast->setStyleSheet("background-color: rgba(0, 0, 0, 2); border-style: "
+    this->boardcast->setStyleSheet("background-color: rgba(0, 0, 0, 255); border-style: "
                                   "outset; border-width: 0px; font: normal 30px; color: "
                                   "rgb(51, 153, 255); text-align: right");
     this->boardcast->setFont(QFont("monospace"));
@@ -86,13 +86,15 @@ void ChatBar::onTextMessageReceived(QString message) {
 }
 
 void ChatBar::focusInEvent(QFocusEvent *) {
+    qDebug() << "in";
 }
 
 void ChatBar::focusOutEvent(QFocusEvent *) {
+    qDebug() << "out";
 }
 
 void ChatBar::mousePressEvent(QMouseEvent *event) {
-
+    qDebug() << "asd";
 }
 
 void ChatBar::setParentWidth() {
@@ -126,8 +128,7 @@ void ChatBar::clearTimeoutContent() {
     if(!this->boardcastContent.isEmpty()) {
         if( this->boardcastContent.size() > 3 )
             this->boardcastContent.resize(3);
-        else
-            this->boardcastContent.pop_front();
+        this->boardcastContent.pop_front();
     }
     this->boardcast->setText("");
     this->boardcast->setAlignment(Qt::AlignCenter);
