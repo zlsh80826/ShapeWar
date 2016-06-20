@@ -11,7 +11,7 @@ protected:
     void focusOutEvent(QFocusEvent *event);
     void focusInEvent(QFocusEvent *event);
     void mousePressEvent(QMouseEvent *event);
-    void mouseRealseEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 
 private:
 

@@ -17,7 +17,7 @@ void BoardcastBoard::mousePressEvent(QMouseEvent *event) {
 
 }
 
-void BoardcastBoard::mouseReleaseEvent(QMouseEvent *e) {
+void BoardcastBoard::mouseReleaseEvent(QMouseEvent *event) {
 
 }
 
