@@ -28,8 +28,9 @@ class Hero(abilities.PropertyMixin, MovableObject):
         self.radius = 30
         self.acc = 0.6  # acceleration
         self.hp = self.max_hp
-        self.experience = 5
+        self.experience = 0
         self.level = 1
+        self.score = 0
 
         self.ready_bullets = []
         self.bullets = [Bullet(i, self) for i in range(200)]
@@ -67,7 +68,6 @@ class Hero(abilities.PropertyMixin, MovableObject):
             self.hp = min(self.max_hp, self.hp_regen + self.hp)
         if self.choose >= 0:
             self.abilities[self.choose].upgrade()
-            print(self.choose)
             self.choose = -1
 
     def handle_upgrade(self):
@@ -126,6 +126,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
 
     def add_exp(self, ammount):
         self.experience += ammount
+        self.add_score(ammount)
         while self.experience >= self.max_exp:
             self.experience -= self.max_exp
             self.level += 1
@@ -136,6 +137,9 @@ class Hero(abilities.PropertyMixin, MovableObject):
                 self.experience,
                 self.max_exp
             )
+
+    def add_score(self, ammount):
+        self.score += ammount
 
     @property
     def team(self):
@@ -153,15 +157,18 @@ class Hero(abilities.PropertyMixin, MovableObject):
         self.add_exp(other.rewarding_experience)
 
     def reborn(self):
-        self.hp = self.max_hp
         self.visible = True
         self.goReborn = False
-        # Why can't I call super.spawn() ?
-        self.pos = complex(
-            random.random() * (self.x_max - self.x_min) + self.x_min,
-            random.random() * (self.y_max - self.y_min) + self.y_min
-        )
-        self.velocity = 0j
+
+        self.level = 1
+        self.hp = self.max_hp
+        self.experience = self.score / 2
+        while self.experience >= self.max_exp:
+            self.experience -= self.max_exp
+            self.level += 1
+            self.skill_points += 1
+        self.score = 0
+        super().spawn()
 
 
 class Bullet(MovableObject):

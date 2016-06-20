@@ -96,6 +96,7 @@ void View::onSelfDie()
     for(QObject* child : this->children()) {
         QWidget *childWidget = dynamic_cast<QWidget*>(child);
         if(childWidget == NULL) continue;
+        //childWidget->setStyleSheet();
     }
 }
 
