@@ -395,3 +395,7 @@ void View::setPropertyStyle() {
             common.append("background-color: rgb(156, 156, 156, 255);"));
     }
 }
+
+void View::setMouseClicked(bool value) {
+    this->mouseClicked = value;
+}
