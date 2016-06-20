@@ -73,15 +73,26 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
             SLOT(onPassivesChanged(int, int)));
 
     this->rebornLabel = new QLabel("Going to reborn?", this);
-    this->rebornLabel->setGeometry(this->width() / 2 - 70,
-                                   this->height() * 2 / 3, 140, 20);
+    this->rebornLabel->setGeometry(this->width() / 2 - 150,
+                                   this->height() * 2 / 3, 300, 50);
     this->rebornLabel->setVisible(false);
+    //this->rebornLabel->setVisible(true);
     this->rebornBtn = new QPushButton(this);
-    this->rebornBtn->setGeometry(this->width() / 2 + 70, this->height() * 2 / 3,
-                                 40, 20);
+    this->rebornBtn->setGeometry(this->width() / 2 - 30, this->height() * 2 / 3 + 50,
+                                 60, 40);
     this->rebornBtn->setVisible(false);
-    this->rebornBtn->setText("OK");
+    //this->rebornBtn->setVisible(true);
+    this->rebornBtn->setText("Reborn");
     this->rebornChoose = false;
+
+    this->rebornLabel->setStyleSheet("font: 40px");
+    this->rebornBtn->setStyleSheet("background-color: rgba(255, 153, 0, 200) ;"
+                                   "border-style: outset; "
+                                   "border-color: rgba(255, 153, 0, 200); border-top-left-radius: 15px;"
+                                   "border-bottom-right-radius: 15px;"
+                                   "border-top-right-radius: 15px;"
+                                   "border-bottom-left-radius: 15px;"
+                                   );
     connect(self->hpBar, SIGNAL(dieSignal()), this, SLOT(onSelfDie()));
     connect(rebornBtn, SIGNAL(clicked(bool)), this,
             SLOT(onRebornClicked(bool)));
