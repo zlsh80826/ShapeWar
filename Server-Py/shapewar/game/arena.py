@@ -40,6 +40,8 @@ class Arena:
         self.triangles = [garbage.Triangle(i) for i in range(50)]
         self.pentagons = [garbage.Pentagon(i) for i in range(10)]
 
+        self.max_score = 0
+
         self.tick_id = 0
         self.tick_timer = PeriodicCallback(self.tick, self.tick_time)
         self.pptid = 0
@@ -100,6 +102,11 @@ class Arena:
         for client in self.clients:
             client.hero.action()
 
+        self.max_score = max(
+            (client.hero.score for client in self.clients),
+            default=1
+        )
+
         selfs = self.broadcast_updates()
         globalz = self.send_updates()
         await globalz
@@ -122,7 +129,8 @@ class Arena:
             try:
                 client.write_message(
                     await qUnompress_compatible_compression(
-                        {'self': client.hero.to_self_dict()}
+                        {'self': client.hero.to_self_dict(
+                            max_score=self.max_score)}
                     ),
                     binary=True
                 )
