@@ -70,6 +70,7 @@ void Hero::onDieSignal() {
     disappearTimer = new QTimer(this);
     connect(disappearTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
     disappearTimer->start(20);
+    disconnect(appearTimer, SIGNAL(timeout()), this, SLOT(increaseOpacity()));
 }
 
 void Hero::onRebornSignal() {
@@ -78,6 +79,7 @@ void Hero::onRebornSignal() {
     appearTimer = new QTimer(this);
     connect(appearTimer, SIGNAL(timeout()), this, SLOT(increaseOpacity()));
     appearTimer->start(20);
+    disconnect(disappearTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
 }
 
 void Hero::decreaseOpacity() {
