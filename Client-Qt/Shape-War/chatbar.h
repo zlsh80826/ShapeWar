@@ -3,9 +3,13 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QLineEdit>
+#include <QTextEdit>
 #include <QString>
 #include <QTimer>
 #include <QWebSocket>
+#include <QVector>
+#include <QPair>
+#include <QPainter>
 
 class ChatBar : public QLineEdit {
     Q_OBJECT
@@ -19,21 +23,27 @@ public:
 protected:
     void focusOutEvent(QFocusEvent *event);
     void focusInEvent(QFocusEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 
 private:
     QUrl *chat_url;
     QWebSocket chat_webSocket;
     QTimer *upTimer;
     QTimer *downTimer;
+    QTimer *clearTimer;
     QString name;
+    QTextEdit* boardcast;
+    QVector<QString> boardcastContent;
     int posY;
     const int chatBarHeight = 30;
     const int maxPosY = 0;
     const int minPosY = -40;
+    const int boardcastHeight = 120;
 
 private slots:
     void onConnected();
     void onTextMessageReceived(QString message);
+    void clearTimeoutContent();
     void down();
     void up();
 };

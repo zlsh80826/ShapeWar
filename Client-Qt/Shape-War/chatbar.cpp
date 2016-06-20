@@ -18,6 +18,20 @@ ChatBar::ChatBar(QString partUrl, QWidget *parent) : QLineEdit(parent) {
     QObject::connect(&chat_webSocket, &QWebSocket::connected, this,
                                     &ChatBar::onConnected);
     chat_webSocket.open(QUrl(*chat_url));
+    this->boardcast = new QTextEdit(this->parentWidget());
+    this->boardcast->setGeometry(0, 100, this->parentWidget()->width(), boardcastHeight);
+    this->boardcast->setFocusPolicy(Qt::NoFocus);
+    this->boardcast->setAlignment(Qt::AlignCenter);
+    this->boardcast->setStyleSheet("background-color: rgba(0, 0, 0, 2); border-style: "
+                                  "outset; border-width: 0px; font: normal 30px; color: "
+                                  "rgb(51, 153, 255); text-align: right");
+    this->boardcast->setFont(QFont("monospace"));
+    this->boardcast->setDisabled(true);
+    this->boardcast->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    this->boardcast->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    this->clearTimer = new QTimer(this);
+    QObject::connect(this->clearTimer, SIGNAL(timeout()), this, SLOT(clearTimeoutContent()));
+    clearTimer->start(3000);
 }
 
 void ChatBar::startChat() {
@@ -34,7 +48,6 @@ void ChatBar::startChat() {
             this->upTimer->stop();
         }
         this->downTimer->start(10);
-        qDebug() << "focus";
     }
 }
 
@@ -64,6 +77,12 @@ void ChatBar::onTextMessageReceived(QString message) {
     QString sender = object["name"].toString();
     QString content = object["message"].toString();
     qDebug() << sender << ": " << content;
+    this->boardcastContent.append(sender + ": " + content);
+    this->boardcast->setText("");
+    this->boardcast->setAlignment(Qt::AlignCenter);
+    for(int i=0; i<boardcastContent.size(); ++i) {
+        this->boardcast->append(boardcastContent[i]);
+    }
 }
 
 void ChatBar::focusInEvent(QFocusEvent *) {
@@ -72,8 +91,13 @@ void ChatBar::focusInEvent(QFocusEvent *) {
 void ChatBar::focusOutEvent(QFocusEvent *) {
 }
 
+void ChatBar::mousePressEvent(QMouseEvent *event) {
+
+}
+
 void ChatBar::setParentWidth() {
     this->setGeometry(0, this->posY, this->parentWidget()->width(), chatBarHeight);
+    this->boardcast->setGeometry(0, 100, this->parentWidget()->width(), boardcastHeight);
 }
 
 void ChatBar::up() {
@@ -96,4 +120,18 @@ void ChatBar::down() {
 
 void ChatBar::setName(QString name) {
     this->name = name;
+}
+
+void ChatBar::clearTimeoutContent() {
+    if(!this->boardcastContent.isEmpty()) {
+        if( this->boardcastContent.size() > 3 )
+            this->boardcastContent.resize(3);
+        else
+            this->boardcastContent.pop_front();
+    }
+    this->boardcast->setText("");
+    this->boardcast->setAlignment(Qt::AlignCenter);
+    for(int i=0; i<boardcastContent.size(); ++i) {
+        this->boardcast->append(boardcastContent[i]);
+    }
 }
