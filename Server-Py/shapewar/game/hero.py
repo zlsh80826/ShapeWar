@@ -151,7 +151,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
 
     @property
     def rewarding_experience(self):
-        return self.experience // 2
+        return self.score // 2
 
     def killed(self, other):
         self.add_exp(other.rewarding_experience)
@@ -165,13 +165,13 @@ class Hero(abilities.PropertyMixin, MovableObject):
         self.skill_points = 0
         self.levels = defaultdict(int)
 
-        self.score = int (self.score / 2)
+        self.score = self.score // 2
         self.experience = self.score
         while self.experience >= self.max_exp:
             self.experience -= self.max_exp
             self.level += 1
             self.skill_points += 1
-            
+
         super().spawn()
 
 
