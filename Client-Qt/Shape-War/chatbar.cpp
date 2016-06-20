@@ -24,7 +24,7 @@ ChatBar::ChatBar(QString partUrl, QWidget *parent) : QLineEdit(parent) {
     // this->boardcast->setFocusPolicy(Qt::NoFocus);
     this->boardcast->setAlignment(Qt::AlignCenter);
     this->boardcast->setStyleSheet(
-        "background-color: rgba(0, 0, 0, 255); border-style: "
+        "background-color: rgba(0, 0, 0, 2); border-style: "
         "outset; border-width: 0px; font: normal 30px; color: "
         "rgb(51, 153, 255); text-align: right");
     this->boardcast->setFont(QFont("monospace"));
