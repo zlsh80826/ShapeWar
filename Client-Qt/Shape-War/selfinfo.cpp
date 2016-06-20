@@ -62,6 +62,10 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     infoPath.addText(-8 * lv_str.size(), 97,
                      QFont("monospace", 12, QFont::Expanded), lv_str);
     painter->drawPath(infoPath);
+
+    infoPath.addText(-6 * scr_str.size(), 66,
+                     QFont("monospace", 12, QFont::Expanded), scr_str);
+    painter->drawPath(infoPath);
 }
 
 void SelfInfo::setExp(int exp, int max_exp) {
@@ -73,11 +77,18 @@ void SelfInfo::setExp(int exp, int max_exp) {
     this->expTimer->start(25);
 }
 
+void SelfInfo::setMaxScore(int value)
+{
+    maxScore = value;
+}
+
 void SelfInfo::setScore(int new_score) {
+
     if (new_score == this->targetScore)
         return;
     this->targetScore = new_score;
     this->scoreTimer->start(25);
+    this->scr_str = "Score:  " + QString::number(new_score);
 }
 
 void SelfInfo::setLv(int new_lv) {
@@ -109,6 +120,7 @@ void SelfInfo::scoreAni() {
     } else if (this->targetScore < this->score) {
         score -= ((score - targetScore) / 50 + 1);
     }
+    printf("%d / %d", score, maxScore);
     this->scoreWidth = (this->maxScoreWidth * this->score) / this->maxScore;
     this->update(this->boundingRect());
 }

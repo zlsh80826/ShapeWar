@@ -80,14 +80,16 @@ class Hero(abilities.PropertyMixin, MovableObject):
         if W or A or S or D:
             self.velocity += cmath.rect(self.acc, math.atan2(S - W, D - A))
 
-    def to_self_dict(self):
+    def to_self_dict(self, max_score):
         return {
             'id': self.id,
             'level': self.level,
             'experience': self.experience,
             'max_exp': self.max_exp,
             'passives': [ability.level for ability in self.abilities],
-            'upgradePoints': self.skill_points
+            'upgradePoints': self.skill_points,
+            'maxScore': max_score,
+            'score': self.score
         }
 
     def to_player_dict(self):

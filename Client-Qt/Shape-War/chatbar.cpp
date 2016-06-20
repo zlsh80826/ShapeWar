@@ -12,7 +12,7 @@ ChatBar::ChatBar(QString partUrl, QWidget *parent) : QLineEdit(parent) {
     this->downTimer = new QTimer(this);
     QObject::connect(this->upTimer, SIGNAL(timeout()), this, SLOT(up()));
     QObject::connect(this->downTimer, SIGNAL(timeout()), this, SLOT(down()));
-    this->setStyleSheet("background-color: rgba(10, 10, 10, 70); border-style: "
+    this->setStyleSheet("background-color: rgb(10, 10, 10); border-style: "
                         "outset; border-width: 0px; font: bold 18px; color: "
                         "rgb(255, 255, 204);");
     QObject::connect(&chat_webSocket, &QWebSocket::connected, this,
