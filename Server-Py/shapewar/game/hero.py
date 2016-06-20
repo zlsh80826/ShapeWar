@@ -33,7 +33,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
         self.score = 0
 
         self.ready_bullets = []
-        self.bullets = [Bullet(i, self) for i in range(200)]
+        self.bullets = [Bullet(i, self) for i in range(100)]
         self.ready_bullets.extend(self.bullets)
 
         self.last_control = {
@@ -111,8 +111,8 @@ class Hero(abilities.PropertyMixin, MovableObject):
         bullet.velocity = cmath.rect(
             self.bullet_speed, math.radians(self.angle))
         bullet.visible = True
-        bullet.recycle_timer = 100
-        bullet.timeout = 50 * 2
+        bullet.recycle_timer = 50
+        bullet.timeout = 100
 
     @property
     def max_exp(self):

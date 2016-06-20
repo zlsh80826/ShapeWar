@@ -79,7 +79,7 @@ class Abilities:
         ),
         UpgradableAbility(
             'reload', 'Reload',
-            [9, 8, 7, 6, 5, 4, 3, 2, 1]
+            [10, 9, 8, 7, 6, 5, 4, 3, 2]
         ),
         UpgradableAbility(
             'max_speed', 'Movement Speed',

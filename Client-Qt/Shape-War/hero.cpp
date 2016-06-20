@@ -23,7 +23,7 @@ Hero::Hero() {
     this->hpBar = new HpBar(10000, 60, 40);
     connect(hpBar, SIGNAL(dieSignal()), this, SLOT(onDieSignal()));
     connect(hpBar, SIGNAL(rebornSignal()), this, SLOT(onRebornSignal()));
-    bullets = new PolygonGroup<Bullet>(0, 200);
+    bullets = new PolygonGroup<Bullet>(0, 100);
 }
 
 QRectF Hero::boundingRect() const {
