@@ -28,12 +28,16 @@ protected:
 
 public:
     void read_player(const QJsonObject &);
-private slots:
+
+public slots:
     void onDieSignal();
+    void onRebornSignal();
     void decreaseOpacity();
+    void increaseOpacity();
 
 private:
     QTimer *disappearTimer;
+    QTimer *appearTimer;
 };
 
 #endif // HERO_H

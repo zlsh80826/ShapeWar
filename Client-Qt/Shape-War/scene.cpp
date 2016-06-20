@@ -13,10 +13,8 @@ Scene::Scene(QWidget *parent) : QGraphicsScene(parent) {
     LoginDialog *loginDialog = new LoginDialog();
 
     QObject::connect(
-        loginDialog,
-        SIGNAL(acceptLogin(QString &, QString &, QString &, QString &, bool)),
-        this, SLOT(slotAcceptUserLogin(QString &, QString &, QString &,
-                                       QString &, bool)));
+        loginDialog, SIGNAL(acceptLogin(QString &, QString &, QString &)), //, QString &, bool)),
+        this, SLOT(slotAcceptUserLogin(QString &, QString &, QString &))); //QString &, bool)));
     loginDialog->exec();
 
     this->width = 5000;
@@ -90,8 +88,12 @@ void Scene::gameOver() {
 
 void Scene::onConnected() {
     qDebug() << "WebSocket of arena connected";
-    connect(&m_webSocket, &QWebSocket::textMessageReceived, this,
-            &Scene::onTextMessageReceived);
+    connect(&m_webSocket, &QWebSocket::binaryMessageReceived, this,
+            &Scene::onBinaryMessageReceived);
+}
+
+void Scene::onBinaryMessageReceived(QByteArray data) {
+    onTextMessageReceived(QString::fromUtf8(qUncompress(data)));
 }
 
 void Scene::onTextMessageReceived(QString message) {
@@ -152,9 +154,8 @@ void Scene::onTextMessageReceived(QString message) {
     }
 }
 
-void Scene::slotAcceptUserLogin(QString &serverIP, QString &port,
-                                QString &username, QString &password,
-                                bool isAnonymous) {
+void Scene::slotAcceptUserLogin(QString &serverIP, QString &port, QString &username) {
+                                                            //QString &password, bool isAnonymous) {
     partUrl = QString("ws://");
     partUrl += serverIP;
     partUrl += ":";
@@ -163,10 +164,9 @@ void Scene::slotAcceptUserLogin(QString &serverIP, QString &port,
     this->username = username;
     // test
     qDebug() << "Get serverIP: " << serverIP << ", port: " << port
-             << ", username: " << username << ", password: " << password
-             << ", anonymous: " << isAnonymous;
-
+                     << ", username: " << username;
     // TODO: send the username and password to server
+    // ^^^ don't need it anymore
 }
 
 QString Scene::getPartUrl() const {

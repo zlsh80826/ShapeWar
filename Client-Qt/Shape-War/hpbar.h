@@ -18,6 +18,7 @@ private slots:
     void decreaseOpacity();
 signals:
     void dieSignal();
+    void rebornSignal();
 
 private:
     qreal curHp;

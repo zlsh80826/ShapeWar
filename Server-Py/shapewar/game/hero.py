@@ -2,6 +2,7 @@ from collections import defaultdict
 import itertools
 import math
 import cmath
+import random
 import logging
 
 from . import abilities
@@ -27,8 +28,9 @@ class Hero(abilities.PropertyMixin, MovableObject):
         self.radius = 30
         self.acc = 0.6  # acceleration
         self.hp = self.max_hp
-        self.experience = 5
+        self.experience = 0
         self.level = 1
+        self.score = 0
 
         self.ready_bullets = []
         self.bullets = [Bullet(i, self) for i in range(200)]
@@ -38,11 +40,13 @@ class Hero(abilities.PropertyMixin, MovableObject):
             'keys': {'W': False, 'A': False, 'S': False, 'D': False},
             'angle': 0,
             'mouse': False,
-            'upChoose': -1
+            'upChoose': -1,
+            'reborn': False
         }
         self.cooldown = 0
 
         self.choose = -1
+        self.goReborn = False
 
     @property
     def angle(self):
@@ -50,7 +54,10 @@ class Hero(abilities.PropertyMixin, MovableObject):
 
     def action(self):
         if not self.visible:
-            return
+            if not self.goReborn:
+                return
+            else:
+                self.reborn()
         if self.cooldown > 0:
             self.cooldown -= 1
         elif self.last_control['mouse']:
@@ -61,12 +68,13 @@ class Hero(abilities.PropertyMixin, MovableObject):
             self.hp = min(self.max_hp, self.hp_regen + self.hp)
         if self.choose >= 0:
             self.abilities[self.choose].upgrade()
-            print(self.choose)
             self.choose = -1
 
     def handle_upgrade(self):
         if self.last_control['upChoose'] >= 0:
             self.choose = self.last_control['upChoose']
+        if self.last_control['reborn']:
+            self.goReborn = True
 
     def accept_keys(self, W, A, S, D):
         self.apply_friction()
@@ -118,6 +126,7 @@ class Hero(abilities.PropertyMixin, MovableObject):
 
     def add_exp(self, ammount):
         self.experience += ammount
+        self.add_score(ammount)
         while self.experience >= self.max_exp:
             self.experience -= self.max_exp
             self.level += 1
@@ -129,6 +138,9 @@ class Hero(abilities.PropertyMixin, MovableObject):
                 self.max_exp
             )
 
+    def add_score(self, ammount):
+        self.score += ammount
+
     @property
     def team(self):
         return self
@@ -139,10 +151,28 @@ class Hero(abilities.PropertyMixin, MovableObject):
 
     @property
     def rewarding_experience(self):
-        return self.experience // 2
+        return self.score // 2
 
     def killed(self, other):
         self.add_exp(other.rewarding_experience)
+
+    def reborn(self):
+        self.visible = True
+        self.goReborn = False
+        self.hp = self.max_hp
+
+        self.level = 1
+        self.skill_points = 0
+        self.levels = defaultdict(int)
+
+        self.score = self.score // 2
+        self.experience = self.score
+        while self.experience >= self.max_exp:
+            self.experience -= self.max_exp
+            self.level += 1
+            self.skill_points += 1
+
+        super().spawn()
 
 
 class Bullet(MovableObject):

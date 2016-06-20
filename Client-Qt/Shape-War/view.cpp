@@ -70,11 +70,41 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     this->chatBar->setName(scene->getUsername());
 
     connect(self, SIGNAL(passiveChanged(int,int)), this, SLOT(onPassivesChanged(int,int)));
+
+    this->rebornLabel = new QLabel("Going to reborn?", this);
+    this->rebornLabel->setGeometry(this->width()/2 - 70, this->height()*2/3, 140, 20);
+    this->rebornLabel->setVisible(false);
+    this->rebornBtn = new QPushButton(this);
+    this->rebornBtn->setGeometry(this->width()/2 + 70, this->height()*2/3, 40, 20);
+    this->rebornBtn->setVisible(false);
+    this->rebornBtn->setText("OK");
+    this->rebornChoose = false;
+    connect(self->hpBar, SIGNAL(dieSignal()), this, SLOT(onSelfDie()));
+    connect(rebornBtn, SIGNAL(clicked(bool)), this, SLOT(onRebornClicked(bool)));
 }
 
 void View::print_freq() {
     qDebug() << "send per sec: " << this->sends;
     this->sends = 0;
+}
+
+void View::onSelfDie()
+{
+    this->rebornBtn->setVisible(true);
+    this->rebornLabel->setVisible(true);
+    //this->setStyleSheet("background-color: rgb(61, 61, 61, 240);");
+    for(QObject* child : this->children()) {
+        QWidget *childWidget = dynamic_cast<QWidget*>(child);
+        if(childWidget == NULL) continue;
+
+    }
+}
+
+void View::onRebornClicked(bool)
+{
+    this->rebornBtn->setVisible(false);
+    this->rebornLabel->setVisible(false);
+    this->rebornChoose = true;
 }
 
 void View::keyPressEvent(QKeyEvent *event) {
@@ -218,10 +248,12 @@ void View::sendControlToServer() {
     data["mouse"] = mouseClicked;
     data["angle"] = self->rotation();
     data["upChoose"] = upgradeChoose;
+    data["reborn"] = rebornChoose;
     ws.sendTextMessage(QJsonDocument(data).toJson(QJsonDocument::Compact));
 
     // reset upgrate choose to -1
     upgradeChoose = -1;
+    rebornChoose = false;
 }
 
 void View::showUpgrateOptions() {
@@ -270,8 +302,12 @@ void View::onPropertyBtnClicked(int clickedBtnId) {
 
 void View::onPassivesChanged(int i, int value)
 {
-    printf("%d", value);
-    properties.at(i)->first->setText(self->passiveNames.at(i) + " " + QString::number(self->getPassiveLevel(i)));
+    if(value == 0) {
+        properties.at(i)->first->setText(self->passiveNames.at(i));
+    }
+    else {
+        properties.at(i)->first->setText(self->passiveNames.at(i) + " " + QString::number(value));
+    }
     if( value >= self->passiveMax ) {
         properties.at(i)->first->setEnabled(false);
         properties.at(i)->second->setEnabled(false);

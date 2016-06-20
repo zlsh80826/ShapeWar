@@ -22,7 +22,7 @@ Hero::Hero() {
     // test hpBar
     this->hpBar = new HpBar(10000, 60, 40);
     connect(hpBar, SIGNAL(dieSignal()), this, SLOT(onDieSignal()));
-
+    connect(hpBar, SIGNAL(rebornSignal()), this, SLOT(onRebornSignal()));
     bullets = new PolygonGroup<Bullet>(0, 200);
 }
 
@@ -66,9 +66,18 @@ void Hero::read_player(const QJsonObject &data) {
 
 void Hero::onDieSignal() {
     this->hpBar->setVisible(false);
-    this->disappearTimer = new QTimer(this);
+    disappearTimer = new QTimer(this);
+    disconnect(disappearTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
     connect(disappearTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
     disappearTimer->start(20);
+}
+
+void Hero::onRebornSignal() {
+    this->hpBar->setVisible(true);
+    appearTimer = new QTimer(this);
+    disconnect(appearTimer, SIGNAL(timeout()), this, SLOT(increaseOpacity()));
+    connect(appearTimer, SIGNAL(timeout()), this, SLOT(increaseOpacity()));
+    appearTimer->start(20);
 }
 
 void Hero::decreaseOpacity() {
@@ -78,4 +87,13 @@ void Hero::decreaseOpacity() {
         return;
     }
     this->setOpacity(this->opacity() - 0.03);
+}
+
+void Hero::increaseOpacity() {
+    if (this->opacity() >= 0.97) {
+        this->setOpacity(1);
+        this->appearTimer->stop();
+        return;
+    }
+    this->setOpacity(this->opacity() + 0.03);
 }
