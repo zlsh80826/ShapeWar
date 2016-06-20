@@ -10,6 +10,7 @@ ChatBar::ChatBar(QString partUrl, QWidget *parent) : QLineEdit(parent) {
     this->setGeometry(0, this->posY, this->parentWidget()->width(), chatBarHeight);
     this->upTimer = new QTimer(this);
     this->downTimer = new QTimer(this);
+    this->boardcast.setParent(this->parentWidget());
     QObject::connect(this->upTimer, SIGNAL(timeout()), this, SLOT(up()));
     QObject::connect(this->downTimer, SIGNAL(timeout()), this, SLOT(down()));
     this->setStyleSheet("background-color: rgba(10, 10, 10, 70); border-style: "
@@ -61,9 +62,12 @@ void ChatBar::onTextMessageReceived(QString message) {
     const auto &object = doc.object();
 
     // TODO: display chat message from server
-    QString sender = object["name"].toString();
-    QString content = object["message"].toString();
+    QString* sender = new QString(object["name"].toString());
+    QString* content = new QString(object["message"].toString());
+    chatQueue.append(new QPair<QString*, QString*>(sender, content));
     qDebug() << sender << ": " << content;
+    QPainter* painter = new QPainter(this->parentWidget());
+    painter->drawRect(0, 0, 255, 255);
 }
 
 void ChatBar::focusInEvent(QFocusEvent *) {
