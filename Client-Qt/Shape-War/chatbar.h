@@ -3,13 +3,13 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QLineEdit>
-#include <QTextEdit>
-#include <QString>
-#include <QTimer>
-#include <QWebSocket>
-#include <QVector>
-#include <QPair>
 #include <QPainter>
+#include <QPair>
+#include <QString>
+#include <QTextEdit>
+#include <QTimer>
+#include <QVector>
+#include <QWebSocket>
 
 class ChatBar : public QLineEdit {
     Q_OBJECT
@@ -32,7 +32,7 @@ private:
     QTimer *downTimer;
     QTimer *clearTimer;
     QString name;
-    QTextEdit* boardcast;
+    QTextEdit *boardcast;
     QVector<QString> boardcastContent;
     int posY;
     const int chatBarHeight = 30;

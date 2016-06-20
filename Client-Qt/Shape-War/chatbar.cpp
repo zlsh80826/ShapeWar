@@ -1,13 +1,13 @@
 #include "chatbar.h"
 #include <QDebug>
 
-
 ChatBar::ChatBar(QString partUrl, QWidget *parent) : QLineEdit(parent) {
     this->chat_url = new QUrl(partUrl + "/chat");
     this->setStyleSheet("background-color: rgb(255, 0, 0, 1)");
 
     this->posY = this->minPosY;
-    this->setGeometry(0, this->posY, this->parentWidget()->width(), chatBarHeight);
+    this->setGeometry(0, this->posY, this->parentWidget()->width(),
+                      chatBarHeight);
     this->upTimer = new QTimer(this);
     this->downTimer = new QTimer(this);
     QObject::connect(this->upTimer, SIGNAL(timeout()), this, SLOT(up()));
@@ -16,21 +16,24 @@ ChatBar::ChatBar(QString partUrl, QWidget *parent) : QLineEdit(parent) {
                         "outset; border-width: 0px; font: bold 18px; color: "
                         "rgb(255, 255, 204);");
     QObject::connect(&chat_webSocket, &QWebSocket::connected, this,
-                                    &ChatBar::onConnected);
+                     &ChatBar::onConnected);
     chat_webSocket.open(QUrl(*chat_url));
     this->boardcast = new QTextEdit(this->parentWidget());
-    this->boardcast->setGeometry(0, 100, this->parentWidget()->width(), boardcastHeight);
-    //this->boardcast->setFocusPolicy(Qt::NoFocus);
+    this->boardcast->setGeometry(0, 100, this->parentWidget()->width(),
+                                 boardcastHeight);
+    // this->boardcast->setFocusPolicy(Qt::NoFocus);
     this->boardcast->setAlignment(Qt::AlignCenter);
-    this->boardcast->setStyleSheet("background-color: rgba(0, 0, 0, 255); border-style: "
-                                  "outset; border-width: 0px; font: normal 30px; color: "
-                                  "rgb(51, 153, 255); text-align: right");
+    this->boardcast->setStyleSheet(
+        "background-color: rgba(0, 0, 0, 255); border-style: "
+        "outset; border-width: 0px; font: normal 30px; color: "
+        "rgb(51, 153, 255); text-align: right");
     this->boardcast->setFont(QFont("monospace"));
     this->boardcast->setDisabled(true);
     this->boardcast->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->boardcast->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->clearTimer = new QTimer(this);
-    QObject::connect(this->clearTimer, SIGNAL(timeout()), this, SLOT(clearTimeoutContent()));
+    QObject::connect(this->clearTimer, SIGNAL(timeout()), this,
+                     SLOT(clearTimeoutContent()));
     clearTimer->start(3000);
 }
 
@@ -80,7 +83,7 @@ void ChatBar::onTextMessageReceived(QString message) {
     this->boardcastContent.append(sender + ": " + content);
     this->boardcast->setText("");
     this->boardcast->setAlignment(Qt::AlignCenter);
-    for(int i=0; i<boardcastContent.size(); ++i) {
+    for (int i = 0; i < boardcastContent.size(); ++i) {
         this->boardcast->append(boardcastContent[i]);
     }
 }
@@ -98,8 +101,10 @@ void ChatBar::mousePressEvent(QMouseEvent *event) {
 }
 
 void ChatBar::setParentWidth() {
-    this->setGeometry(0, this->posY, this->parentWidget()->width(), chatBarHeight);
-    this->boardcast->setGeometry(0, 100, this->parentWidget()->width(), boardcastHeight);
+    this->setGeometry(0, this->posY, this->parentWidget()->width(),
+                      chatBarHeight);
+    this->boardcast->setGeometry(0, 100, this->parentWidget()->width(),
+                                 boardcastHeight);
 }
 
 void ChatBar::up() {
@@ -108,7 +113,8 @@ void ChatBar::up() {
         return;
     }
     --this->posY;
-    this->setGeometry(0, this->posY, this->parentWidget()->width(), chatBarHeight);
+    this->setGeometry(0, this->posY, this->parentWidget()->width(),
+                      chatBarHeight);
 }
 
 void ChatBar::down() {
@@ -117,7 +123,8 @@ void ChatBar::down() {
         return;
     }
     ++this->posY;
-    this->setGeometry(0, this->posY, this->parentWidget()->width(), chatBarHeight);
+    this->setGeometry(0, this->posY, this->parentWidget()->width(),
+                      chatBarHeight);
 }
 
 void ChatBar::setName(QString name) {
@@ -125,14 +132,14 @@ void ChatBar::setName(QString name) {
 }
 
 void ChatBar::clearTimeoutContent() {
-    if(!this->boardcastContent.isEmpty()) {
-        if( this->boardcastContent.size() > 3 )
+    if (!this->boardcastContent.isEmpty()) {
+        if (this->boardcastContent.size() > 3)
             this->boardcastContent.resize(3);
         this->boardcastContent.pop_front();
     }
     this->boardcast->setText("");
     this->boardcast->setAlignment(Qt::AlignCenter);
-    for(int i=0; i<boardcastContent.size(); ++i) {
+    for (int i = 0; i < boardcastContent.size(); ++i) {
         this->boardcast->append(boardcastContent[i]);
     }
 }
