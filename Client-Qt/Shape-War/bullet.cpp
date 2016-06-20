@@ -38,7 +38,7 @@ QPainterPath Bullet::shape() const {
 
 void Bullet::read(const QJsonObject &json) {
     bool next_active = json["visible"].toBool();
-    if ((this->stage != ACTIVE) && (next_active == false) || (this->stage==DISAPPEARING) )
+    if ( ((this->stage != ACTIVE) && (next_active == false)) || (this->stage==DISAPPEARING) )
         return;
     this->setStage(next_active);
     this->setX(json["x"].toDouble());
