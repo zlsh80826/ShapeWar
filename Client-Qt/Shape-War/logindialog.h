@@ -22,15 +22,15 @@ private:
     QLabel *labelServerIP;
     QLabel *labelPort;
     QLabel *labelUsername;
-    //QLabel *labelPassword;
+    // QLabel *labelPassword;
 
     QLineEdit *editServerIP;
     QLineEdit *editPort;
     QLineEdit *editUsername;
-    //QLineEdit *editPassword;
+    // QLineEdit *editPassword;
 
-    //QCheckBox *anonymousCheck;
-    //QLabel *labelRegister;
+    // QCheckBox *anonymousCheck;
+    // QLabel *labelRegister;
     /*!
      * The standard dialog button box.
      */
@@ -73,11 +73,11 @@ signals:
      * password the password entered in the dialog
      * index the number of the username selected in the combobox
      */
-    void acceptLogin( QString &ServerIP, QString &port, QString &username );
-                     //QString &password, bool isAnonymous);
+    void acceptLogin(QString &ServerIP, QString &port, QString &username);
+    // QString &password, bool isAnonymous);
 public slots:
     void slotAcceptLogin();
-    //void anonymousCheckOnclicked();
+    // void anonymousCheckOnclicked();
 };
 
 #endif // LOGINDIALOG_H

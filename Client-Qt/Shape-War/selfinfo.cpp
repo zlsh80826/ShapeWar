@@ -54,13 +54,13 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setBrush(QBrush(QColor(240, 240, 240, 255), Qt::SolidPattern));
     QPainterPath namePath;
     namePath.addText(-12 * name.size(), 40, QFont("monospace", 30, QFont::Bold),
-                 name);
+                     name);
     painter->drawPath(namePath);
     pen.setWidth(1);
     painter->setPen(pen);
     QPainterPath infoPath;
-    infoPath.addText(-8 * lv_str.size(), 97, QFont("monospace", 12, QFont::Expanded),
-                 lv_str);
+    infoPath.addText(-8 * lv_str.size(), 97,
+                     QFont("monospace", 12, QFont::Expanded), lv_str);
     painter->drawPath(infoPath);
 }
 
@@ -81,19 +81,19 @@ void SelfInfo::setScore(int new_score) {
 }
 
 void SelfInfo::setLv(int new_lv) {
-    if(this->lv == new_lv)
+    if (this->lv == new_lv)
         return;
     this->lv = new_lv;
     this->lv_str = "Lv: " + QString::number(new_lv);
 }
 
 void SelfInfo::expAni() {
-    if ( targetExp == exp ) {
+    if (targetExp == exp) {
         expTimer->stop();
-    } else if ( targetExp > exp ) {
-        exp += (( targetExp - exp ) / 50 + 1);
-    } else if ( targetExp < exp ) {
-        exp -= ( ( exp - targetExp ) / 50 + 1);
+    } else if (targetExp > exp) {
+        exp += ((targetExp - exp) / 50 + 1);
+    } else if (targetExp < exp) {
+        exp -= ((exp - targetExp) / 50 + 1);
     }
 
     this->expWidth = (this->maxExpWidth * this->exp) / this->max_exp;

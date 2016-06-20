@@ -49,7 +49,8 @@ QPainterPath Polygon::shape() const {
 
 void Polygon::read(const QJsonObject &json) {
     bool next_active = json["visible"].toBool();
-    if ( ((this->stage != ACTIVE) && (next_active == false)) || (this->stage==DISAPPEARING) )
+    if (((this->stage != ACTIVE) && (next_active == false)) ||
+        (this->stage == DISAPPEARING))
         return;
     this->setX(json["x"].toDouble());
     this->setY(json["y"].toDouble());

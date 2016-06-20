@@ -16,8 +16,8 @@ void LoginDialog::setUpGUI() {
     editPort->setText("8888");
     editUsername = new QLineEdit(this);
     // initialize the password field so that it does not echo characters
-    //editPassword = new QLineEdit(this);
-    //editPassword->setEchoMode(QLineEdit::Password);
+    // editPassword = new QLineEdit(this);
+    // editPassword->setEchoMode(QLineEdit::Password);
 
     // initialize the labels
     labelServerIP = new QLabel(this);
@@ -56,8 +56,8 @@ void LoginDialog::setUpGUI() {
     connect(buttons->button(QDialogButtonBox::Ok), SIGNAL(clicked()), this,
             SLOT(slotAcceptLogin()));
 
-    //anonymousCheck = new QCheckBox("Play anonymous", this);
-    //connect(anonymousCheck, SIGNAL(clicked()), this,
+    // anonymousCheck = new QCheckBox("Play anonymous", this);
+    // connect(anonymousCheck, SIGNAL(clicked()), this,
     //        SLOT(anonymousCheckOnclicked()));
 
     // place components into the dialog
@@ -70,12 +70,12 @@ void LoginDialog::setUpGUI() {
     rowCounting++;
     formGridLayout->addWidget(labelUsername, rowCounting, 0);
     formGridLayout->addWidget(editUsername, rowCounting, 1);
-    //rowCounting++;
-    //formGridLayout->addWidget(labelPassword, rowCounting, 0);
-    //formGridLayout->addWidget(editPassword, rowCounting, 1);
-    //rowCounting++;
-    //formGridLayout->addWidget(anonymousCheck, rowCounting, 0);
-    //formGridLayout->addWidget(labelRegister, rowCounting, 1);
+    // rowCounting++;
+    // formGridLayout->addWidget(labelPassword, rowCounting, 0);
+    // formGridLayout->addWidget(editPassword, rowCounting, 1);
+    // rowCounting++;
+    // formGridLayout->addWidget(anonymousCheck, rowCounting, 0);
+    // formGridLayout->addWidget(labelRegister, rowCounting, 1);
     rowCounting++;
     formGridLayout->addWidget(buttons, rowCounting, 0, 1, 2);
 
@@ -90,11 +90,11 @@ void LoginDialog::slotAcceptLogin() {
     QString serverIP = editServerIP->text();
     QString port = editPort->text();
     QString username = editUsername->text();
-    //QString password = editPassword->text();
-    //bool isAnonymous = anonymousCheck->isChecked();
-    emit acceptLogin( serverIP, port, username );
-                    // password, // current password
-                    // isAnonymous);
+    // QString password = editPassword->text();
+    // bool isAnonymous = anonymousCheck->isChecked();
+    emit acceptLogin(serverIP, port, username);
+    // password, // current password
+    // isAnonymous);
 
     // close this dialog
     close();

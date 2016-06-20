@@ -67,7 +67,8 @@ void Hero::read_player(const QJsonObject &data) {
 void Hero::onDieSignal() {
     this->hpBar->setVisible(false);
     disappearTimer = new QTimer(this);
-    disconnect(disappearTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
+    disconnect(disappearTimer, SIGNAL(timeout()), this,
+               SLOT(decreaseOpacity()));
     connect(disappearTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
     disappearTimer->start(20);
 }

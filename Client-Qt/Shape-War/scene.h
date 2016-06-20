@@ -2,12 +2,12 @@
 #define SCENE_H
 
 #include "polygongroup.h"
+#include <QByteArray>
 #include <QColor>
 #include <QGraphicsView>
 #include <QHash>
 #include <QKeyEvent>
 #include <QSet>
-#include <QByteArray>
 #include <QtWebSockets/QWebSocket>
 #include <bullet.h>
 #include <hero.h>
@@ -35,7 +35,8 @@ public:
 public slots:
     void startGame();
     void gameOver();
-    void slotAcceptUserLogin(QString &, QString &, QString &); //, QString &, bool);
+    void slotAcceptUserLogin(QString &, QString &,
+                             QString &); //, QString &, bool);
 
 Q_SIGNALS:
     void closed();
