@@ -2,6 +2,7 @@ from collections import defaultdict
 import itertools
 import math
 import cmath
+import random
 import logging
 
 from . import abilities
@@ -38,11 +39,13 @@ class Hero(abilities.PropertyMixin, MovableObject):
             'keys': {'W': False, 'A': False, 'S': False, 'D': False},
             'angle': 0,
             'mouse': False,
-            'upChoose': -1
+            'upChoose': -1,
+            'reborn': False
         }
         self.cooldown = 0
 
         self.choose = -1
+        self.goReborn = False
 
     @property
     def angle(self):
@@ -50,7 +53,10 @@ class Hero(abilities.PropertyMixin, MovableObject):
 
     def action(self):
         if not self.visible:
-            return
+            if not self.goReborn:
+                return
+            else:
+                self.reborn()
         if self.cooldown > 0:
             self.cooldown -= 1
         elif self.last_control['mouse']:
@@ -67,6 +73,8 @@ class Hero(abilities.PropertyMixin, MovableObject):
     def handle_upgrade(self):
         if self.last_control['upChoose'] >= 0:
             self.choose = self.last_control['upChoose']
+        if self.last_control['reborn']:
+            self.goReborn = True
 
     def accept_keys(self, W, A, S, D):
         self.apply_friction()
@@ -143,6 +151,17 @@ class Hero(abilities.PropertyMixin, MovableObject):
 
     def killed(self, other):
         self.add_exp(other.rewarding_experience)
+
+    def reborn(self):
+        self.hp = self.max_hp
+        self.visible = True
+        self.goReborn = False
+        # Why can't I call super.spawn() ?
+        self.pos = complex(
+            random.random() * (self.x_max - self.x_min) + self.x_min,
+            random.random() * (self.y_max - self.y_min) + self.y_min
+        )
+        self.velocity = 0j
 
 
 class Bullet(MovableObject):

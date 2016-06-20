@@ -25,6 +25,11 @@ HpBar::HpBar(qreal initHp, qreal width, qreal offsetY) {
 }
 
 void HpBar::setHp(int curHp, int maxHp) {
+    if (this->curHp > 0 && curHp <= 0)
+        emit(dieSignal());
+    if (this->curHp <= 0 && curHp > 0)
+        emit(rebornSignal());
+
     if (curHp == maxHp) {
         if (!this->revealTimer->isActive())
             this->revealTimer->start(20);
@@ -38,8 +43,6 @@ void HpBar::setHp(int curHp, int maxHp) {
         this->curHpWidth = width * (this->curHp / this->maxHp);
         this->update(this->boundingRect());
     }
-    if (curHp <= 0)
-        emit(dieSignal());
 }
 
 QRectF HpBar::boundingRect() const {
