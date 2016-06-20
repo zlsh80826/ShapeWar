@@ -13,6 +13,7 @@ public:
     void setLv(int);
     void setScore(int);
     void setExp(int, int);
+    void setMaxScore(int value);
 
 private:
     QString name;
@@ -29,7 +30,9 @@ private:
     qreal maxScoreWidth;
     QTimer *expTimer;
     QTimer *scoreTimer;
+
     QString lv_str = "Lv: 1";
+    QString scr_str = "Score: 0";
 
 private slots:
     void expAni();

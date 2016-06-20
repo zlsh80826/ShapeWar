@@ -11,7 +11,7 @@ void LoginDialog::setUpGUI() {
     QGridLayout *formGridLayout = new QGridLayout(this);
 
     editServerIP = new QLineEdit(this);
-    editServerIP->setText("127.0.0.1");
+    editServerIP->setText("localhost");
     editPort = new QLineEdit(this);
     editPort->setText("8888");
     editUsername = new QLineEdit(this);

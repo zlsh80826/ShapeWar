@@ -88,7 +88,8 @@ class Hero(abilities.PropertyMixin, MovableObject):
             'max_exp': self.max_exp,
             'passives': [ability.level for ability in self.abilities],
             'upgradePoints': self.skill_points,
-            'maxScore': max_score
+            'maxScore': max_score,
+            'score': self.score
         }
 
     def to_player_dict(self):
