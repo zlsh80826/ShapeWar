@@ -12,7 +12,7 @@ ChatBar::ChatBar(QString partUrl, QWidget *parent) : QLineEdit(parent) {
     this->downTimer = new QTimer(this);
     QObject::connect(this->upTimer, SIGNAL(timeout()), this, SLOT(up()));
     QObject::connect(this->downTimer, SIGNAL(timeout()), this, SLOT(down()));
-    this->setStyleSheet("background-color: rgb(10, 10, 10); border-style: "
+    this->setStyleSheet("background-color: rgba(10, 10, 10, 70); border-style: "
                         "outset; border-width: 0px; font: bold 18px; color: "
                         "rgb(255, 255, 204);");
     QObject::connect(&chat_webSocket, &QWebSocket::connected, this,
@@ -24,11 +24,11 @@ ChatBar::ChatBar(QString partUrl, QWidget *parent) : QLineEdit(parent) {
     this->boardcast->setFocusPolicy(Qt::NoFocus);
     this->boardcast->setAlignment(Qt::AlignCenter);
     this->boardcast->setStyleSheet(
-        "background-color: rgba(0, 0, 0, 2); border-style: "
+        "background-color: rgb(255, 255, 255, 1); border-style: "
         "outset; border-width: 0px; font: normal 30px; color: "
         "rgb(51, 153, 255); text-align: right");
     this->boardcast->setFont(QFont("monospace"));
-    //this->boardcast->setDisabled(true);
+    this->boardcast->setDisabled(true);
     this->boardcast->setReadOnly(true);
     qDebug() << this->boardcast->cursor();
     this->boardcast->setCursor(QCursor(Qt::CrossCursor));
