@@ -65,21 +65,19 @@ void Hero::read_player(const QJsonObject &data) {
 }
 
 void Hero::onDieSignal() {
-    printf("die");
     this->hpBar->setVisible(false);
     disappearTimer = new QTimer(this);
+    disconnect(disappearTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
     connect(disappearTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
     disappearTimer->start(20);
-    disconnect(appearTimer, SIGNAL(timeout()), this, SLOT(increaseOpacity()));
 }
 
 void Hero::onRebornSignal() {
-    printf("reborn");
     this->hpBar->setVisible(true);
     appearTimer = new QTimer(this);
+    disconnect(appearTimer, SIGNAL(timeout()), this, SLOT(increaseOpacity()));
     connect(appearTimer, SIGNAL(timeout()), this, SLOT(increaseOpacity()));
     appearTimer->start(20);
-    disconnect(disappearTimer, SIGNAL(timeout()), this, SLOT(decreaseOpacity()));
 }
 
 void Hero::decreaseOpacity() {
@@ -94,7 +92,7 @@ void Hero::decreaseOpacity() {
 void Hero::increaseOpacity() {
     if (this->opacity() >= 0.97) {
         this->setOpacity(1);
-        this->disappearTimer->stop();
+        this->appearTimer->stop();
         return;
     }
     this->setOpacity(this->opacity() + 0.03);
