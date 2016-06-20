@@ -249,6 +249,10 @@ void View::resizeEvent(QResizeEvent *event) {
     InfoCenterY = nowViewHeight - InfoHeightOffset;
     this->onSelfPosChanged();
     this->chatBar->setParentWidth();
+    this->rebornBtn->setGeometry(this->width() / 2 - 30, this->height() * 2 / 3 + 50,
+                                 60, 40);
+    this->rebornLabel->setGeometry(this->width() / 2 - 150,
+                                   this->height() * 2 / 3, 300, 50);
 }
 
 void View::sendControlToServer() {
