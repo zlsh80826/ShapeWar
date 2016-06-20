@@ -3,8 +3,10 @@ import json
 import logging
 import itertools
 import struct
+from concurrent.futures import ThreadPoolExecutor
 from tornado.websocket import WebSocketHandler, WebSocketClosedError
 from tornado.ioloop import PeriodicCallback
+from tornado import gen
 
 from .hero import Hero
 from . import garbage
@@ -14,10 +16,14 @@ from .collision import collision_pairs, collide
 logger = logging.getLogger(__name__)
 
 
+zlib_compress_executor = ThreadPoolExecutor(4)
+
+
+@gen.coroutine
 def qUnompress_compatible_compression(data):
     string = json.dumps(data)
     binary = string.encode('utf-8')
-    compressed = zlib.compress(binary)
+    compressed = yield zlib_compress_executor.submit(zlib.compress, binary)
     bytecount = len(compressed)
     header = struct.pack('>I', bytecount)  # big-endian unsigned int
     return header + compressed
@@ -61,10 +67,12 @@ class Arena:
         for client in self.clients:
             yield from client.hero.bullets
 
-    def tick(self):
+    async def tick(self):
         """this function is called every `self.tick_time` milliseconds
         to process each tick
         """
+        self.tick_id += 1
+
         for obj in itertools.chain(
             self.squares,
             self.triangles,
@@ -92,12 +100,13 @@ class Arena:
         for client in self.clients:
             client.hero.action()
 
-        self.send_updates()
+        selfs = self.broadcast_updates()
+        globalz = self.send_updates()
+        await globalz
+        await selfs
 
-    def send_updates(self):
-        self.tick_id += 1
-        self.broadcast_updates()
-        self.broadcast_message(qUnompress_compatible_compression({
+    async def send_updates(self):
+        self.broadcast_message(await qUnompress_compatible_compression({
             "tick": self.tick_id,
             "players": [
                 client.hero.to_player_dict() for client in self.clients
@@ -107,18 +116,23 @@ class Arena:
             "pentagons": [pentagon.to_dict() for pentagon in self.pentagons]
         }))
 
-    def broadcast_updates(self):
+    async def broadcast_updates(self):
         removal = set()
-        for client in self.clients:
+        for client in list(self.clients):
             try:
-                client.send_updates()
+                client.write_message(
+                    await qUnompress_compatible_compression(
+                        {'self': client.hero.to_self_dict()}
+                    ),
+                    binary=True
+                )
             except WebSocketClosedError:
                 removal.add(client)
         self.clients -= removal
 
     def broadcast_message(self, message):
         removal = set()
-        for client in self.clients:
+        for client in list(self.clients):
             try:
                 client.write_message(message, binary=True)
             except WebSocketClosedError:
@@ -141,14 +155,6 @@ class ArenaHandler(WebSocketHandler):
         self.hero.last_control = data
         self.hero.handle_upgrade()
         logger.debug('%s %r', self.request.remote_ip, data)
-
-    def send_updates(self):
-        self.write_message(
-            qUnompress_compatible_compression(
-                {'self': self.hero.to_self_dict()}
-            ),
-            binary=True
-        )
 
     def check_origin(self, origin):
         return True
