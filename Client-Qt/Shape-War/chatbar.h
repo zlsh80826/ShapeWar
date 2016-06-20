@@ -10,6 +10,7 @@
 #include <QTimer>
 #include <QVector>
 #include <QWebSocket>
+#include <boardcastboard.h>
 
 class ChatBar : public QLineEdit {
     Q_OBJECT
@@ -23,7 +24,6 @@ public:
 protected:
     void focusOutEvent(QFocusEvent *event);
     void focusInEvent(QFocusEvent *event);
-    void mousePressEvent(QMouseEvent *event);
 
 private:
     QUrl *chat_url;
@@ -32,7 +32,7 @@ private:
     QTimer *downTimer;
     QTimer *clearTimer;
     QString name;
-    QTextEdit *boardcast;
+    BoardcastBoard *boardcast;
     QVector<QString> boardcastContent;
     int posY;
     const int chatBarHeight = 30;

@@ -18,19 +18,23 @@ ChatBar::ChatBar(QString partUrl, QWidget *parent) : QLineEdit(parent) {
     QObject::connect(&chat_webSocket, &QWebSocket::connected, this,
                      &ChatBar::onConnected);
     chat_webSocket.open(QUrl(*chat_url));
-    this->boardcast = new QTextEdit(this->parentWidget());
+    this->boardcast = new BoardcastBoard(this->parentWidget());
     this->boardcast->setGeometry(0, 100, this->parentWidget()->width(),
                                  boardcastHeight);
-    // this->boardcast->setFocusPolicy(Qt::NoFocus);
+    this->boardcast->setFocusPolicy(Qt::NoFocus);
     this->boardcast->setAlignment(Qt::AlignCenter);
     this->boardcast->setStyleSheet(
         "background-color: rgba(0, 0, 0, 2); border-style: "
         "outset; border-width: 0px; font: normal 30px; color: "
         "rgb(51, 153, 255); text-align: right");
     this->boardcast->setFont(QFont("monospace"));
-    this->boardcast->setDisabled(true);
+    //this->boardcast->setDisabled(true);
+    this->boardcast->setReadOnly(true);
+    qDebug() << this->boardcast->cursor();
+    this->boardcast->setCursor(QCursor(Qt::CrossCursor));
     this->boardcast->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->boardcast->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    //this->boardcast->setView((View)this->parentWidget());
     this->clearTimer = new QTimer(this);
     QObject::connect(this->clearTimer, SIGNAL(timeout()), this,
                      SLOT(clearTimeoutContent()));
@@ -57,6 +61,8 @@ void ChatBar::startChat() {
 void ChatBar::sendTextToServer() {
 
     QString text = this->text();
+    if(text == "")
+        return;
     QJsonObject data;
     data["name"] = this->name;
     data["message"] = text;
@@ -94,10 +100,6 @@ void ChatBar::focusInEvent(QFocusEvent *) {
 
 void ChatBar::focusOutEvent(QFocusEvent *) {
     qDebug() << "out";
-}
-
-void ChatBar::mousePressEvent(QMouseEvent *event) {
-    qDebug() << "asd";
 }
 
 void ChatBar::setParentWidth() {
@@ -143,3 +145,4 @@ void ChatBar::clearTimeoutContent() {
         this->boardcast->append(boardcastContent[i]);
     }
 }
+
