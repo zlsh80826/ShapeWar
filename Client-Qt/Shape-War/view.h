@@ -23,6 +23,7 @@ class View : public QGraphicsView {
 
 public:
     View(Scene *scene, QWebSocket &ws);
+    void setMouseClicked(bool);
 
 public slots:
     void onSelfPosChanged();

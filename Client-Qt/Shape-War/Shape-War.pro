@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     self.cpp \
     selfinfo.cpp \
     polygon.cpp \
-    chatbar.cpp
+    chatbar.cpp \
+    boardcastboard.cpp
 
 HEADERS  += \
     scene.h \
@@ -35,7 +36,8 @@ HEADERS  += \
     polygongroup.h \
     selfinfo.h \
     polygon.h \
-    chatbar.h
+    chatbar.h \
+    boardcastboard.h
 
 CONFIG += qt
 
