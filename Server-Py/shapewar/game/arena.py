@@ -102,9 +102,18 @@ class Arena:
             "players": [
                 client.hero.to_player_dict() for client in self.clients
             ],
-            "squares": [square.to_dict() for square in self.squares],
-            "triangles": [triangle.to_dict() for triangle in self.triangles],
-            "pentagons": [pentagon.to_dict() for pentagon in self.pentagons]
+            "squares": [
+                square.to_dict() for square in self.squares
+                if square.visible or square.respawn_cooldown
+            ],
+            "triangles": [
+                triangle.to_dict() for triangle in self.triangles
+                if triangle.visible or triangle.respawn_cooldown
+            ],
+            "pentagons": [
+                pentagon.to_dict() for pentagon in self.pentagons
+                if pentagon.visible or pentagon.respawn_cooldown
+            ]
         }))
 
     def broadcast_updates(self):

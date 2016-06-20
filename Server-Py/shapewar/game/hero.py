@@ -83,16 +83,11 @@ class Hero(abilities.PropertyMixin, MovableObject):
 
     def to_self_dict(self):
         return {
-            'x': self.x,
-            'y': self.y,
             'id': self.id,
-            'maxHp': self.max_hp,
-            'currentHp': self.hp,
             'level': self.level,
             'experience': self.experience,
             'max_exp': self.max_exp,
             'passives': [ability.level for ability in self.abilities],
-            'bullets': [bullet.to_dict() for bullet in self.bullets],
             'upgradePoints': self.skill_points
         }
 
@@ -104,7 +99,10 @@ class Hero(abilities.PropertyMixin, MovableObject):
             'maxHp': self.max_hp,
             'currentHp': self.hp,
             'angle': self.angle,
-            'bullets': [bullet.to_dict() for bullet in self.bullets]
+            'bullets': [
+                bullet.to_dict() for bullet in self.bullets
+                if bullet.visible or bullet.recycle_timer
+            ]
         }
 
     def shoot(self, bullet):
