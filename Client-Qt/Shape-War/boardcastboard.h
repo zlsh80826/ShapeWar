@@ -1,6 +1,7 @@
 #ifndef BOARDCASTBOARD_H
 #define BOARDCASTBOARD_H
 #include <QTextEdit>
+#include <QMouseEvent>
 
 class BoardcastBoard : public QTextEdit {
     Q_OBJECT
