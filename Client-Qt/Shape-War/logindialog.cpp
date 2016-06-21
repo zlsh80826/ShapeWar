@@ -1,15 +1,23 @@
 #include "logindialog.h"
 
+/*!
+ * \brief LoginDialog::LoginDialog construtor
+ * \param parent
+ */
 LoginDialog::LoginDialog(QWidget *parent) : QDialog(parent) {
     setUpGUI();
     setWindowTitle(tr("User Login"));
     setModal(true);
 }
 
+/*!
+ * \brief LoginDialog::setUpGUI set up the GUI of this dialog
+ */
 void LoginDialog::setUpGUI() {
     // set up the layout
     QGridLayout *formGridLayout = new QGridLayout(this);
 
+    // initialize the editlines
     editServerIP = new QLineEdit(this);
     editServerIP->setText("localhost");
     editPort = new QLineEdit(this);
