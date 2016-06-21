@@ -11,9 +11,9 @@ class Polygon : public QGraphicsObject {
     Q_OBJECT
 public:
     Polygon(int);
-    QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-               QWidget *widget);
+    virtual QRectF boundingRect() const override;
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+               QWidget *widget) override;
     QPainterPath shape() const;
     void read(const QJsonObject &json);
     HpBar *hpBar;

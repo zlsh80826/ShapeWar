@@ -68,7 +68,7 @@ void Bullet::read(const QJsonObject &json) {
 }
 
 /*!
- * \brief Bullet::setStage make this bullet star from ( ACTIVE -> DISAPPEARING )
+ * \brief Bullet::setStage make this bullet stage from ( ACTIVE -> DISAPPEARING )
  *  or ( DISAPPEARING -> INACTIVE ) or ( INACTIVE -> ACTIVE )
  * \param control
  */

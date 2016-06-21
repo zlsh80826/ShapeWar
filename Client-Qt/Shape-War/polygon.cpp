@@ -3,7 +3,12 @@
 #include <QPainter>
 #include <QtMath>
 
+/*!
+ * \brief Polygon::Polygon contructor
+ * \param edgeCount
+ */
 Polygon::Polygon(int edgeCount) {
+    // set values and new necessary things
     this->axis = 20;
     this->hpBar = new HpBar(1000, 2 * axis, axis + 5);
     this->stage = INACTIVE;
@@ -17,12 +22,22 @@ Polygon::Polygon(int edgeCount) {
                      SLOT(increaseOpacity()));
 }
 
+/*!
+ * \brief Polygon::boundingRect  (the same idea of bullet::boudingRect)
+ * \return
+ */
 QRectF Polygon::boundingRect() const {
     qreal halfPenWidth = 3 / 2;
     return QRectF(-axis - halfPenWidth, -axis - halfPenWidth,
                   axis * 2 + halfPenWidth, axis * 2 + halfPenWidth);
 }
 
+/*!
+ * \brief Polygon::paint (the same idea of bullet::paint)
+ * \param painter
+ * \param option
+ * \param widget
+ */
 void Polygon::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                     QWidget *widget) {
     (void)option;
@@ -41,12 +56,20 @@ void Polygon::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->drawPath(this->shape());
 }
 
+/*!
+ * \brief Polygon::shape (the same idea of bullet::shape)
+ * \return
+ */
 QPainterPath Polygon::shape() const {
     QPainterPath path;
     path.addPolygon(polygonShape);
     return path;
 }
 
+/*!
+ * \brief Polygon::read read and update the polygon's information from server
+ * \param json
+ */
 void Polygon::read(const QJsonObject &json) {
     bool next_active = json["visible"].toBool();
     if (((this->stage != ACTIVE) && (next_active == false)) ||
@@ -62,6 +85,11 @@ void Polygon::read(const QJsonObject &json) {
     this->hpBar->setPos(this->x(), this->y());
 }
 
+/*!
+ * \brief Polygon::setStage make this polygon stage from ( ACTIVE -> DISAPPEARING )
+ *  or ( DISAPPEARING -> INACTIVE ) or ( INACTIVE -> ACTIVE )
+ * \param control
+ */
 void Polygon::setStage(bool control) {
     if (control == false) {
         this->stage = DISAPPEARING;
@@ -75,11 +103,17 @@ void Polygon::setStage(bool control) {
     }
 }
 
+/*!
+ * \brief Polygon::disappear animates disappearing
+ */
 void Polygon::disappear() {
     this->disappearTimer->start(20);
     this->hpBar->setVisible(false);
 }
 
+/*!
+ * \brief Polygon::decreaseOpacity help animates disappering by setting opacity
+ */
 void Polygon::decreaseOpacity() {
     if (this->opacity() <= 0.05) {
         this->setOpacity(0);
@@ -92,6 +126,9 @@ void Polygon::decreaseOpacity() {
     this->constructPolygon();
 }
 
+/*!
+ * \brief Polygon::increaseOpacity help animates appering by setting opacity
+ */
 void Polygon::increaseOpacity() {
     if (this->opacity() >= 0.95) {
         this->setOpacity(1);
@@ -102,6 +139,9 @@ void Polygon::increaseOpacity() {
     this->setOpacity(this->opacity() + 0.08);
 }
 
+/*!
+ * \brief Polygon::constructPolygon calclate the shape points to construct the shape using edge count
+ */
 void Polygon::constructPolygon() {
     QVector<QPoint> shapePoint;
     double radian = qDegreesToRadians(360.0 / edgeCount);
