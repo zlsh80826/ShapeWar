@@ -22,8 +22,8 @@ public:
     void setName(QString);
 
 protected:
-    void focusOutEvent(QFocusEvent *event);
-    void focusInEvent(QFocusEvent *event);
+    virtual void focusOutEvent(QFocusEvent *event) override;
+    virtual void focusInEvent(QFocusEvent *event) override;
 
 private:
     QUrl *chat_url;
@@ -32,13 +32,13 @@ private:
     QTimer *downTimer;
     QTimer *clearTimer;
     QString name;
-    BoardcastBoard *boardcast;
-    QVector<QString> boardcastContent;
+    BoardcastBoard *broadcast;
+    QVector<QString> broadcastContent;
     int posY;
     const int chatBarHeight = 30;
     const int maxPosY = 0;
     const int minPosY = -40;
-    const int boardcastHeight = 120;
+    const int broadcastHeight = 120;
 
 private slots:
     void onConnected();
