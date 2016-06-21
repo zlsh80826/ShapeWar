@@ -1,13 +1,16 @@
 #include "view.h"
+/*!
+ * \brief View::View constructor
+ * \param scene
+ * \param ws the webSocket of arena (apart off chat)
+ */
 View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     this->resize(viewWidth, viewHeight);
     this->setWindowTitle("Shape-War");
 
     setRenderHint(QPainter::Antialiasing, true);
-    // setCacheMode(CacheBackground);    // I don't know why but this cause
-    // unexpected wrong
 
-    // size control, maybe not necessary
+    // size control
     setMinimumSize(500, 400);
     setMaximumSize(maxViewWidth, maxViewHeight);
 
@@ -32,18 +35,19 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     mouseClicked = false;
     upgradeChoose = -1;
 
+    // to expand the skills (aka. passives) options
     expandBtn = new QPushButton("+", this);
     expandBtn->setGeometry(0, viewHeight - buttonLen, buttonLen, buttonLen);
     expandBtn->setVisible(true);
     isExpanded = false;
     connect(expandBtn, SIGNAL(clicked()), this, SLOT(showUpgrateOptions()));
 
+    // set up passives options
     for (int i = 0, size = self->passiveNames.size(); i < size; i++) {
         properties.push_back(new QPair<QLabel *, QPushButton *>(
             new QLabel(self->passiveNames.at(i), this),
             new QPushButton("+", this)));
     }
-
     propertyBtnPtrGroup = new QButtonGroup(this);
     for (unsigned int i = 0, size = properties.size(); i < size; i++) {
         QPair<QLabel *, QPushButton *> *property = properties.at(i);
@@ -61,27 +65,29 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
     connect(propertyBtnPtrGroup, SIGNAL(buttonClicked(int)), this,
             SLOT(onPropertyBtnClicked(int)));
 
+    // timer for testing tansmittion rate
     sec = new QTimer(0);
     this->sends = 0;
     connect(sec, SIGNAL(timeout()), this, SLOT(print_freq()));
     sec->start(1000);
 
+    // new chat bar
     this->chatBar = new ChatBar(scene->getPartUrl(), this);
     this->chatBar->setName(scene->getUsername());
 
+    // when passives changes do necessary display update
     connect(self, SIGNAL(passiveChanged(int, int)), this,
             SLOT(onPassivesChanged(int, int)));
 
+    // set up reborn interface
     this->rebornLabel = new QLabel("Going to reborn?", this);
     this->rebornLabel->setGeometry(this->width() / 2 - 150,
                                    this->height() * 2 / 3, 300, 50);
     this->rebornLabel->setVisible(false);
-    //this->rebornLabel->setVisible(true);
     this->rebornBtn = new QPushButton(this);
     this->rebornBtn->setGeometry(this->width() / 2 - 30, this->height() * 2 / 3 + 50,
                                  60, 40);
     this->rebornBtn->setVisible(false);
-    //this->rebornBtn->setVisible(true);
     this->rebornBtn->setText("Reborn");
     this->rebornChoose = false;
 
@@ -98,11 +104,17 @@ View::View(Scene *scene, QWebSocket &ws) : QGraphicsView(scene), ws(ws) {
             SLOT(onRebornClicked(bool)));
 }
 
+/*!
+ * \brief View::print_freq print the rating
+ */
 void View::print_freq() {
     qDebug() << "send per sec: " << this->sends;
     this->sends = 0;
 }
 
+/*!
+ * \brief View::onSelfDie update display setting when die
+ */
 void View::onSelfDie() {
     this->rebornBtn->setVisible(true);
     this->rebornLabel->setVisible(true);
@@ -114,12 +126,19 @@ void View::onSelfDie() {
     }
 }
 
+/*!
+ * \brief View::onRebornClicked update display setting when click reborn button
+ */
 void View::onRebornClicked(bool) {
     this->rebornBtn->setVisible(false);
     this->rebornLabel->setVisible(false);
     this->rebornChoose = true;
 }
 
+/*!
+ * \brief View::keyPressEvent collect the control actions of user
+ * \param event
+ */
 void View::keyPressEvent(QKeyEvent *event) {
     // ment is just for testing
     // whether to move to judged by server instead of here
@@ -140,6 +159,10 @@ void View::keyPressEvent(QKeyEvent *event) {
     }
 }
 
+/*!
+ * \brief View::keyReleaseEvent collect the control actions of users
+ * \param event
+ */
 void View::keyReleaseEvent(QKeyEvent *event) {
     if (event->isAutoRepeat()) {
         event->ignore();
@@ -168,6 +191,9 @@ void View::keyReleaseEvent(QKeyEvent *event) {
     // qDebug() << "Released key: " << event->key();
 }
 
+/*!
+ * \brief View::onSelfPosChanged center on the view and setting rotation and info position of self
+ */
 void View::onSelfPosChanged() {
     this->centerOn(this->self->pos());
     QPointF mouseP = this->mapToScene(this->mapFromGlobal(QCursor::pos()));
@@ -175,16 +201,28 @@ void View::onSelfPosChanged() {
     self->setInfoPos(this->mapToScene(QPoint(InfoCenterX, InfoCenterY)));
 }
 
+/*!
+ * \brief View::mousePressEvent collect control action of user
+ * \param event
+ */
 void View::mousePressEvent(QMouseEvent *event) {
     (void)event;
     mouseClicked = true;
 }
 
+/*!
+ * \brief View::mouseReleaseEvent collect control action of user
+ * \param event
+ */
 void View::mouseReleaseEvent(QMouseEvent *event) {
     (void)event;
     mouseClicked = false;
 }
 
+/*!
+ * \brief View::mouseMoveEvent collect control action of user
+ * \param event
+ */
 void View::mouseMoveEvent(QMouseEvent *event) {
     QPointF mouseP = this->mapToScene(event->pos());
     self->setRotation(this->calcRargetAngle(mouseP));
@@ -193,6 +231,11 @@ void View::mouseMoveEvent(QMouseEvent *event) {
     //                  targetAngle * 180.0 / 3.14 );
 }
 
+/*!
+ * \brief View::calcRargetAngle calclate the angle between mouse and self
+ * \param mouseP
+ * \return
+ */
 qreal View::calcRargetAngle(QPointF &mouseP) {
     QPointF selfP = self->pos();
     qreal tangent = (mouseP.y() - selfP.y()) / (mouseP.x() - selfP.x());
@@ -205,23 +248,17 @@ qreal View::calcRargetAngle(QPointF &mouseP) {
     targetAngle /= 3.14;
     return targetAngle;
 }
-
+/*!
+ * \brief View::wheelEvent eat this event to prevent it is passed to parent widget
+ */
 void View::wheelEvent(QWheelEvent *) {
-    // eat this event to prevent it is passed to parent widget
     // do nothing
-
-    // below are just testing other things
-    /*printf("From %d to", self->getUpgradePoints());
-    if (event->orientation() == Qt::Vertical) {
-        if (event->delta() > 0) {
-            self->setUpgradePoints(self->getUpgradePoints() + 1);
-        } else {
-            self->setUpgradePoints(self->getUpgradePoints() - 1);
-        }
-    }
-    printf(" %d", self->getUpgradePoints());*/
 }
 
+/*!
+ * \brief View::resizeEvent when the view is resized set necessary position of objects in view
+ * \param event
+ */
 void View::resizeEvent(QResizeEvent *event) {
     (void)event;
     int nowViewWidth = this->width();
@@ -255,6 +292,9 @@ void View::resizeEvent(QResizeEvent *event) {
                                    this->height() * 2 / 3, 300, 50);
 }
 
+/*!
+ * \brief View::sendControlToServer send the collected control actions to server and reset some of the,
+ */
 void View::sendControlToServer() {
     this->sends++;
     QJsonObject data;
@@ -273,6 +313,9 @@ void View::sendControlToServer() {
     rebornChoose = false;
 }
 
+/*!
+ * \brief View::showUpgrateOptions show or hide the upgrade options
+ */
 void View::showUpgrateOptions() {
     isExpanded = !isExpanded;
     if (isExpanded) {
@@ -295,6 +338,9 @@ void View::showUpgrateOptions() {
     }
 }
 
+/*!
+ * \brief View::onUpgradePointChanged setting display of upgrade option when upgrade point changed
+ */
 void View::onUpgradePointChanged() {
     printf("now UP: %d", self->getUpgradePoints());
     bool enabled = (self->getUpgradePoints() > 0) ? true : false;
@@ -311,6 +357,10 @@ void View::onUpgradePointChanged() {
     this->setPropertyStyle();
 }
 
+/*!
+ * \brief View::onPropertyBtnClicked collect control action of upgrade
+ * \param clickedBtnId
+ */
 void View::onPropertyBtnClicked(int clickedBtnId) {
     qDebug() << "Button clicked: " << this->self->passiveNames.at(clickedBtnId);
     // TODO: handle the message want to  pass to server
@@ -318,6 +368,11 @@ void View::onPropertyBtnClicked(int clickedBtnId) {
     this->setPropertyStyle();
 }
 
+/*!
+ * \brief View::onPassivesChanged set display option when passives changed
+ * \param i
+ * \param value
+ */
 void View::onPassivesChanged(int i, int value) {
     if (value == 0) {
         properties.at(i)->first->setText(self->passiveNames.at(i));
@@ -332,6 +387,9 @@ void View::onPassivesChanged(int i, int value) {
     }
 }
 
+/*!
+ * \brief View::setPropertyStyle draw the style of upgrade options interface
+ */
 void View::setPropertyStyle() {
     for (int i = 0; i < properties.size(); ++i) {
         this->properties.at(i)->first->setStyleSheet(
@@ -411,6 +469,10 @@ void View::setPropertyStyle() {
     }
 }
 
+/*!
+ * \brief View::setMouseClicked setter of mouseClicked
+ * \param value
+ */
 void View::setMouseClicked(bool value) {
     this->mouseClicked = value;
 }

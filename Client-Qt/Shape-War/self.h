@@ -3,6 +3,9 @@
 
 #include "hero.h"
 #include "selfinfo.h"
+/*!
+ * \brief The Self class provide a interface to show self's information (which is not known to ohter players)
+ */
 class Self : public Hero {
     Q_OBJECT
 public:
