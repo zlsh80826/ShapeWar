@@ -1,5 +1,8 @@
 #include "self.h"
 
+/*!
+ * \brief Self::Self constructor
+ */
 Self::Self() : Hero() {
     this->info = new SelfInfo();
     this->upgradePoints = 0;
@@ -8,6 +11,10 @@ Self::Self() : Hero() {
     }
 }
 
+/*!
+ * \brief Self::read_info read necessary info from server (those now known to others)
+ * \param json
+ */
 void Self::read_info(const QJsonObject &json) {
     QJsonObject instance = json["self"].toObject();
     this->setUpgradePoints(instance["upgradePoints"].toInt());
@@ -27,6 +34,10 @@ void Self::read_info(const QJsonObject &json) {
     }
 }
 
+/*!
+ * \brief Self::read_global read the self's global information (will be known to others)
+ * \param data
+ */
 void Self::read_global(const QJsonObject &data) {
     this->setX(data["x"].toDouble());
     this->setY(data["y"].toDouble());
@@ -34,6 +45,11 @@ void Self::read_global(const QJsonObject &data) {
     this->bullets->read(data["bullets"].toArray());
     this->hpBar->setHp(data["currentHp"].toInt(), data["maxHp"].toInt());
 }
+
+
+/*!
+ * below are setters and getters, emit signal if necessary
+ */
 
 void Self::setInfoPos(QPointF pos) {
     info->setPos(pos);

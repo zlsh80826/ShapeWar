@@ -9,7 +9,12 @@
 #include <QPainter>
 #include <QtWebSockets/QWebSocket>
 
+/*!
+ * \brief Scene::Scene constructor
+ * \param parent
+ */
 Scene::Scene(QWidget *parent) : QGraphicsScene(parent) {
+    // new login dialog and connect accept login signal and slot
     LoginDialog *loginDialog = new LoginDialog();
 
     QObject::connect(
@@ -26,10 +31,12 @@ Scene::Scene(QWidget *parent) : QGraphicsScene(parent) {
     initGame();
     startGame();
 
+    // connent signals and slots and start webSocket
     connect(&m_webSocket, &QWebSocket::connected, this, &Scene::onConnected);
     connect(&m_webSocket, &QWebSocket::disconnected, this, &Scene::closed);
     m_webSocket.open(QUrl(*dummy_url));
 
+    // debug and test transmittion rating
     sec = new QTimer(0);
     this->recvs = 0;
     connect(sec, SIGNAL(timeout()), this, SLOT(print_freq()));
@@ -41,6 +48,11 @@ void Scene::print_freq() {
     qDebug() << "recv per sec: " << this->recvs;
     this->recvs = 0;
 }
+/*!
+ * \brief Scene::drawBackground draws the background of scene
+ * \param painter
+ * \param rect
+ */
 void Scene::drawBackground(QPainter *painter, const QRectF &rect) {
     (void)rect;
     // need to change position to global
@@ -55,15 +67,19 @@ void Scene::drawBackground(QPainter *painter, const QRectF &rect) {
     }
 }
 
+// we already start game at server, so this function is abandoned
 void Scene::startGame() {
+
 }
 
+/*!
+ * \brief Scene::initGame initial the self and other heros and containers of monstors
+ */
 void Scene::initGame() {
 
     this->setSceneRect(5, 5, width, height);
     this->backgroundColor = QColor(10, 10, 255, 30);
 
-    // self should not be constructed here after server is completed ?
     self = new Self();
     self->setPos(100, 200);
     this->addItem(self);
@@ -86,19 +102,32 @@ void Scene::initGame() {
     pentagons->addToParent(this);
 }
 
+// the game never over ( unless the server is corrupt )
 void Scene::gameOver() {
 }
 
+/*!
+ * \brief Scene::onConnected when connected, connect signal/slot when message is received from server
+ */
 void Scene::onConnected() {
     qDebug() << "WebSocket of arena connected";
     connect(&m_webSocket, &QWebSocket::binaryMessageReceived, this,
             &Scene::onBinaryMessageReceived);
 }
 
+/*!
+ * \brief Scene::onBinaryMessageReceived uncompress the date and tranlate is using UTF8
+ * \param data
+ */
 void Scene::onBinaryMessageReceived(QByteArray data) {
     onTextMessageReceived(QString::fromUtf8(qUncompress(data)));
 }
 
+/*!
+ * \brief Scene::onTextMessageReceived interpret uncompressed data to Json
+ * and make objects in all containers to read their information
+ * \param message
+ */
 void Scene::onTextMessageReceived(QString message) {
     // qDebug().noquote() << "Message received:" << message;
     QJsonDocument doc = QJsonDocument::fromJson(message.toUtf8());
@@ -157,6 +186,12 @@ void Scene::onTextMessageReceived(QString message) {
     }
 }
 
+/*!
+ * \brief Scene::slotAcceptUserLogin fill necesary information
+ * \param serverIP
+ * \param port
+ * \param username
+ */
 void Scene::slotAcceptUserLogin(QString &serverIP, QString &port,
                                 QString &username) {
     // QString &password, bool isAnonymous) {
@@ -173,10 +208,18 @@ void Scene::slotAcceptUserLogin(QString &serverIP, QString &port,
     // ^^^ don't need it anymore
 }
 
+/*!
+ * \brief Scene::getPartUrl getter of partial url
+ * \return
+ */
 QString Scene::getPartUrl() const {
     return partUrl;
 }
 
+/*!
+ * \brief Scene::getUsername getter of user name
+ * \return
+ */
 QString Scene::getUsername() const {
     return username;
 }

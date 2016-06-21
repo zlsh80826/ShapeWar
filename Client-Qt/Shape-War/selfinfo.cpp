@@ -4,7 +4,11 @@
 #include <QPainter>
 #include <QTimer>
 
+/*!
+ * \brief SelfInfo::SelfInfo constructor
+ */
 SelfInfo::SelfInfo() {
+    // set initial values
     this->score = 0;
     this->targetScore = 0;
     this->maxScore = 50000;
@@ -18,6 +22,8 @@ SelfInfo::SelfInfo() {
     this->maxScoreWidth = 400;
     this->setOpacity(0.95);
     this->setZValue(1);
+
+    // new timer and connect signals/slots
     this->expTimer = new QTimer(this);
     this->scoreTimer = new QTimer(this);
     QObject::connect(this->expTimer, SIGNAL(timeout()), this, SLOT(expAni()));
@@ -25,14 +31,28 @@ SelfInfo::SelfInfo() {
                      SLOT(scoreAni()));
 }
 
+/*!
+ * \brief SelfInfo::setName setter of name
+ * \param name
+ */
 void SelfInfo::setName(QString name) {
     this->name = name;
 }
 
+/*!
+ * \brief SelfInfo::boundingRect (the same idea of bullet::boudingRect)
+ * \return
+ */
 QRectF SelfInfo::boundingRect() const {
     return QRectF(-380, -40, 760, 160);
 }
 
+/*!
+ * \brief SelfInfo::paint (the same idea of bullet::paint)
+ * \param painter
+ * \param option
+ * \param widget
+ */
 void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                      QWidget *widget) {
     (void)option;
@@ -68,6 +88,11 @@ void SelfInfo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->drawPath(infoPath);
 }
 
+/*!
+ * \brief SelfInfo::setExp setter of exp and max_exp, also control animation processes
+ * \param exp
+ * \param max_exp
+ */
 void SelfInfo::setExp(int exp, int max_exp) {
     if (exp == this->targetExp && max_exp == this->max_exp)
         return;
@@ -77,11 +102,19 @@ void SelfInfo::setExp(int exp, int max_exp) {
     this->expTimer->start(25);
 }
 
+/*!
+ * \brief SelfInfo::setMaxScore setter of max score
+ * \param value
+ */
 void SelfInfo::setMaxScore(int value)
 {
     maxScore = value;
 }
 
+/*!
+ * \brief SelfInfo::setScore setter of score
+ * \param new_score
+ */
 void SelfInfo::setScore(int new_score) {
 
     if (new_score == this->targetScore)
@@ -91,6 +124,10 @@ void SelfInfo::setScore(int new_score) {
     this->scr_str = "Score:  " + QString::number(new_score);
 }
 
+/*!
+ * \brief SelfInfo::setLv setter of level
+ * \param new_lv
+ */
 void SelfInfo::setLv(int new_lv) {
     if (this->lv == new_lv)
         return;
@@ -98,6 +135,9 @@ void SelfInfo::setLv(int new_lv) {
     this->lv_str = "Lv: " + QString::number(new_lv);
 }
 
+/*!
+ * \brief SelfInfo::expAni animates the exp bar
+ */
 void SelfInfo::expAni() {
     if (targetExp == exp) {
         expTimer->stop();
@@ -111,6 +151,9 @@ void SelfInfo::expAni() {
     this->update(this->boundingRect());
 }
 
+/*!
+ * \brief SelfInfo::scoreAni animates the score bar
+ */
 void SelfInfo::scoreAni() {
     if (this->targetScore == this->score) {
         scoreTimer->stop();
