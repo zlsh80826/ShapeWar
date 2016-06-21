@@ -11,12 +11,12 @@ public:
 
 protected:
     // focus event for debug
-    void focusOutEvent(QFocusEvent *event);
-    void focusInEvent(QFocusEvent *event);
+    virtual void focusOutEvent(QFocusEvent *event) override;
+    virtual void focusInEvent(QFocusEvent *event) override;
 
     // override mouse event to ignore events passing to this widget
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
+    virtual void mousePressEvent(QMouseEvent *event) override;
+    virtual void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
     const int boardcastHeight = 120;

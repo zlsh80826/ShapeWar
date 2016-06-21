@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QPainter>
 
+// constructor
 Bullet::Bullet(int) {
     this->setOpacity(0);
     this->radius = 20;
@@ -10,13 +11,24 @@ Bullet::Bullet(int) {
     QObject::connect(this->disappearTimer, SIGNAL(timeout()), this,
                      SLOT(decreaseOpacity()));
 }
-
+/*!
+ * \brief Bullet::boundingRect mark the rect area to let view know weather
+ *  to draw / update this graphics item
+ * \return the rect area
+ */
 QRectF Bullet::boundingRect() const {
     qreal halfPenWidth = 2;
     return QRectF(-radius - halfPenWidth, -radius - halfPenWidth,
                   radius * 2 + halfPenWidth, radius * 2 + halfPenWidth);
 }
 
+/*!
+ * \brief Bullet::paint
+ * \param painter performs low-level painting on widgets and other paint devicess
+ * \param option describe the parameters needed to draw
+ * \param widget If provided, it points to the widget that is being painted on;
+ * otherwise, it is 0. For cached painting, widget is always 0
+ */
 void Bullet::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                    QWidget *widget) {
     (void)option;
@@ -30,12 +42,20 @@ void Bullet::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->drawPath(this->shape());
 }
 
+/*!
+ * \brief Bullet::shape describe the paint path for painter of Bullet::paint
+ * \return the path
+ */
 QPainterPath Bullet::shape() const {
     QPainterPath path;
     path.addEllipse(0, 0, radius, radius);
     return path;
 }
 
+/*!
+ * \brief Bullet::read read the Json object to update the information of this Bullet
+ * \param json the Json object to read
+ */
 void Bullet::read(const QJsonObject &json) {
     bool next_active = json["visible"].toBool();
     if (((this->stage != ACTIVE) && (next_active == false)) ||
@@ -47,6 +67,11 @@ void Bullet::read(const QJsonObject &json) {
     this->radius = json["radius"].toInt();
 }
 
+/*!
+ * \brief Bullet::setStage make this bullet star from ( ACTIVE -> DISAPPEARING )
+ *  or ( DISAPPEARING -> INACTIVE ) or ( INACTIVE -> ACTIVE )
+ * \param control
+ */
 void Bullet::setStage(bool control) {
     if (control == false) {
         this->stage = DISAPPEARING;
@@ -57,10 +82,16 @@ void Bullet::setStage(bool control) {
     }
 }
 
+/*!
+ * \brief Bullet::disappear make this bullet gradually disappear
+ */
 void Bullet::disappear() {
     this->disappearTimer->start(15);
 }
 
+/*!
+ * \brief Bullet::decreaseOpacity implement the disappear animation using setting of opacity
+ */
 void Bullet::decreaseOpacity() {
     if (this->opacity() <= 0.05) {
         this->setOpacity(0);
