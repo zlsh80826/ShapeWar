@@ -19,22 +19,7 @@ ChatBar::ChatBar(QString partUrl, QWidget *parent) : QLineEdit(parent) {
                      &ChatBar::onConnected);
     chat_webSocket.open(QUrl(*chat_url));
     this->boardcast = new BoardcastBoard(this->parentWidget());
-    this->boardcast->setGeometry(0, 100, this->parentWidget()->width(),
-                                 boardcastHeight);
-    this->boardcast->setFocusPolicy(Qt::NoFocus);
-    this->boardcast->setAlignment(Qt::AlignCenter);
-    this->boardcast->setStyleSheet(
-        "background-color: rgb(255, 255, 255, 1); border-style: "
-        "outset; border-width: 0px; font: normal 30px; color: "
-        "rgb(51, 153, 255); text-align: right");
-    this->boardcast->setFont(QFont("monospace"));
-    this->boardcast->setDisabled(true);
-    this->boardcast->setReadOnly(true);
-    qDebug() << this->boardcast->cursor();
-    this->boardcast->setCursor(QCursor(Qt::CrossCursor));
-    this->boardcast->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    this->boardcast->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    //this->boardcast->setView((View)this->parentWidget());
+
     this->clearTimer = new QTimer(this);
     QObject::connect(this->clearTimer, SIGNAL(timeout()), this,
                      SLOT(clearTimeoutContent()));
